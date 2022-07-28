@@ -8,5 +8,5 @@ For your convenience, both procedures are documented for you at
 <a href="https://www.databricks.training/step-by-step/importing-courseware-from-github" target="_blank">https&#58;//www.databricks.training/step-by-step/importing-courseware-from-github</a>.<br/>
 
 **Special Note:** This course is published in multiple languages.
-* English, see https://github.com/databricks-academy/data-engineering-with-databricks
+* English, see https://github.com/databricks-academy/data-engineering-with-databricks-english
 * Japanese, see https://github.com/databricks-academy/data-engineering-with-databricks-japanese (this repo)
