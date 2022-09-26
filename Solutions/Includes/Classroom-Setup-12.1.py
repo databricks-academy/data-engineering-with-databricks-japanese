@@ -1,10 +1,11 @@
 # Databricks notebook source
-# MAGIC %run ./_utility-methods $lesson="12.1"
+# MAGIC %run ./_utility-methods
 
 # COMMAND ----------
 
-DA.cleanup()
-DA.init(create_db=False)
+DA = DBAcademyHelper(**helper_arguments)
+DA.reset_environment()
+DA.init(install_datasets=True, create_db=False)
 DA.conclude_setup()
 
 # COMMAND ----------
@@ -50,7 +51,7 @@ CREATE FUNCTION is_active()
         END;
 """)
     
-DA.generate_config = _generate_config    
+DA.generate_config = _generate_config
 
 # COMMAND ----------
 
@@ -115,4 +116,3 @@ ORDER BY user_id ASC;
 """)
     
 DA.generate_summary = _generate_summary
-

@@ -1,16 +1,18 @@
 # Databricks notebook source
-# MAGIC %run ./_utility-methods $lesson="11.1"
+# MAGIC %run ./_utility-methods
 
 # COMMAND ----------
 
-def print_sql(rows, sql):
+@DBAcademyHelper.monkey_patch
+def print_sql(self, rows, sql):
     html = f"""<textarea style="width:100%" rows="{rows}"> \n{sql.strip()}</textarea>"""
     displayHTML(html)
 
 # COMMAND ----------
 
-def _generate_users_table():
-    print_sql(20, f"""
+@DBAcademyHelper.monkey_patch
+def generate_users_table(self):
+    self.print_sql(20, f"""
 CREATE DATABASE IF NOT EXISTS {DA.db_name}
 LOCATION '{DA.paths.user_db}';
 
@@ -30,24 +32,21 @@ VALUES (1, "Yve", 1.0, "CA"),
 CREATE VIEW ny_users_vw
 AS SELECT * FROM users WHERE state = 'NY';
 """)
-    
-DA.generate_users_table = _generate_users_table
 
 # COMMAND ----------
 
-def _generate_create_database_with_grants():
-    print_sql(7, f"""
+@DBAcademyHelper.monkey_patch
+def generate_create_database_with_grants(self):
+    self.print_sql(7, f"""
 CREATE DATABASE {DA.db_name}_derivative;
 
 GRANT USAGE, READ_METADATA, CREATE, MODIFY, SELECT ON DATABASE `{DA.db_name}_derivative` TO `users`;
 
-SHOW GRANT ON DATABASE `{DA.db_name}_derivative`;""")    
-    
-DA.generate_create_database_with_grants = _generate_create_database_with_grants
+SHOW GRANT ON DATABASE `{DA.db_name}_derivative`;""")
 
 # COMMAND ----------
 
-DA.cleanup()
-DA.init(create_db=False)
+DA = DBAcademyHelper(**helper_arguments)
+DA.reset_environment()
+DA.init(install_datasets=True, create_db=False)
 DA.conclude_setup()
-

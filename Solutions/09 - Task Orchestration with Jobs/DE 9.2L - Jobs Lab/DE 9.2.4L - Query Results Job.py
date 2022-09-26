@@ -1,14 +1,12 @@
 # Databricks notebook source
-# MAGIC %run ../../Includes/Classroom-Setup-9.2.4L
+# MAGIC %run ../../Includes/Classroom-Setup-09.2.4L
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
-# MAGIC # DLTパイプラインの結果を調べる（Exploring the Results of a DLT Pipeline）
-# MAGIC 
-# MAGIC 次のセルを実行してストレージ場所の出力を一覧表にします：
+# MAGIC %md <i18n value="1372d675-796a-4bbb-9d83-356d3b1b297e"/>
+# DLTパイプラインの結果を調べる（Exploring the Results of a DLT Pipeline）
+
+次のセルを実行してストレージ場所の出力を一覧表にします：
 
 # COMMAND ----------
 
@@ -17,10 +15,8 @@ display(files)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
-# MAGIC **system**ディレクトリは、パイプラインに関連付けられたイベントをキャプチャします。
+# MAGIC %md <i18n value="9a19b4f8-479b-4dfb-80a8-05e08cfd9eb0"/>
+**system**ディレクトリは、パイプラインに関連付けられたイベントをキャプチャします。
 
 # COMMAND ----------
 
@@ -29,12 +25,10 @@ display(files)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
-# MAGIC これらのイベントログはDeltaテーブルとして保存されます。
-# MAGIC 
-# MAGIC それではテーブルを照会しましょう。
+# MAGIC %md <i18n value="da333edd-ee6d-4892-9da0-29f38d96e14f"/>
+これらのイベントログはDeltaテーブルとして保存されます。
+
+それではテーブルを照会しましょう。
 
 # COMMAND ----------
 
@@ -43,10 +37,8 @@ display(files)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
-# MAGIC *テーブル*ディレクトリの内容を見ていきましょう。
+# MAGIC %md <i18n value="303e482b-e3cd-48eb-b9be-5357e07803aa"/>
+*テーブル*ディレクトリの内容を見ていきましょう。
 
 # COMMAND ----------
 
@@ -55,10 +47,8 @@ display(files)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
-# MAGIC ゴールドテーブルを照会しましょう。
+# MAGIC %md <i18n value="6c5ffd14-74db-4ec2-8764-526da08840ab"/>
+ゴールドテーブルを照会しましょう。
 
 # COMMAND ----------
 
@@ -68,4 +58,3 @@ display(files)
 # COMMAND ----------
 
 DA.cleanup()
-
