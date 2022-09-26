@@ -7,21 +7,16 @@
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="78c97c5e-68ec-4a38-86ce-6af6466b8bd1"/>
-# プロジェクト情報 (Project Information)
-
-* コース名: **Data Engineering with Databricks**
-* バージョン:  **2.3.6-JA**
-* 作成日時: **Sep 26, 2022 at 20:37:19 UTC**
-
-# COMMAND ----------
-
-# MAGIC %md <i18n value="bd2e5e62-c077-477c-a1ff-93642a5a4db7"/>
-このコースのデータセットとその著作権に関する追加情報を確認するため、次のセルを実行してください。
-
-# COMMAND ----------
-
-# MAGIC %run ./Includes/Print-Dataset-Copyrights
+# MAGIC %md
+# MAGIC %md --i18n-78c97c5e-68ec-4a38-86ce-6af6466b8bd1
+# MAGIC 
+# MAGIC   
+# MAGIC 
+# MAGIC # Project Information
+# MAGIC 
+# MAGIC * Name: **Data Engineering with Databricks**
+# MAGIC * Version:  **2.2.1-JA.3**
+# MAGIC * Built On: **Jul 25, 2022 at 03:31:51 UTC**
 
 # COMMAND ----------
 

@@ -1,8 +1,4 @@
 -- Databricks notebook source
--- MAGIC %run ../../Includes/Classroom-Setup-09.2.3L
-
--- COMMAND ----------
-
 CREATE OR REFRESH STREAMING LIVE TABLE recordings_bronze
 AS SELECT current_timestamp() receipt_time, input_file_name() source_file, *
   FROM cloud_files("${source}", "json", map("cloudFiles.schemaHints", "time DOUBLE"))
@@ -11,7 +7,7 @@ AS SELECT current_timestamp() receipt_time, input_file_name() source_file, *
 
 CREATE OR REFRESH STREAMING LIVE TABLE pii
 AS SELECT *
-  FROM cloud_files("${datasets_path}/healthcare/patient", "csv", map("header", "true", "cloudFiles.inferColumnTypes", "true"))
+  FROM cloud_files("/mnt/training/healthcare/patient", "csv", map("header", "true", "cloudFiles.inferColumnTypes", "true"))
 
 -- COMMAND ----------
 
@@ -34,3 +30,4 @@ CREATE OR REFRESH STREAMING LIVE TABLE daily_patient_avg
 AS SELECT mrn, name, MEAN(heartrate) avg_heartrate, DATE(time) `date`
   FROM STREAM(live.recordings_enriched)
   GROUP BY mrn, name, DATE(time)
+

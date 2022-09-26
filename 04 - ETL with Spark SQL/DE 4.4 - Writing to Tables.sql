@@ -7,56 +7,64 @@
 
 -- COMMAND ----------
 
--- MAGIC %md <i18n value="3a66b3fc-6b92-436c-8b22-95b91bddeac3"/>
-# Deltaテーブルへの書き込み（Writing to Delta Tables）
-Delta Lakeテーブルでは、クラウドのオブジェクトストレージにあるデータファイルによってバックアップされているテーブルへのACIDに準拠した更新が可能です。
-
-このノートブックでは、Delta Lakeを使用して更新を処理するためのSQL構文を説明します。 多くの操作は標準SQLとなりますが、SparkとDelta Lakeの実行に合わせてちょっとした違いがあります。
-
-## 学習目標（Learning Objectives）
-このレッスンでは、以下のことが学べます。
--  **`INSERT OVERWRITE`** を使用してテーブルを上書きする
--  **`INSERT INTO`** を使用してテーブルに追加する
--  **`MERGE INTO`** を使用してテーブルに対して追加、更新、削除を行う
--  **`COPY INTO`** を使用してデータを段階的にテーブルに取り込む
-
--- COMMAND ----------
-
--- MAGIC %md <i18n value="3fa1b6f1-9faa-453f-b033-c5f2cf011703"/>
-## セットアップを実行する（Run Setup）
-
-セットアップスクリプトでは、このノートブックの実行に必要なデータを作成し値を宣言します。
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC 
+-- MAGIC # Deltaテーブルへの書き込み（Writing to Delta Tables）
+-- MAGIC Delta Lakeテーブルでは、クラウドのオブジェクトストレージにあるデータファイルによってバックアップされているテーブルへのACIDに準拠した更新が可能です。
+-- MAGIC 
+-- MAGIC このノートブックでは、Delta Lakeを使用して更新を処理するためのSQL構文を説明します。 多くの操作は標準SQLとなりますが、SparkとDelta Lakeの実行に合わせてちょっとした違いがあります。
+-- MAGIC 
+-- MAGIC ## 学習目標（Learning Objectives）
+-- MAGIC このレッスンでは、以下のことが学べます。
+-- MAGIC -  **`INSERT OVERWRITE`** を使用してテーブルを上書きする
+-- MAGIC -  **`INSERT INTO`** を使用してテーブルに追加する
+-- MAGIC -  **`MERGE INTO`** を使用してテーブルに対して追加、更新、削除を行う
+-- MAGIC -  **`COPY INTO`** を使用してデータを段階的にテーブルに取り込む
 
 -- COMMAND ----------
 
--- MAGIC %run ../Includes/Classroom-Setup-04.4
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC 
+-- MAGIC ## セットアップを実行する（Run Setup）
+-- MAGIC 
+-- MAGIC セットアップスクリプトでは、このノートブックの実行に必要なデータを作成し値を宣言します。
 
 -- COMMAND ----------
 
--- MAGIC %md <i18n value="3a8cba57-5d9e-4514-b589-d263a2f02f74"/>
-## 完全な上書き（Complete Overwrites）
+-- MAGIC %run ../Includes/Classroom-Setup-4.4
 
-上書きを使用して、テーブル内のすべてのデータを置き換えられます。 テーブルを削除して再作成するのに比べて、テーブルを上書きすることに複数の利点があります：
-- ディレクトリを再帰的に表示したりファイルを削除したりする必要がないため、テーブルを上書きしたほうがはるかに早いです。
-- テーブルの前のバージョンはまだ存在しており、タイムトラベルを使用して前のデータを簡単に取得できます。
-- これはアトミック操作です。 並行のクエリは、テーブルを削除している途中でもテーブルを読み取れます。
-- ACIDトランザクションの保証に従って、テーブルの上書きに失敗した場合、テーブルはその前の状態のままとなります。
+-- COMMAND ----------
 
-Spark SQLには、完全な上書きを行うための2つの簡単なメソッドが備わっています。
-
-一部の学習者は、CTAS文についての以前のレッスンで、実は（セルが複数回実行されたときに発生する可能性のあるエラーを避けるために）CRAS文が使用されていたことに気づいたかもしれません。
-
- **`CREATE OR REPLACE TABLE`** （CRAS）文は、実行されるたびにテーブルの中身を完全に置き換えます。
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC 
+-- MAGIC ## 完全な上書き（Complete Overwrites）
+-- MAGIC 
+-- MAGIC 上書きを使用して、テーブル内のすべてのデータを置き換えられます。 テーブルを削除して再作成するのに比べて、テーブルを上書きすることに複数の利点があります：
+-- MAGIC - ディレクトリを再帰的に表示したりファイルを削除したりする必要がないため、テーブルを上書きしたほうがはるかに早いです。
+-- MAGIC - テーブルの前のバージョンはまだ存在しており、タイムトラベルを使用して前のデータを簡単に取得できます。
+-- MAGIC - これはアトミック操作です。 並行のクエリは、テーブルを削除している途中でもテーブルを読み取れます。
+-- MAGIC - ACIDトランザクションの保証に従って、テーブルの上書きに失敗した場合、テーブルはその前の状態のままとなります。
+-- MAGIC 
+-- MAGIC Spark SQLには、完全な上書きを行うための2つの簡単なメソッドが備わっています。
+-- MAGIC 
+-- MAGIC 一部の学習者は、CTAS文についての以前のレッスンで、実は（セルが複数回実行されたときに発生する可能性のあるエラーを避けるために）CRAS文が使用されていたことに気づいたかもしれません。
+-- MAGIC 
+-- MAGIC  **`CREATE OR REPLACE TABLE`** （CRAS）文は、実行されるたびにテーブルの中身を完全に置き換えます。
 
 -- COMMAND ----------
 
 CREATE OR REPLACE TABLE events AS
-SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/events-historical`
+SELECT * FROM parquet.`${da.paths.datasets}/raw/events-historical`
 
 -- COMMAND ----------
 
--- MAGIC %md <i18n value="a4090f92-557e-4d23-a808-155356270d1b"/>
-テーブル履歴を確認すると、テーブルの以前のバージョンが置き換えられたことが分かります。
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC 
+-- MAGIC テーブル履歴を確認すると、テーブルの以前のバージョンが置き換えられたことが分かります。
 
 -- COMMAND ----------
 
@@ -64,24 +72,28 @@ DESCRIBE HISTORY events
 
 -- COMMAND ----------
 
--- MAGIC %md <i18n value="06628fba-431d-4cb7-bd52-449fdc203cb2"/>
-**`INSERT OVERWRITE`** では、ほとんど同じ結果を得られます。ターゲットテーブルのデータがクエリのデータに置き換えられます。
-
- **`INSERT OVERWRITE`** は：
-
-- CRAS文と違って新しいテーブルを作成することはできず、既存のテーブルを上書きすることしかできません。
-- 現在のテーブルスキーマに一致する新しいレコードでのみ上書きできるため、ダウンストリーム消費者に悪影響を与えずに既存のテーブルを上書きできるより安全なテクニックとなります。
-- 個別のパーセンテージを上書きできます
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC 
+-- MAGIC  **`INSERT OVERWRITE`** では、ほとんど同じ結果を得られます。ターゲットテーブルのデータがクエリのデータに置き換えられます。
+-- MAGIC 
+-- MAGIC  **`INSERT OVERWRITE`** は：
+-- MAGIC 
+-- MAGIC - CRAS文と違って新しいテーブルを作成することはできず、既存のテーブルを上書きすることしかできません。
+-- MAGIC - 現在のテーブルスキーマに一致する新しいレコードでのみ上書きできるため、ダウンストリーム消費者に悪影響を与えずに既存のテーブルを上書きできるより安全なテクニックとなります。
+-- MAGIC - 個別のパーセンテージを上書きできます
 
 -- COMMAND ----------
 
 INSERT OVERWRITE sales
-SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/sales-historical/`
+SELECT * FROM parquet.`${da.paths.datasets}/raw/sales-historical/`
 
 -- COMMAND ----------
 
--- MAGIC %md <i18n value="c668da22-a355-441f-aeab-a513997b8d71"/>
-CRAS文とは異なるメトリックが表示されることにご注意ください。 テーブル履歴に操作が記録される方法も異なります。
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC 
+-- MAGIC CRAS文とは異なるメトリックが表示されることにご注意ください。 テーブル履歴に操作が記録される方法も異なります。
 
 -- COMMAND ----------
 
@@ -89,71 +101,84 @@ DESCRIBE HISTORY sales
 
 -- COMMAND ----------
 
--- MAGIC %md <i18n value="4fa20011-e560-45d5-85c0-c82930974804"/>
-ここでの主な違いは、Delta Lakeが書き込み時にスキーマを強制する方法に関係しています。
-
-CRAS文を使用するとターゲットテーブルの中身を完全に再定義できるのに対し、 **`INSERT OVERWRITE`** を使用すると、スキーマを変更しようとした場合（任意の設定を指定しない限り）失敗します。
-
-以下のセルからコメントアウトを外して実行すると、予期せぬエラーメッセージを生成できます。
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC 
+-- MAGIC ここでの主な違いは、Delta Lakeが書き込み時にスキーマを強制する方法に関係しています。
+-- MAGIC 
+-- MAGIC CRAS文を使用するとターゲットテーブルの中身を完全に再定義できるのに対し、 **`INSERT OVERWRITE`** を使用すると、スキーマを変更しようとした場合（任意の設定を指定しない限り）失敗します。
+-- MAGIC 
+-- MAGIC 以下のセルからコメントアウトを外して実行すると、予期せぬエラーメッセージを生成できます。
 
 -- COMMAND ----------
 
 -- INSERT OVERWRITE sales
--- SELECT *, current_timestamp() FROM parquet.`${da.paths.datasets}/ecommerce/raw/sales-historical`
+-- SELECT *, current_timestamp() FROM parquet.`${da.paths.datasets}/raw/sales-historical`
 
 -- COMMAND ----------
 
--- MAGIC %md <i18n value="02c9c3f2-2996-42b5-9d56-60967a0031c0"/>
-## 行の追加（Append Rows）
-
- **`INSERT INTO`** を使用して、既存のDeltaテーブルにアトミックに新しい行を追加できます。 これにより、既存のテーブルを段階的に更新でき、毎回上書きするよりも効率的です。
-
- **`INSERT INTO`** を使用して、 **`sales`** テーブルに新しい売上レコードを追加します。
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC 
+-- MAGIC 
+-- MAGIC ## 行の追加（Append Rows）
+-- MAGIC 
+-- MAGIC  **`INSERT INTO`** を使用して、既存のDeltaテーブルにアトミックに新しい行を追加できます。 これにより、既存のテーブルを段階的に更新でき、毎回上書きするよりも効率的です。
+-- MAGIC 
+-- MAGIC  **`INSERT INTO`** を使用して、 **`sales`** テーブルに新しい売上レコードを追加します。
 
 -- COMMAND ----------
 
 INSERT INTO sales
-SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/sales-30m`
+SELECT * FROM parquet.`${da.paths.datasets}/raw/sales-30m`
 
 -- COMMAND ----------
 
--- MAGIC %md <i18n value="3a0a94f8-43fa-4dc3-be0c-110b07f1db89"/>
-同じレコードを何度も追加してしまうのを防ぐ組み込み保証は **`INSERT INTO`** にはありませんので、ご注意ください。 上記のセルを再実行するとターゲットテーブルに同一のレコードが書き込まれ、重複レコードにつながります。
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC 
+-- MAGIC 
+-- MAGIC 同じレコードを何度も追加してしまうのを防ぐ組み込み保証は **`INSERT INTO`** にはありませんので、ご注意ください。 上記のセルを再実行するとターゲットテーブルに同一のレコードが書き込まれ、重複レコードにつながります。
 
 -- COMMAND ----------
 
--- MAGIC %md <i18n value="cad7b32f-3e35-4962-a911-823d92f2f653"/>
-## 更新のマージ（Merge Updates）
-
- **`MERGE`** のSQL操作を使用して、ソーステーブル、ビュー、もしくはデータフレームからターゲットDeltaテーブルにデータをアップサートできます。 Delta Lakeは、 **`MERGE`** で挿入、更新、削除をサポートしており、SQL標準構文の他にも、高度な使い方を助けるために構文拡張もサポートしています。
-
-<strong><code>
-MERGE INTO target a<br/>
-USING source b<br/>
-ON {merge_condition}<br/>
-WHEN MATCHED THEN {matched_action}<br/>
-WHEN NOT MATCHED THEN {not_matched_action}<br/>
-</code></strong>
-
- **`MERGE`** 操作を使用して、更新されたメールアドレスと新しいユーザーで過去のユーザーデータを更新します。
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC 
+-- MAGIC 
+-- MAGIC ## 更新のマージ（Merge Updates）
+-- MAGIC 
+-- MAGIC  **`MERGE`** のSQL操作を使用して、ソーステーブル、ビュー、もしくはデータフレームからターゲットDeltaテーブルにデータをアップサートできます。 Delta Lakeは、 **`MERGE`** で挿入、更新、削除をサポートしており、SQL標準構文の他にも、高度な使い方を助けるために構文拡張もサポートしています。
+-- MAGIC 
+-- MAGIC <strong><code>
+-- MAGIC MERGE INTO target a<br/>
+-- MAGIC USING source b<br/>
+-- MAGIC ON {merge_condition}<br/>
+-- MAGIC WHEN MATCHED THEN {matched_action}<br/>
+-- MAGIC WHEN NOT MATCHED THEN {not_matched_action}<br/>
+-- MAGIC </code></strong>
+-- MAGIC 
+-- MAGIC  **`MERGE`** 操作を使用して、更新されたメールアドレスと新しいユーザーで過去のユーザーデータを更新します。
 
 -- COMMAND ----------
 
 CREATE OR REPLACE TEMP VIEW users_update AS 
 SELECT *, current_timestamp() AS updated 
-FROM parquet.`${da.paths.datasets}/ecommerce/raw/users-30m`
+FROM parquet.`${da.paths.datasets}/raw/users-30m`
 
 -- COMMAND ----------
 
--- MAGIC %md <i18n value="edc2f42c-8cd2-47c6-a8e6-09b1541e1e00"/>
-**`MERGE`** の主な利点は：
-* 新、挿入、削除が単一のトランザクションとして行われる
-* 一致するフィールドの他にも、複数の条件文を追加できる
-* カスタムロジックを実装するための方法がたくさんある
-
-以下では、現在の列のメールアドレスが **`NULL`** なっており、新しい列のメールアドレスアドレスが<0><1>NULL</1></0>となっていない場合にのみレコードを更新します。
-
-新しいバッチの一致しないレコードはすべて挿入されます。
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC 
+-- MAGIC  **`MERGE`** の主な利点は：
+-- MAGIC * 新、挿入、削除が単一のトランザクションとして行われる
+-- MAGIC * 一致するフィールドの他にも、複数の条件文を追加できる
+-- MAGIC * カスタムロジックを実装するための方法がたくさんある
+-- MAGIC 
+-- MAGIC 以下では、現在の列のメールアドレスが **`NULL`** なっており、新しい列のメールアドレスアドレスが<0><1>NULL</1></0>となっていない場合にのみレコードを更新します。
+-- MAGIC 
+-- MAGIC 新しいバッチの一致しないレコードはすべて挿入されます。
 
 -- COMMAND ----------
 
@@ -166,21 +191,25 @@ WHEN NOT MATCHED THEN INSERT *
 
 -- COMMAND ----------
 
--- MAGIC %md <i18n value="90e330ce-5596-4fa8-a474-78442e48ae67"/>
-**`MATCHED`** および **`NOT MATCHED`** の両方の条件においても、この関数の動作を明示的に指定していることにご注意ください。ここに示されている例は、すべての **`MERGE`** の動作を表すものではなく、適用できるロジックの一例にすぎません。
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC 
+-- MAGIC  **`MATCHED`** および **`NOT MATCHED`** の両方の条件においても、この関数の動作を明示的に指定していることにご注意ください。ここに示されている例は、すべての **`MERGE`** の動作を表すものではなく、適用できるロジックの一例にすぎません。
 
 -- COMMAND ----------
 
--- MAGIC %md <i18n value="493c7f22-4011-4b08-ad79-4b2a4ef2a12f"/>
-## 重複排除のためのInsert-Onlyマージ（Insert-Only Merge for Deduplication）
-
-連続の追加操作でログもしくは常に追加されるその他のデータセットをDeltaテーブルに集めるのが一般的なETLの使い方です。
-
-多くのソースシステムは重複レコードを生成します。 マージでは、insert-onlyマージを実行すれば重複レコードの挿入を予防できます。
-
-この最適化されたコマンドは同様の **`MERGE`** 構文を使用しますが、 **`WHEN NOT MATCHED`** 句のみを指定します。
-
-以下では、これを使用して、同じ **`user_id`** および **`event_timestamp`** を持つレコードが既に **`events`** テーブルにないことを確認します。
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC 
+-- MAGIC ## 重複排除のためのInsert-Onlyマージ（Insert-Only Merge for Deduplication）
+-- MAGIC 
+-- MAGIC 連続の追加操作でログもしくは常に追加されるその他のデータセットをDeltaテーブルに集めるのが一般的なETLの使い方です。
+-- MAGIC 
+-- MAGIC 多くのソースシステムは重複レコードを生成します。 マージでは、insert-onlyマージを実行すれば重複レコードの挿入を予防できます。
+-- MAGIC 
+-- MAGIC この最適化されたコマンドは同様の **`MERGE`** 構文を使用しますが、 **`WHEN NOT MATCHED`** 句のみを指定します。
+-- MAGIC 
+-- MAGIC 以下では、これを使用して、同じ **`user_id`** および **`event_timestamp`** を持つレコードが既に **`events`** テーブルにないことを確認します。
 
 -- COMMAND ----------
 
@@ -192,29 +221,33 @@ WHEN NOT MATCHED AND b.traffic_source = 'email' THEN
 
 -- COMMAND ----------
 
--- MAGIC %md <i18n value="1162da2b-3c56-42ff-b6b8-2532276b03cd"/>
-## 段階的な読み込み（Load Incrementally）
-
- **`COPY INTO`** は、SQLエンジニアに、外部システムからデータを段階的に取り込める、べき等の方法を提供します。
-
-この操作にはいくつかの条件があることにご注意ください：
-- データスキーマは一貫している必要がある
-- 重複レコードは、除外するか、ダウンストリームで処理する必要がある
-
-この操作は、予想どおりに増大するデータの全テーブルスキャンよりもはるかに軽い可能性があります。
-
-ここでは、静的ディレクトリでの単純な実行を示しますが、実際の価値は、ソース内の新しいファイルを自動的に取得する時間の経過に伴う複数の実行にあります。
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC 
+-- MAGIC ## 段階的な読み込み（Load Incrementally）
+-- MAGIC 
+-- MAGIC  **`COPY INTO`** は、SQLエンジニアに、外部システムからデータを段階的に取り込める、べき等の方法を提供します。
+-- MAGIC 
+-- MAGIC この操作にはいくつかの条件があることにご注意ください：
+-- MAGIC - データスキーマは一貫している必要がある
+-- MAGIC - 重複レコードは、除外するか、ダウンストリームで処理する必要がある
+-- MAGIC 
+-- MAGIC この操作は、予想どおりに増大するデータの全テーブルスキャンよりもはるかに軽い可能性があります。
+-- MAGIC 
+-- MAGIC ここでは、静的ディレクトリでの単純な実行を示しますが、実際の価値は、ソース内の新しいファイルを自動的に取得する時間の経過に伴う複数の実行にあります。
 
 -- COMMAND ----------
 
 COPY INTO sales
-FROM "${da.paths.datasets}/ecommerce/raw/sales-30m"
+FROM "${da.paths.datasets}/raw/sales-30m"
 FILEFORMAT = PARQUET
 
 -- COMMAND ----------
 
--- MAGIC %md <i18n value="567f82f1-956b-42c5-98d7-7914675b105e"/>
-次のセルを実行して、このレッスンに関連するテーブルとファイルを削除してください。
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC 
+-- MAGIC 次のセルを実行して、このレッスンに関連するテーブルとファイルを削除してください。
 
 -- COMMAND ----------
 

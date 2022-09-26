@@ -1,36 +1,41 @@
 # Databricks notebook source
-# MAGIC %run ./_utility-methods
+# MAGIC %run ./_utility-methods $lesson="cap_12"
 
 # COMMAND ----------
 
-@DBAcademyHelper.monkey_patch
-def print_sql(self, rows, sql):
+# MAGIC %run ./mount-datasets
+
+# COMMAND ----------
+
+def print_sql(rows, sql):
     displayHTML(f"""<body><textarea style="width:100%" rows={rows}> \n{sql.strip()}</textarea></body>""")
+    
 
 # COMMAND ----------
 
-@DBAcademyHelper.monkey_patch
-def generate_daily_patient_avg(self):
+def _generate_daily_patient_avg():
     sql = f"SELECT * FROM {DA.db_name}.daily_patient_avg"
-    self.print_sql(3, sql)
+    print_sql(3, sql)
+
+DA.generate_daily_patient_avg = _generate_daily_patient_avg
 
 # COMMAND ----------
 
-@DBAcademyHelper.monkey_patch
-def generate_visualization_query(self):
+def _generate_visualization_query():
     sql = f"""
 SELECT flow_name, timestamp, int(details:flow_progress:metrics:num_output_rows) num_output_rows
 FROM {DA.db_name}.dlt_metrics
 ORDER BY timestamp DESC;"""
     
-    self.print_sql(5, sql)
+    print_sql(5, sql)
+
+DA.generate_visualization_query = _generate_visualization_query
 
 # COMMAND ----------
 
 generate_register_dlt_event_metrics_sql_string = ""
 
-@DBAcademyHelper.monkey_patch
-def generate_register_dlt_event_metrics_sql(self):
+def _generate_register_dlt_event_metrics_sql():
     global generate_register_dlt_event_metrics_sql_string
     
     generate_register_dlt_event_metrics_sql_string = f"""
@@ -46,293 +51,33 @@ SELECT timestamp, origin.flow_name, details
 FROM {DA.db_name}.dlt_success
 ORDER BY timestamp DESC;""".strip()
     
-    self.print_sql(13, generate_register_dlt_event_metrics_sql_string)
+    print_sql(13, generate_register_dlt_event_metrics_sql_string)
+    
+DA.generate_register_dlt_event_metrics_sql = _generate_register_dlt_event_metrics_sql
 
 # COMMAND ----------
 
-@DBAcademyHelper.monkey_patch
-def get_pipeline_config(self):
-    notebook = dbutils.entry_point.getDbutils().notebook().getContext().notebookPath().getOrElse(None)
-    notebook = "/".join(notebook.split("/")[:-1]) + "/DE 12.2.2L - DLT Task"
-    
-    job_name = f"Cap-12-{DA.username}"
-    
-    return job_name, notebook
+def print_pipeline_config():
+    path = dbutils.entry_point.getDbutils().notebook().getContext().notebookPath().getOrElse(None)
+    path = "/".join(path.split("/")[:-1]) + "/DE 12.2.2L - DLT Task"
 
-# COMMAND ----------
-
-@DBAcademyHelper.monkey_patch
-def print_pipeline_config(self):
+    displayHTML(f"""<table>
+    <tr><td style="white-space:nowrap">Pipeline Name:</td><td><b>Cap-12-{DA.username}</b></td></tr>
+    <tr><td style="white-space:nowrap">Source:</td><td><b>{DA.paths.working_dir}/source/tracker</b></td></tr>
+    <tr><td style="white-space:nowrap">Target:</td><td><b>{DA.db_name}</b></td></tr>
+    <tr><td style="white-space:nowrap">Storage Location:</td><td><b>{DA.paths.working_dir}/storage</b></td></tr>
+    <tr><td style="white-space:nowrap" style="white-space:nowrap">Notebook Path:</td><td><b>{path}</b></td></tr>
+    </table>""")
     
-    job_name, notebook = self.get_pipeline_config()
-
-    displayHTML(f"""<table style="width:100%">
-    <tr>
-        <td style="white-space:nowrap; width:1em">Pipeline Name:</td>
-        <td><input type="text" value="{job_name}" style="width:100%"></td></tr>
-    <tr>
-        <td style="white-space:nowrap; width:1em">Notebook Path:</td>
-        <td><input type="text" value="{notebook}" style="width:100%"></td></tr>
-    <tr>
-        <td style="white-space:nowrap; width:1em">Datsets Path:</td>
-        <td><input type="text" value="{DA.paths.datasets}" style="width:100%"></td></tr>
-    <tr>
-        <td style="white-space:nowrap; width:1em">Source:</td>
-        <td><input type="text" value="{DA.paths.stream_path}" style="width:100%"></td></tr>
-    <tr>
-        <td style="white-space:nowrap; width:1em">Target:</td>
-        <td><input type="text" value="{DA.db_name}" style="width:100%"></td></tr>
-    <tr>
-        <td style="white-space:nowrap; width:1em">Storage Location:</td>
-        <td><input type="text" value="{DA.paths.storage_location}" style="width:100%"></td></tr>
+def print_job_config():
+    displayHTML(f"""<table>
+    <tr><td style="white-space:nowrap">Job Name:</td><td><b>Cap-12-{DA.username}</b></td></tr>
     </table>""")
 
 # COMMAND ----------
 
-@DBAcademyHelper.monkey_patch
-def create_pipeline(self):
-    "Provided by DBAcademy, this function creates the prescribed pipline"
-    
-    pipeline_name, path = self.get_pipeline_config()
-
-    # We need to delete the existing pipline so that we can apply updates
-    # because some attributes are not mutable after creation.
-    self.client.pipelines().delete_by_name(pipeline_name)
-    
-    response = self.client.pipelines().create(
-        name = pipeline_name, 
-        storage = DA.paths.storage_location, 
-        target = DA.db_name, 
-        notebooks = [path],
-        continuous = True,
-        development = self.is_smoke_test(), # When testing, don't use production
-        configuration = {
-            "spark.master": "local[*]",
-            "datasets_path": DA.paths.datasets,
-            "source": DA.paths.stream_path,
-        },
-        clusters=[{ "label": "default", "num_workers": 0 }])
-    
-    pipeline_id = response.get("pipeline_id")
-    print(f"Created pipline {pipeline_id}")
-
-# COMMAND ----------
-
-@DBAcademyHelper.monkey_patch
-def validate_pipeline_config(self):
-    "Provided by DBAcademy, this function validates the configuration of the pipeline"
-    import json
-    
-    pipeline_name, path = self.get_pipeline_config()
-
-    pipeline = self.client.pipelines().get_by_name(pipeline_name)
-    assert pipeline is not None, f"The pipline named \"{pipeline_name}\" doesn't exist. Double check the spelling."
-
-    spec = pipeline.get("spec")
-    # print(json.dumps(spec, indent=4))
-    
-    storage = spec.get("storage")
-    assert storage == DA.paths.storage_location, f"Invalid storage location. Found \"{storage}\", expected \"{DA.paths.storage_location}\" "
-    
-    target = spec.get("target")
-    assert target == DA.db_name, f"Invalid target. Found \"{target}\", expected \"{DA.db_name}\" "
-    
-    libraries = spec.get("libraries")
-    assert libraries is None or len(libraries) > 0, f"The notebook path must be specified."
-    assert len(libraries) == 1, f"More than one library (e.g. notebook) was specified."
-    first_library = libraries[0]
-    assert first_library.get("notebook") is not None, f"Incorrect library configuration - expected a notebook."
-    first_library_path = first_library.get("notebook").get("path")
-    assert first_library_path == path, f"Invalid notebook path. Found \"{first_library_path}\", expected \"{path}\" "
-
-    configuration = spec.get("configuration")
-    assert configuration is not None, f"The three configuration parameters were not specified."
-    datasets_path = configuration.get("datasets_path")
-    assert datasets_path == DA.paths.datasets, f"Invalid \"datasets_path\" value. Found \"{datasets_path}\", expected \"{DA.paths.datasets}\"."
-    spark_master = configuration.get("spark.master")
-    assert spark_master == f"local[*]", f"Invalid \"spark.master\" value. Expected \"local[*]\", found \"{spark_master}\"."
-    stream_source = configuration.get("source")
-    assert stream_source == DA.paths.stream_path, f"Invalid \"source\" value. Expected \"{DA.paths.stream_path}\", found \"{stream_source}\"."
-    
-    cluster = spec.get("clusters")[0]
-    autoscale = cluster.get("autoscale")
-    assert autoscale is None, f"Autoscaling should be disabled."
-    
-    num_workers = cluster.get("num_workers")
-    assert num_workers == 0, f"Expected the number of workers to be 0, found {num_workers}."
-
-    development = spec.get("development")
-    assert development == self.is_smoke_test(), f"The pipline mode should be set to \"Production\"."
-    
-    channel = spec.get("channel")
-    assert channel is None or channel == "CURRENT", f"Expected the channel to be Current but found {channel}."
-    
-    photon = spec.get("photon")
-    assert photon == True, f"Expected Photon to be enabled."
-    
-    continuous = spec.get("continuous")
-    assert continuous == True, f"Expected the Pipeline mode to be \"Continuous\", found \"Triggered\"."
-
-    policy = self.client.cluster_policies.get_by_name("Student's DLT-Only Policy")
-    if policy is not None:
-        cluster = { 
-            "num_workers": 0,
-            "label": "default", 
-            "policy_id": policy.get("policy_id")
-        }
-        self.client.pipelines.create_or_update(name = pipeline_name,
-                                               storage = DA.paths.storage_location,
-                                               target = DA.db_name,
-                                               notebooks = [path],
-                                               continuous = True,
-                                               development = False,
-                                               configuration = {
-                                                   "spark.master": "local[*]",
-                                                   "datasets_path": DA.paths.datasets,
-                                                   "source": DA.paths.stream_path,
-                                               },
-                                               clusters=[cluster])
-    print("All tests passed!")
-
-# COMMAND ----------
-
-@DBAcademyHelper.monkey_patch
-def get_job_config(self):
-    
-    root = dbutils.entry_point.getDbutils().notebook().getContext().notebookPath().getOrElse(None)
-    root = "/".join(root.split("/")[:-1])
-    
-    notebook = f"{root}/DE 12.2.3L - Land New Data"
-
-    job_name = f"Cap-12-{DA.username}"
-    
-    return job_name, notebook
-
-# COMMAND ----------
-
-@DBAcademyHelper.monkey_patch
-def print_job_config(self):
-    
-    job_name, notebook = self.get_job_config()
-
-    displayHTML(f"""<table style="width:100%">
-    <tr>
-        <td style="white-space:nowrap; width:1em">Job Name:</td>
-        <td><input type="text" value="{job_name}" style="width:100%"></td></tr>
-    <tr>
-        <td style="white-space:nowrap; width:1em">Notebook Path:</td>
-        <td><input type="text" value="{notebook}" style="width:100%"></td></tr>
-    </table>""")
-
-# COMMAND ----------
-
-@DBAcademyHelper.monkey_patch
-def create_job(self):
-    "Provided by DBAcademy, this function creates the prescribed job"
-    
-    job_name, notebook = self.get_job_config()
-
-    self.client.jobs.delete_by_name(job_name, success_only=False)
-    cluster_id = dbgems.get_tags().get("clusterId")
-    
-    params = {
-        "name": job_name,
-        "tags": {
-            "dbacademy.course": self.course_name,
-            "dbacademy.source": self.course_name
-        },
-        "email_notifications": {},
-        "timeout_seconds": 7200,
-        "max_concurrent_runs": 1,
-        "format": "MULTI_TASK",
-        "tasks": [
-            {
-                "task_key": "Land-Data",
-                "libraries": [],
-                "notebook_task": {
-                    "notebook_path": notebook,
-                    "base_parameters": []
-                },
-                "existing_cluster_id": cluster_id
-            },
-        ],
-    }
-    params = self.update_cluster_params(params, [0])
-    
-    create_response = self.client.jobs().create(params)
-    job_id = create_response.get("job_id")
-    
-    print(f"Created job #{job_id}")
-
-# COMMAND ----------
-
-@DBAcademyHelper.monkey_patch
-def validate_job_config(self):
-    "Provided by DBAcademy, this function validates the configuration of the job"
-    import json
-    
-    pipeline_name, job_path = self.get_pipeline_config()
-    job_name, notebook = self.get_job_config()
-
-    job = self.client.jobs.get_by_name(job_name)
-    assert job is not None, f"The job named \"{job_name}\" doesn't exist. Double check the spelling."
-    
-    settings = job.get("settings")
-    assert settings.get("format") == "SINGLE_TASK", f"""Expected only one task."""
-
-    # Land-Data Task
-#     task_name = settings.get("task_key", None)
-#     assert task_name == "Land-Data", f"Expected the first task to have the name \"Land-Data\", found \"{task_name}\""
-    
-    notebook_path = settings.get("notebook_task", {}).get("notebook_path")
-    assert notebook_path == notebook, f"Invalid Notebook Path for the first task. Found \"{notebook_path}\", expected \"{notebook}\" "
-
-    if not self.is_smoke_test():
-        # Don't check the actual_cluster_id when running as a smoke test
-        
-        actual_cluster_id = settings.get("existing_cluster_id", None)
-        assert actual_cluster_id is not None, f"The first task is not configured to use the current All-Purpose cluster"
-
-        expected_cluster_id = dbgems.get_tags().get("clusterId")
-        if expected_cluster_id != actual_cluster_id:
-            actual_cluster = self.client.clusters.get(actual_cluster_id).get("cluster_name")
-            expected_cluster = self.client.clusters.get(expected_cluster_id).get("cluster_name")
-            assert actual_cluster_id == expected_cluster_id, f"The first task is not configured to use the current All-Purpose cluster, expected \"{expected_cluster}\", found \"{actual_cluster}\""
-
-    schedule = settings.get("schedule")
-    if schedule is None:
-        print("WARNING: The job has not been scheduled.\n")
-    else:
-        pause_status = schedule.get("pause_status")
-        if pause_status == "PAUSED":
-            print("WARNING: The job should not be paused.\n")
-        else:
-            quartz_cron_expression = schedule.get("quartz_cron_expression")
-            if "0/2 * * * ?" not in quartz_cron_expression:
-                print(f"WARNING: Expected the schedule to be \"* 0/2 * * * ?\" but found \"{quartz_cron_expression}\".\n")
-    
-    print("All tests passed!")
-
-# COMMAND ----------
-
-@DBAcademyHelper.monkey_patch
-def start_job(self):
-    job_name, notebook = self.get_job_config()
-    job_id = self.client.jobs.get_by_name(job_name).get("job_id")
-    run_id = self.client.jobs.run_now(job_id).get("run_id")
-    print(f"Started job #{job_id}, run #{run_id}")
-
-    self.client.runs.wait_for(run_id)
-
-# COMMAND ----------
-
-DA = DBAcademyHelper(lesson="cap_12", **helper_arguments)
-DA.reset_environment()
-DA.init(install_datasets=True, create_db=True)
-
-DA.paths.stream_path = f"{DA.paths.working_dir}/stream"
-DA.paths.storage_location = f"{DA.paths.working_dir}/storage"
-
-DA.data_factory = DltDataFactory(DA.paths.stream_path)
-
+DA.cleanup()
+DA.init()
+DA.data_factory = DltDataFactory()
 DA.conclude_setup()
+

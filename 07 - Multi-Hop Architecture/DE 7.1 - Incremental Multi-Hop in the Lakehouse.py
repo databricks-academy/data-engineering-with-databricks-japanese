@@ -7,82 +7,92 @@
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="c84bb70e-0f3a-4cb9-a8b4-882200c7c940"/>
-# レイクハウスの増分マルチホップ（Incremental Multi-Hop in the Lakehouse）
-
-構造化ストリーミングAPIとSpark SQLを組み合わせて増分データを処理する方法を理解したので、ここからは構造化ストリーミングとDelta Lakeの緊密な統合について学んでいきます。
-
-
-
-## 学習目標（Learning Objectives）
-このレッスンでは、以下のことが学べます。
-* ブロンズテーブルとシルバーテーブル、ゴールドテーブルについて説明する
-* Delta Lakeのマルチホップパイプラインを構築する
-
-# COMMAND ----------
-
-# MAGIC %md <i18n value="8f7d994a-fe1f-4628-825e-30c35b9ff187"/>
-## レイクハウスの増分更新（Incremental Updates in the Lakehouse）
-
-ユーザーはDelta Lakeを使うことで、統合したマルチホップパイプラインでストリーミングとバッチワークロードを簡単に組み合わせることができます。 パイプラインの各段階は、ビジネスでのコアなユースケースを推進するにあたり価値のあるデータの状態を表しています。 すべてのデータとメタデータはクラウドのオブジェクトストレージにあるため、複数のユーザーとアプリケーションがほぼリアルタイムでデータにアクセスでき、そのためアナリストは処理中の最新データにアクセスすることが可能です。
-
-![](https://files.training.databricks.com/images/sslh/multi-hop-simple.png)
-
-- **ブロンズ**テーブルには、様々なソース（JSONファイル、RDBMSデータ、IoTデータなど）から取り込まれた未加工のデータが含まれます。
-
-- **シルバー**テーブルはデータのより洗練されたビューを提示します。 様々なブロンズテーブルのフィールドを統合することで、ストリーミングレコードをエンリッチ化させたり、または最近のアクティビティに基づいてアカウントステータスを更新したりできます。
-
-- **ゴールド**テーブルは、レポーティングやダッシュボーディングによく使われるビジネスレベルの集約を提示します。 ここには、日々のアクティブウェブサイトユーザー、店舗ごとの週間売上、または部門別四半期ごとの売上総利益などの集約が含まれます。
-
-最終的に出力されるのは、ビジネス指標の実用的な洞察、ダッシュボードおよびレポートです。
-
-ETLパイプラインのすべての段階でビジネスロジックを検討することにより、不必要なデータの重複を減らし、すべての履歴データに対するアドホッククエリを制限して、ストレージとコンピュートコストを最適化します。
-
-各段階はバッチまたはストリーミングジョブとして構成することができ、そしてACIDトランザクションのおかげで成功するか完全に失敗します。
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC # レイクハウスの増分マルチホップ（Incremental Multi-Hop in the Lakehouse）
+# MAGIC 
+# MAGIC 構造化ストリーミングAPIとSpark SQLを組み合わせて増分データを処理する方法を理解したので、ここからは構造化ストリーミングとDelta Lakeの緊密な統合について学んでいきます。
+# MAGIC 
+# MAGIC 
+# MAGIC 
+# MAGIC ## 学習目標（Learning Objectives）
+# MAGIC このレッスンでは、以下のことが学べます。
+# MAGIC * ブロンズテーブルとシルバーテーブル、ゴールドテーブルについて説明する
+# MAGIC * Delta Lakeのマルチホップパイプラインを構築する
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="9008b325-00b1-41a3-bc43-9c693bade882"/>
-## 使用するデータセット（Datasets Used）
-
-このデモでは、簡略化されて人工的に生成された医療データを使用します。 2つのデータセットのスキーマは以下の通りです。 様々な段階でこれらのスキーマを操作することに留意してください。
-
-#### レコーディング（Recordings）
-主なデータセットは、医療機器からJSON形式で配信される心拍数の記録を使用します。
-
-| フィールド     | 型      |
-| --------- | ------ |
-| device_id | int    |
-| mrn       | long   |
-| time      | double |
-| heartrate | double |
-
-#### PII
-これらのデータは後に外部システムで保存されている患者情報の静的テーブルと結合し、名前で患者を特定できるようになります。
-
-| フィールド | 型      |
-| ----- | ------ |
-| mrn   | long   |
-| name  | string |
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC ## レイクハウスの増分更新（Incremental Updates in the Lakehouse）
+# MAGIC 
+# MAGIC ユーザーはDelta Lakeを使うことで、統合したマルチホップパイプラインでストリーミングとバッチワークロードを簡単に組み合わせることができます。 パイプラインの各段階は、ビジネスでのコアなユースケースを推進するにあたり価値のあるデータの状態を表しています。 すべてのデータとメタデータはクラウドのオブジェクトストレージにあるため、複数のユーザーとアプリケーションがほぼリアルタイムでデータにアクセスでき、そのためアナリストは処理中の最新データにアクセスすることが可能です。
+# MAGIC 
+# MAGIC ![](https://files.training.databricks.com/images/sslh/multi-hop-simple.png)
+# MAGIC 
+# MAGIC - **ブロンズ**テーブルには、様々なソース（JSONファイル、RDBMSデータ、IoTデータなど）から取り込まれた未加工のデータが含まれます。
+# MAGIC 
+# MAGIC - **シルバー**テーブルはデータのより洗練されたビューを提示します。 様々なブロンズテーブルのフィールドを統合することで、ストリーミングレコードをエンリッチ化させたり、または最近のアクティビティに基づいてアカウントステータスを更新したりできます。
+# MAGIC 
+# MAGIC - **ゴールド**テーブルは、レポーティングやダッシュボーディングによく使われるビジネスレベルの集約を提示します。 ここには、日々のアクティブウェブサイトユーザー、店舗ごとの週間売上、または部門別四半期ごとの売上総利益などの集約が含まれます。
+# MAGIC 
+# MAGIC 最終的に出力されるのは、ビジネス指標の実用的な洞察、ダッシュボードおよびレポートです。
+# MAGIC 
+# MAGIC ETLパイプラインのすべての段階でビジネスロジックを検討することにより、不必要なデータの重複を減らし、すべての履歴データに対するアドホッククエリを制限して、ストレージとコンピュートコストを最適化します。
+# MAGIC 
+# MAGIC 各段階はバッチまたはストリーミングジョブとして構成することができ、そしてACIDトランザクションのおかげで成功するか完全に失敗します。
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="7b621659-663d-4fea-b26c-5eefdf4d025a"/>
-## はじめる（Getting Started）
-
-次のセルを実行して、ラボ環境を構成します。
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC ## 使用するデータセット（Datasets Used）
+# MAGIC 
+# MAGIC このデモでは、簡略化されて人工的に生成された医療データを使用します。 2つのデータセットのスキーマは以下の通りです。 様々な段階でこれらのスキーマを操作することに留意してください。
+# MAGIC 
+# MAGIC #### レコーディング（Recordings）
+# MAGIC 主なデータセットは、医療機器からJSON形式で配信される心拍数の記録を使用します。
+# MAGIC 
+# MAGIC | フィールド     | 型      |
+# MAGIC | --------- | ------ |
+# MAGIC | device_id | int    |
+# MAGIC | mrn       | long   |
+# MAGIC | time      | double |
+# MAGIC | heartrate | double |
+# MAGIC 
+# MAGIC #### PII
+# MAGIC これらのデータは後に外部システムで保存されている患者情報の静的テーブルと結合し、名前で患者を特定できるようになります。
+# MAGIC 
+# MAGIC | フィールド | 型      |
+# MAGIC | ----- | ------ |
+# MAGIC | mrn   | long   |
+# MAGIC | name  | string |
 
 # COMMAND ----------
 
-# MAGIC %run ../Includes/Classroom-Setup-07.1
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC ## はじめる（Getting Started）
+# MAGIC 
+# MAGIC 次のセルを実行して、ラボ環境を構成します。
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="045c9907-e803-4506-8e69-4e370f06cd1d"/>
-## データシミュレーター（Data Simulator）
-Databricks Auto Loaderは、クラウドオブジェクトストアに到着したファイルを自動で処理します。
+# MAGIC %run ../Includes/Classroom-Setup-7.1
 
-このプロセスをシミュレートするため、コースを通して次の操作を複数回実行するように求められます。
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC ## データシミュレーター（Data Simulator）
+# MAGIC Databricks Auto Loaderは、クラウドオブジェクトストアに到着したファイルを自動で処理します。
+# MAGIC 
+# MAGIC このプロセスをシミュレートするため、コースを通して次の操作を複数回実行するように求められます。
 
 # COMMAND ----------
 
@@ -90,14 +100,16 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="d5d9393e-0a91-41f5-95f3-82f1be290add"/>
-## ブロンズテーブル：未加工のJSONレコーディングを取り込む（Bronze Table: Ingesting Raw JSON Recordings）
-
-以下ではスキーマ推論を備えたAuto Loaderを使って、未加工のJSONソースで読み取りを構成します。
-
-Spark DataFrame APIを使って増分読み取りを設定する必要がありますが、一度構成されると、すぐにテンポラリビューを登録してデータのストリーミング変換にSpark SQLが活用できることに留意してください。
-
-**注**：JSONデータソースでは、Auto Loaderは各列を文字列として推測するように設定しています。 ここでは、 **`cloudFiles.schemaHints`** オプションを使用して **`time`** 列のデータ型を指定する方法を示します。 フィールドに不適切な型が入力されるとNULL値になることに注意してください。
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC ## ブロンズテーブル：未加工のJSONレコーディングを取り込む（Bronze Table: Ingesting Raw JSON Recordings）
+# MAGIC 
+# MAGIC 以下ではスキーマ推論を備えたAuto Loaderを使って、未加工のJSONソースで読み取りを構成します。
+# MAGIC 
+# MAGIC Spark DataFrame APIを使って増分読み取りを設定する必要がありますが、一度構成されると、すぐにテンポラリビューを登録してデータのストリーミング変換にSpark SQLが活用できることに留意してください。
+# MAGIC 
+# MAGIC **注**：JSONデータソースでは、Auto Loaderは各列を文字列として推測するように設定しています。 ここでは、 **`cloudFiles.schemaHints`** オプションを使用して **`time`** 列のデータ型を指定する方法を示します。 フィールドに不適切な型が入力されるとNULL値になることに注意してください。
 
 # COMMAND ----------
 
@@ -111,8 +123,10 @@ Spark DataFrame APIを使って増分読み取りを設定する必要があり�
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="7fdec7ea-277e-4df4-911b-b2a4d3761b6a"/>
-ここではソースファイルとそれが取り込まれた時間を示す追加のメタデータを用いることで、未加工のデータをエンリッチ化します。 この追加したメタデータは、破損したデータを検出した際に発生するエラーのトラブルシューティングに有益な情報をもたらしますが、ダウンストリームの処理中には無視することができます。
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC ここではソースファイルとそれが取り込まれた時間を示す追加のメタデータを用いることで、未加工のデータをエンリッチ化します。 この追加したメタデータは、破損したデータを検出した際に発生するエラーのトラブルシューティングに有益な情報をもたらしますが、ダウンストリームの処理中には無視することができます。
 
 # COMMAND ----------
 
@@ -124,8 +138,10 @@ Spark DataFrame APIを使って増分読み取りを設定する必要があり�
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="6f60f3aa-65ff-4204-9cf8-00f456d4497b"/>
-以下のコードはエンリッチ化された未加工のデータをPySpark APIに渡し、Delta Lakeテーブルへの増分書き込みを処理します。
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC 以下のコードはエンリッチ化された未加工のデータをPySpark APIに渡し、Delta Lakeテーブルへの増分書き込みを処理します。
 
 # COMMAND ----------
 
@@ -138,8 +154,10 @@ Spark DataFrame APIを使って増分読み取りを設定する必要があり�
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="6fd28dc4-1516-4f6a-8478-290d366a342c"/>
-次のセルを用いて別ファイルの到着をトリガーすると、書き込んだストリーミングクエリによって変更が素早く検出されることを確認できます。
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC 次のセルを用いて別ファイルの到着をトリガーすると、書き込んだストリーミングクエリによって変更が素早く検出されることを確認できます。
 
 # COMMAND ----------
 
@@ -147,11 +165,13 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="4d7848cc-ecff-474d-be27-21717d9f08d1"/>
-### 静的ルックアップテーブルをロードする（Load Static Lookup Table）
-Delta LakeがデータにもたらすACID保証はテーブルレベルで管理され、完全で正常なコミットのみをテーブルに反映するようにします。 これらのデータを他のデータソースと統合する場合、それらのソースがどのようにデータをバージョン管理するのか、そしてどのような整合性がそれらを保証するのかに注目してください。
-
-この簡略化されたデモでは、レコーディングに患者データを追加するため静的CSVファイルをロードしています。 本番環境では、Databricksの<a href="https://docs.databricks.com/spark/latest/structured-streaming/auto-loader.html" target="_blank">Auto Loader</a>機能を利用して、Delta Lakeにあるこれらデータの最新ビューを維持するということもできます。
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC ### 静的ルックアップテーブルをロードする（Load Static Lookup Table）
+# MAGIC Delta LakeがデータにもたらすACID保証はテーブルレベルで管理され、完全で正常なコミットのみをテーブルに反映するようにします。 これらのデータを他のデータソースと統合する場合、それらのソースがどのようにデータをバージョン管理するのか、そしてどのような整合性がそれらを保証するのかに注目してください。
+# MAGIC 
+# MAGIC この簡略化されたデモでは、レコーディングに患者データを追加するため静的CSVファイルをロードしています。 本番環境では、Databricksの<a href="https://docs.databricks.com/spark/latest/structured-streaming/auto-loader.html" target="_blank">Auto Loader</a>機能を利用して、Delta Lakeにあるこれらデータの最新ビューを維持するということもできます。
 
 # COMMAND ----------
 
@@ -159,7 +179,7 @@ Delta LakeがデータにもたらすACID保証はテーブルレベルで管理
       .format("csv")
       .schema("mrn STRING, name STRING")
       .option("header", True)
-      .load(f"{DA.paths.datasets}/healthcare/patient/patient_info.csv")
+      .load(f"{DA.paths.data_source}/patient/patient_info.csv")
       .createOrReplaceTempView("pii"))
 
 # COMMAND ----------
@@ -169,12 +189,14 @@ Delta LakeがデータにもたらすACID保証はテーブルレベルで管理
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="00ed3fc7-7c17-44f0-b56f-5e824a72bd9c"/>
-## シルバーテーブル：エンリッチ化されたレコーディングデータ（Silver Table: Enriched Recording Data）
-シルバーレベルの2番目のホップとして、以下のエンリッチ処理とチェックを行います。
-- レコーディングデータとPIIを結合して、患者名を追加する
-- レコーディングの時間を人間が読める形式 **`'yyyy-MM-dd HH:mm:ss'`** に解析する
-- <= 0 の心拍数は患者の不在または送信エラーを意味するため排除する
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC ## シルバーテーブル：エンリッチ化されたレコーディングデータ（Silver Table: Enriched Recording Data）
+# MAGIC シルバーレベルの2番目のホップとして、以下のエンリッチ処理とチェックを行います。
+# MAGIC - レコーディングデータとPIIを結合して、患者名を追加する
+# MAGIC - レコーディングの時間を人間が読める形式 **`'yyyy-MM-dd HH:mm:ss'`** に解析する
+# MAGIC - <= 0 の心拍数は患者の不在または送信エラーを意味するため排除する
 
 # COMMAND ----------
 
@@ -203,8 +225,10 @@ Delta LakeがデータにもたらすACID保証はテーブルレベルで管理
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="f7f66dc8-f5b5-4682-bfb6-e97aab650874"/>
-別の新しいファイルをトリガーし、前の両方のクエリを介して伝播するのを待ちます。
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC 別の新しいファイルをトリガーし、前の両方のクエリを介して伝播するのを待ちます。
 
 # COMMAND ----------
 
@@ -217,10 +241,12 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="d6a2ecd9-043e-4488-8a70-3ee3389cf681"/>
-## ゴールドテーブル：一日の平均（Gold Table: Daily Averages）
-
-ここでは **`recordings_enriched`** からデータのストリームを読み取り別のストリームを書き込むことで、患者別平均値を表す集約ゴールドテーブルを作成します。
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC ## ゴールドテーブル：一日の平均（Gold Table: Daily Averages）
+# MAGIC 
+# MAGIC ここでは **`recordings_enriched`** からデータのストリームを読み取り別のストリームを書き込むことで、患者別平均値を表す集約ゴールドテーブルを作成します。
 
 # COMMAND ----------
 
@@ -238,14 +264,16 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="de6370ea-e1a0-4212-98eb-53fd012e73b0"/>
-以下では  **`.trigger(availableNow=True)`** を使用している点に注意してください。 これににより、すべての利用可能なデータをマイクロバッチで処理するようこの1回限りのジョブをトリガーする際、構造化ストリーミングの強みを生かし続けることが可能になります。 要約すると、その強みとは以下の通りです。
-- 1回限りのエンドツーエンド・フォールトトレランス処理
-- アップストリームデータソースにおける変更の自動検出
-
-おおよそのデータ増加率が分かっていれば、このジョブに割り当てるクラスタのサイズを適切に選び、迅速で費用効果の高い処理を確保できます。 カスタマーは、データの最終的な集約ビューを更新するのに掛かるコストを評価し、十分な情報を得た上でこのオペレーションを実行する頻度を決定できます。
-
-このテーブルにサブスクライブしているダウンストリーム処理には、高価な集約を再実行する必要はありません。 むしろファイルを逆シリアル化するだけで、この既に集約されたソースに対し、含まれるフィールドに基づいたクエリが素早くプッシュダウンされます。
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC 以下では  **`.trigger(availableNow=True)`** を使用している点に注意してください。 これににより、すべての利用可能なデータをマイクロバッチで処理するようこの1回限りのジョブをトリガーする際、構造化ストリーミングの強みを生かし続けることが可能になります。 要約すると、その強みとは以下の通りです。
+# MAGIC - 1回限りのエンドツーエンド・フォールトトレランス処理
+# MAGIC - アップストリームデータソースにおける変更の自動検出
+# MAGIC 
+# MAGIC おおよそのデータ増加率が分かっていれば、このジョブに割り当てるクラスタのサイズを適切に選び、迅速で費用効果の高い処理を確保できます。 カスタマーは、データの最終的な集約ビューを更新するのに掛かるコストを評価し、十分な情報を得た上でこのオペレーションを実行する頻度を決定できます。
+# MAGIC 
+# MAGIC このテーブルにサブスクライブしているダウンストリーム処理には、高価な集約を再実行する必要はありません。 むしろファイルを逆シリアル化するだけで、この既に集約されたソースに対し、含まれるフィールドに基づいたクエリが素早くプッシュダウンされます。
 
 # COMMAND ----------
 
@@ -254,19 +282,21 @@ DA.data_factory.load()
       .format("delta")
       .outputMode("complete")
       .option("checkpointLocation", f"{DA.paths.checkpoints}/daily_avg")
-      .trigger(availableNow=True)
+      .trigger(once=True)
       .table("daily_patient_avg"))
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="5ffbd353-850f-431e-8455-827f87cad2ca"/>
-#### Deltaを使った完全な出力に関する重要な考察（Important Considerations for complete Output with Delta）
-
- **`complete`** の出力モードを使用すると、ロジックを実行する度にテーブルの状態全体が書き換えられます。 これは集約を計算するためには理想ですが、構造化ストリーミングがデータはアップストリームロジックにのみ追加されると想定しているため、このディレクトリからストリームを読み取ることは**できません**。
-
-**注**：この行動を変えるために特定のオプションを設定することができますが、その他の制限が追加されてしまいます。 詳細を知りたい場合は、<a href="https://docs.databricks.com/delta/delta-streaming.html#ignoring-updates-and-deletes" target="_blank">Deltaストリーミング：更新と削除を無視する</a>を参照してください。
-
-登録したばかりのゴールドDeltaテーブルは、次のクエリを実行する度にデータの現状に関する静的読み取りを行います。
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC #### Deltaを使った完全な出力に関する重要な考察（Important Considerations for complete Output with Delta）
+# MAGIC 
+# MAGIC  **`complete`** の出力モードを使用すると、ロジックを実行する度にテーブルの状態全体が書き換えられます。 これは集約を計算するためには理想ですが、構造化ストリーミングがデータはアップストリームロジックにのみ追加されると想定しているため、このディレクトリからストリームを読み取ることは**できません**。
+# MAGIC 
+# MAGIC **注**：この行動を変えるために特定のオプションを設定することができますが、その他の制限が追加されてしまいます。 詳細を知りたい場合は、<a href="https://docs.databricks.com/delta/delta-streaming.html#ignoring-updates-and-deletes" target="_blank">Deltaストリーミング：更新と削除を無視する</a>を参照してください。
+# MAGIC 
+# MAGIC 登録したばかりのゴールドDeltaテーブルは、次のクエリを実行する度にデータの現状に関する静的読み取りを行います。
 
 # COMMAND ----------
 
@@ -275,8 +305,10 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="bcca7247-9716-44ed-8424-e72170f0a2dc"/>
-上記のテーブルには、全ユーザーの全日程が含まれていることに注意してください。 アドホッククエリの述語がここでエンコードされたデータと一致する場合、ソースにあるファイルへ述語をプッシュダウンして、より限定された集約ビューを迅速に生成できます。
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC 上記のテーブルには、全ユーザーの全日程が含まれていることに注意してください。 アドホッククエリの述語がここでエンコードされたデータと一致する場合、ソースにあるファイルへ述語をプッシュダウンして、より限定された集約ビューを迅速に生成できます。
 
 # COMMAND ----------
 
@@ -287,9 +319,11 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="0822f785-38af-4b30-9154-8d82eb9fe000"/>
-## 残りのレコードを処理する（Process Remaining Records）
-次のセルは、2020年の残り期間の追加ファイルをソースディレクトリに配置します。 これらの処理はDelta Lakeの最初の3つのテーブルを通して確認できますが、最後のクエリを再実行して **`daily_patient_avg`** テーブルを更新する必要があります。なぜなら、このクエリはtrigger available now構文を使っているからです。
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC ## 残りのレコードを処理する（Process Remaining Records）
+# MAGIC 次のセルは、2020年の残り期間の追加ファイルをソースディレクトリに配置します。 これらの処理はDelta Lakeの最初の3つのテーブルを通して確認できますが、最後のクエリを再実行して **`daily_patient_avg`** テーブルを更新する必要があります。なぜなら、このクエリはtrigger available now構文を使っているからです。
 
 # COMMAND ----------
 
@@ -297,10 +331,12 @@ DA.data_factory.load(continuous=True)
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="f1f576bc-2b5d-46cf-9acb-6c7c4807c1af"/>
-## まとめ（Wrapping Up）
-
-最後に、すべてのストリームが停止していることを確認してください。
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC ## まとめ（Wrapping Up）
+# MAGIC 
+# MAGIC 最後に、すべてのストリームが停止していることを確認してください。
 
 # COMMAND ----------
 
@@ -308,22 +344,26 @@ DA.cleanup()
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="82928cc5-5e2b-4368-90bd-dff62a27ff12"/>
-## 概要（Summary）
-
-Delta Lakeと構造化ストリーミングが組み合わさることで、レイクハウスのデータをほぼリアルタイムでアクセスして分析します。
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC ## 概要（Summary）
+# MAGIC 
+# MAGIC Delta Lakeと構造化ストリーミングが組み合わさることで、レイクハウスのデータをほぼリアルタイムでアクセスして分析します。
 
 # COMMAND ----------
 
-# MAGIC %md <i18n value="e60b0dac-92ed-4480-a969-d0568ce83494"/>
-## 追加のトピックとリソース（Additional Topics & Resources）
-
-* <a href="https://docs.databricks.com/delta/delta-streaming.html" target="_blank">テーブルストリーミングの読み取りおよび書き込み</a>
-* <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html" target="_blank">構造化ストリーミングのプログラミングガイド</a>
-* 『<a href="https://www.youtube.com/watch?v=rl8dIzTpxrI" target="_blank">構造化ストリーミングを深く掘り下げる</a>』著者：Tathagata Das。 これは構造化ストリーミングがどのように機能するかを説明する非常に優れた動画です。
-* <a href="https://databricks.com/glossary/lambda-architecture" target="_blank">ラムダアーキテクチャ</a>
-* <a href="https://bennyaustin.wordpress.com/2010/05/02/kimball-and-inmon-dw-models/#" target="_blank">データウェアハウスモデル</a>
-* <a href="http://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html" target="_blank">Kafkaソースストリームを作成する</a>
+# MAGIC %md
+# MAGIC 
+# MAGIC 
+# MAGIC ## 追加のトピックとリソース（Additional Topics & Resources）
+# MAGIC 
+# MAGIC * <a href="https://docs.databricks.com/delta/delta-streaming.html" target="_blank">テーブルストリーミングの読み取りおよび書き込み</a>
+# MAGIC * <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html" target="_blank">構造化ストリーミングのプログラミングガイド</a>
+# MAGIC * 『<a href="https://www.youtube.com/watch?v=rl8dIzTpxrI" target="_blank">構造化ストリーミングを深く掘り下げる</a>』著者：Tathagata Das。 これは構造化ストリーミングがどのように機能するかを説明する非常に優れた動画です。
+# MAGIC * <a href="https://databricks.com/glossary/lambda-architecture" target="_blank">ラムダアーキテクチャ</a>
+# MAGIC * <a href="https://bennyaustin.wordpress.com/2010/05/02/kimball-and-inmon-dw-models/#" target="_blank">データウェアハウスモデル</a>
+# MAGIC * <a href="http://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html" target="_blank">Kafkaソースストリームを作成する</a>
 
 # COMMAND ----------
 
