@@ -7,8 +7,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="16687081-02b3-482b-be71-197120e12a05"/>
 # MAGIC 
 # MAGIC # Databricks SQLに最低限必要なPython（Just Enough Python for Databricks SQL）
 # MAGIC 
@@ -21,8 +20,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="92eb3275-1f6e-4bc1-a80b-67508df888de"/>
 # MAGIC 
 # MAGIC ## if/else
 # MAGIC 
@@ -42,10 +40,9 @@ food = "beans"
 
 # COMMAND ----------
 
-# MAGIC %md
+# MAGIC %md <i18n value="9c791b4a-4ee3-4bbb-939f-9ed31759da7f"/>
 # MAGIC 
-# MAGIC 
-# MAGIC  **`if`** および **`else`** の操作というのは、要するに実行環境で特定の条件が真であるかどうかを評価することです。
+# MAGIC **`if`** および **`else`** の操作というのは、要するに実行環境で特定の条件が真であるかどうかを評価することです。
 # MAGIC 
 # MAGIC Pythonには、次の比較演算子があることに注意してください：
 # MAGIC 
@@ -69,8 +66,7 @@ else:
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="052f07cc-5c35-4b36-84d0-c9d74de7ff08"/>
 # MAGIC 
 # MAGIC 期待どおり、 **`food`** 変数は文字列リテラル **`"beans"`** であるため、 **`if`** 文が **`True`** と評価され、最初のprint文が評価されました。
 # MAGIC 
@@ -82,8 +78,7 @@ food = "beef"
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="8c0092e9-4e2a-4d93-a30e-78dcba746b3b"/>
 # MAGIC 
 # MAGIC これで、最初の条件は **`False`** と評価されます。
 # MAGIC 
@@ -98,8 +93,7 @@ else:
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="5c76cfb8-9264-4ddc-92cf-0aa63b567c49"/>
 # MAGIC 
 # MAGIC 変数に新しい値を割り当てるたびに、これにより古い変数が完全に消去されることに注意してください。
 
@@ -110,8 +104,7 @@ print(food)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="f60f08b3-72db-4b52-8376-4dcf8d252a78"/>
 # MAGIC 
 # MAGIC Pythonキーワード **`elif`** （ **`else`**  +  **`if`** の省略）を使用すると複数の条件を評価できます。
 # MAGIC 
@@ -135,8 +128,7 @@ else:
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="d0051774-0569-4847-bb8f-1a2a8db975e8"/>
 # MAGIC 
 # MAGIC 上記のロジックを関数にカプセル化することで、グローバルに定義された変数を参照するのではなく、このロジックとフォーマットを任意の引数で再利用できます。
 
@@ -154,8 +146,7 @@ def foods_i_like(food):
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="54f912f7-b9fb-4f1a-8187-b76052aaa634"/>
 # MAGIC 
 # MAGIC ここでは、文字列 **`"bread"`** を関数に渡します。
 
@@ -165,8 +156,7 @@ foods_i_like("bread")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="2b1d135a-b98c-4072-b828-b4169653c505"/>
 # MAGIC 
 # MAGIC 関数を評価するときに、文字列 **`"bread"`** をローカルに **`food`** 変数に割り当てると、ロジックは期待どおりに動作します。
 # MAGIC 
@@ -178,8 +168,7 @@ food
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="946fc15f-2c44-4010-9688-f165f93e8aeb"/>
 # MAGIC 
 # MAGIC ## try/except
 # MAGIC 
@@ -194,8 +183,7 @@ def three_times(number):
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="6a348bd2-426e-4d37-878f-fe8e8b11e1b0"/>
 # MAGIC 
 # MAGIC この関数では、整数値に3を掛けたいとします。
 # MAGIC 
@@ -207,8 +195,7 @@ three_times(2)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="9d553980-52df-4cc7-bc7c-b9310281da00"/>
 # MAGIC 
 # MAGIC 文字列が関数に渡された場合に何が起こるかに注意してください。
 
@@ -218,8 +205,7 @@ three_times("2")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="eac6727b-22a1-4703-9e51-940b3bbbf175"/>
 # MAGIC 
 # MAGIC この場合、エラーは発生しませんが、目的の結果も得られません。
 # MAGIC 
@@ -235,9 +221,7 @@ assert type(2) == int
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="b450adca-eb4f-44ef-abcc-1a106d84e42b"/>
 # MAGIC 
 # MAGIC 次のセルからコメントアウトを外して実行し、文字列 **`"2"`** が整数であることをアサートします。
 # MAGIC 
@@ -249,8 +233,7 @@ assert type(2) == int
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="082bea6b-a032-4d49-9f44-a4ee942633af"/>
 # MAGIC 
 # MAGIC 期待どおり、文字列 **`"2"`** は整数ではありません。
 # MAGIC 
@@ -262,8 +245,7 @@ assert "2".isnumeric()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="eec0771a-d4c7-4a78-a78a-4afd93ba1cc8"/>
 # MAGIC 
 # MAGIC 文字列の数値は、APIクエリの結果で使用されたり、JSONまたはCSVファイルの未加工のレコードで使用されたり、またはSQLクエリによって返されたりして、一般的です。
 # MAGIC 
@@ -277,8 +259,7 @@ int("2")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="38f8fcf7-6042-4cd9-a241-671e5cfa9e62"/>
 # MAGIC 
 # MAGIC Pythonは、数値を含む文字列を数値型にはキャストしますが、他の文字列を数値に変更することはできません。
 # MAGIC 
@@ -290,8 +271,7 @@ int("2")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="2e3e2928-05a7-48f5-9d25-ba2f65cc2686"/>
 # MAGIC 
 # MAGIC エラーが発生すると、ノートブックスクリプトの実行が停止することに注意してください。ノートブックが本番ジョブとしてスケジュールされている場合、エラー後のすべてのセルはスキップされます。
 # MAGIC 
@@ -312,8 +292,7 @@ def try_int(num_string):
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="f218c24b-706b-4b5b-ad79-b7b7f6986ea5"/>
 # MAGIC 
 # MAGIC 数値文字列が渡されると、関数は結果を整数として返します。
 
@@ -323,8 +302,7 @@ try_int("2")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="fa07607e-bf17-4e4b-bfa3-171469da787d"/>
 # MAGIC 
 # MAGIC 数値以外の文字列が渡されると、有益なメッセージが表示されます。
 # MAGIC 
@@ -336,8 +314,7 @@ try_int("two")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="8355bfb5-25c7-4f70-b4c1-dfa1216d058e"/>
 # MAGIC 
 # MAGIC 以下では、以前の関数が更新され、エラーを処理して有益なメッセージを返すためのロジックが含まれています。
 
@@ -353,8 +330,7 @@ def three_times(number):
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="ec8b637c-e44e-4ff4-8c08-d5ed16fc926f"/>
 # MAGIC 
 # MAGIC これで、関数は文字列として渡された数値を処理できます。
 
@@ -364,8 +340,7 @@ three_times("2")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="bd26b679-0f99-4b8f-974e-944f21cf569e"/>
 # MAGIC 
 # MAGIC また、文字列が渡されると、有益なメッセージを表示します。
 
@@ -375,15 +350,13 @@ three_times("two")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="cfcaaa1b-c7b5-4e86-bb90-4fce11b9a489"/>
 # MAGIC 
 # MAGIC 現在の実装だと、このロジックはこのロジックのインタラクティブな実行にのみ役立つことに注意してください（メッセージは現在どこのログにも記録されておらず、コードは目的の形式でデータを返しません。表示されたメッセージに対応するにはユーザーの介入が必要になります）。
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="196be391-f129-4571-800a-e8d49925e57d"/>
 # MAGIC 
 # MAGIC ## SQLクエリにPythonの制御流れを適用する（Applying Python Control Flow for SQL Queries）
 # MAGIC 
@@ -403,8 +376,7 @@ three_times("two")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="0ccc4fe8-a8bf-4f53-89ff-64f89444f3cf"/>
 # MAGIC 
 # MAGIC 以下のSQLセルを実行して、このテンポラリビューの内容をプレビューします。
 
@@ -415,8 +387,7 @@ three_times("two")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="12630b87-da36-4bd5-aa87-1a73c41403f9"/>
 # MAGIC 
 # MAGIC PythonセルでSQLを実行するには、文字列クエリを  **`spark.sql()`** に渡します。
 
@@ -427,8 +398,7 @@ spark.sql(query)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="5308c8e6-7796-4232-b6c6-d87ae3bd97bb"/>
 # MAGIC 
 # MAGIC ただし、  **`spark.sql()`** を使用してクエリを実行すると、結果が表示されるのではなく、DataFrameとして返されます。 以下のコードは、結果をキャプチャして表示するために拡張されています。
 
@@ -440,8 +410,7 @@ display(result)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="86cdef19-25f1-44e1-93d0-49c8c172e25e"/>
 # MAGIC 
 # MAGIC 関数で単純な **`if`** 句を使用すると、任意のSQLクエリを実行し、オプションで結果を表示し、常に結果のDataFrameを返すことができます。
 
@@ -459,8 +428,7 @@ result = simple_query_function(query)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="76d7f722-62a9-4513-9adb-398062a0e75c"/>
 # MAGIC 
 # MAGIC クエリの目的がデータのプレビューを返すのではなく、テンポラリビューを作成することであるため、以下では、別のクエリを実行しプレビューを **`False`** に設定します。
 
@@ -472,8 +440,7 @@ simple_query_function(new_query, preview=False)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="b71d2371-2659-468e-85fa-5ce5f54bc500"/>
 # MAGIC 
 # MAGIC これで、組織のニーズに応じてさらにパラメーター化できる単純な拡張可能な関数ができました。
 # MAGIC 
@@ -485,11 +452,9 @@ injection_query = "SELECT * FROM demo_tmp_vw; DROP DATABASE prod_db CASCADE; SEL
 
 # COMMAND ----------
 
-# MAGIC %md
+# MAGIC %md <i18n value="153c01d2-ac1a-4093-9902-1f8af8b0d12c"/>
 # MAGIC 
-# MAGIC 
-# MAGIC 
-# MAGIC  **`find()`** メソッドを使用してセミコロンを探すことで、複数のSQL文が含まれていないかをテストできます。
+# MAGIC **`find()`** メソッドを使用してセミコロンを探すことで、複数のSQL文が含まれていないかをテストできます。
 
 # COMMAND ----------
 
@@ -497,9 +462,7 @@ injection_query.find(";")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="44ecbf92-2b32-4043-9ed3-4703375d855c"/>
 # MAGIC 
 # MAGIC セミコロンが見つからなかった場合、メソッドは **`-1`** を返します
 
@@ -509,9 +472,7 @@ injection_query.find("x")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="bb33efe0-e629-40f3-86fa-505fdb6d7d75"/>
 # MAGIC 
 # MAGIC その知識を活かして、クエリ文字列でセミコロンの簡単な検索を定義し、見つかった場合（  **`-1`** じゃない場合）はカスタムエラーメッセージを表示できます
 
@@ -524,9 +485,7 @@ def injection_check(query):
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="546a4926-18ac-4303-ab28-bd1538c8058f"/>
 # MAGIC 
 # MAGIC **注**：ここに示す例は素朴ですが、一般的な原則を示すことを目的としています。
 # MAGIC 
@@ -536,9 +495,7 @@ def injection_check(query):
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="f687ed3f-fce2-48ff-8634-c344aa3a60e1"/>
 # MAGIC 
 # MAGIC 次のセルからコメントアウトを外して試してみましょう：
 
@@ -548,8 +505,7 @@ def injection_check(query):
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="d9dd7b85-cab2-47e5-81dc-70b334662d62"/>
 # MAGIC 
 # MAGIC このメソッドを以前のクエリ関数に追加すれば、実行前に潜在的な脅威がないか各クエリを評価する、より堅牢な関数ができます。
 
@@ -564,8 +520,7 @@ def secure_query_function(query, preview=True):
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="5360d17d-8596-4639-b504-46f1fadaeba6"/>
 # MAGIC 
 # MAGIC 予想どおり、安全なクエリで通常のパフォーマンスが見られます。
 
@@ -575,8 +530,7 @@ secure_query_function(query)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="4ae1b084-4cc3-4acf-ad16-3a0ad45b0c22"/>
 # MAGIC 
 # MAGIC ただし、不正なロジックが実行された場合は実行を防ぎます。
 

@@ -7,8 +7,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="988e4844-2372-4e5c-b603-bf59f9c0c638"/>
 # MAGIC 
 # MAGIC # 増分データについて推論する（Reasoning about Incremental Data）
 # MAGIC 
@@ -36,9 +35,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="203d2cf2-e366-4b68-8e45-e17186a9503b"/>
 # MAGIC 
 # MAGIC ## はじめる（Getting Started）
 # MAGIC 
@@ -46,13 +43,11 @@
 
 # COMMAND ----------
 
-# MAGIC %run ../Includes/Classroom-Setup-6.2
+# MAGIC %run ../Includes/Classroom-Setup-06.2
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="bb701ed4-32db-4e97-bd72-0b90acaeca16"/>
 # MAGIC 
 # MAGIC ## 無限データをテーブルとして扱う（Treating Infinite Data as a Table）
 # MAGIC 
@@ -74,8 +69,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="08b87ec8-7f2b-4638-a93f-c6cf132ab1f0"/>
 # MAGIC 
 # MAGIC ## 基本概念（Basic Concepts）
 # MAGIC 
@@ -92,8 +86,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="c0f129fa-daf9-4d01-8454-fa040442457f"/>
 # MAGIC 
 # MAGIC ## エンドツーエンドのフォールトトレランス
 # MAGIC 
@@ -112,9 +105,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="57f9dadd-71ff-41cd-bf26-a3b968e68fba"/>
 # MAGIC 
 # MAGIC ## ストリームを読み取る（Reading a Stream）
 # MAGIC 
@@ -134,9 +125,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="4fadee61-b02e-4601-a3b8-26c2c9f06160"/>
 # MAGIC 
 # MAGIC ストリーミングテンポラリビューのクエリを実行すると、ソースに新しいデータが到着する度にクエリの結果が更新されます。
 # MAGIC 
@@ -151,8 +140,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="147067e0-bb54-4556-849f-00b9710e7c48"/>
 # MAGIC 
 # MAGIC このデータは、前回のレッスンで書き出したDeltaテーブルと同じだということが分かるでしょう。
 # MAGIC 
@@ -167,8 +155,7 @@ for s in spark.streams.active:
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="2daca6ba-fca5-40d9-ba5f-b97cf609b20e"/>
 # MAGIC 
 # MAGIC ## ストリーミングデータの操作（Working with Streaming Data）
 # MAGIC 静的データと同じように、ストリーミングのテンポラリビューに対するほとんどの変換を実行できます。 ここでは単純な集約を実行して、 **`device_id`** ごとのレコードの数を取得します。
@@ -186,8 +173,7 @@ for s in spark.streams.active:
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="99d062fc-28c0-4b88-955e-f7d6e80ee472"/>
 # MAGIC 
 # MAGIC 続ける前に、ノートブック上部にある **`Stop Execution`** かセルのすぐ下にある **`Cancel`** をクリックするか、または次のセルを実行してすべてのアクティブなストリーミングクエリを停止してください。
 
@@ -200,8 +186,7 @@ for s in spark.streams.active:
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="c257cb96-badc-473c-873a-0fb4ced7c825"/>
 # MAGIC 
 # MAGIC ## サポートされていないオペレーション（Unsupported Operations）
 # MAGIC 
@@ -222,8 +207,7 @@ for s in spark.streams.active:
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="fbde5075-43da-4c12-882c-e6da63bdb026"/>
 # MAGIC 
 # MAGIC ## ストリーミング結果の永続化（Persisting Streaming Results）
 # MAGIC 
@@ -242,9 +226,7 @@ for s in spark.streams.active:
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="db473405-f8b5-4fc7-9f87-c669b3d8e7d8"/>
 # MAGIC 
 # MAGIC ## ストリームを書き込む（Writing a Stream）
 # MAGIC 
@@ -288,8 +270,7 @@ for s in spark.streams.active:
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="a8df4901-05f0-41cd-944d-935c21fd40fc"/>
 # MAGIC 
 # MAGIC ## まとめ（Pulling It All Together）
 # MAGIC 
@@ -303,15 +284,14 @@ for s in spark.streams.active:
     .writeStream                                                
     .option("checkpointLocation", f"{DA.paths.checkpoints}/silver")
     .outputMode("complete")
-    .trigger(once=True)
+    .trigger(availableNow=True)
     .table("device_counts")
     .awaitTermination() # This optional method blocks execution of the next cell until the incremental batch write has succeeded
 )
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="0e13fc25-53ff-4c40-a93b-e3c3c5dc2644"/>
 # MAGIC 
 # MAGIC 以下ではトリガー方法を変えて、トリガーされた増分バッチから4秒ごとにトリガーされる常時有効のクエリに変更します。
 # MAGIC 
@@ -331,8 +311,7 @@ DA.block_until_stream_is_ready(query)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="d42a3739-71d7-4b9c-a1d2-a32feea1228f"/>
 # MAGIC 
 # MAGIC ## 出力を照会する（Querying the Output）
 # MAGIC それでは、SQLから書き込んだ出力を照会しましょう。 結果はテーブルであるため、結果を戻すにはデータを逆シリアル化するだけで良いです。
@@ -347,8 +326,7 @@ DA.block_until_stream_is_ready(query)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="a7d8882f-825c-4b16-a788-6a30f8696cf7"/>
 # MAGIC 
 # MAGIC ## 新しいデータの配置（Land New Data）
 # MAGIC 
@@ -362,8 +340,7 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="9e62e0fc-7705-4ee4-8407-07cc908cbfdc"/>
 # MAGIC 
 # MAGIC ターゲットテーブルを再度クエリして、  **`device_id`** ごとに更新された数を確認します。
 
@@ -375,8 +352,7 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="9d17fa00-4a3f-48a0-a15e-8ac39df11550"/>
 # MAGIC 
 # MAGIC ## クリーンアップ（Clean up）
 # MAGIC 引き続き、上記のセルを使って新しいデータを配置し、テーブル結果を探ってみましょう。

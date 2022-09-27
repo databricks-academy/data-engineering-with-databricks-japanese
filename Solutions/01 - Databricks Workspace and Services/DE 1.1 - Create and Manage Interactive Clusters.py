@@ -7,7 +7,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
+# MAGIC %md <i18n value="014a6669-786f-416d-ac00-9c2e4e9eecfe"/>
 # MAGIC 
 # MAGIC # インタラクティブ・クラスタの作成と管理（Create and Manage Interactive Clusters）
 # MAGIC 
@@ -26,7 +26,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
+# MAGIC %md <i18n value="cb2cc2e0-3923-4969-bc01-11698cd1761c"/>
 # MAGIC 
 # MAGIC ## クラスタを作成する（Create Cluster）
 # MAGIC 
@@ -49,7 +49,16 @@
 
 # COMMAND ----------
 
-# MAGIC %md
+# MAGIC %md <i18n value="21e3f0c5-0ced-4742-8f25-07775db546fd"/>
+# MAGIC 
+# MAGIC ### <img src="https://files.training.databricks.com/images/icon_warn_24.png" /> このコースではシングルノードクラスタが必要です。（Single-Node Cluster Required for This Course）
+# MAGIC **重要：**このコースではノートブックをシングルノードクラスタで実行する必要があります。
+# MAGIC 
+# MAGIC 上記の手順に従って、**クラスターモード**が **`シングルノード`** に設定してクラスタを作成します。
+
+# COMMAND ----------
+
+# MAGIC %md <i18n value="d1a8cf77-f6e8-40df-8355-3a598441457a"/>
 # MAGIC 
 # MAGIC ## クラスタの管理（Manage Clusters）
 # MAGIC 
@@ -63,7 +72,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
+# MAGIC %md <i18n value="b7ce6ce1-4d68-4a91-b325-3831c1653c67"/>
 # MAGIC 
 # MAGIC ## 再起動、終了、削除（Restart, Terminate, and Delete）
 # MAGIC 

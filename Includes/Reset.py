@@ -1,35 +1,11 @@
 # Databricks notebook source
-# MAGIC %run ./_utility-methods $lesson="reset"
+# MAGIC %run ./_utility-methods
 
 # COMMAND ----------
 
-# MAGIC %run ./mount-datasets
+DA = DBAcademyHelper(**helper_arguments)
+DA.init(install_datasets=False, create_db=False)
 
-# COMMAND ----------
-
-DA.init()
-
-# COMMAND ----------
-
-rows = spark.sql(f"show databases").collect()
-for row in rows:
-    db_name = row[0]
-    if db_name.startswith(DA.db_name_prefix):
-        print(db_name)
-        spark.sql(f"DROP DATABASE {db_name} CASCADE")
-
-# COMMAND ----------
-
-if DA.paths.exists(DA.working_dir_prefix):
-    print(DA.working_dir_prefix)
-    dbutils.fs.rm(DA.working_dir_prefix, True)
-
-# COMMAND ----------
-
-# Create the source database, install the datasets, whatever, so that we can run the other notebooks asyncronously
-install_dtavod_datasets(reinstall=True)
-install_eltwss_datasets(reinstall=True)
-
-# COMMAND ----------
-
-# MAGIC %run ./mount-datasets
+DA.cleanup_databases()    # Remove any databases created by this course
+DA.cleanup_working_dir()  # Remove any files created in the workspace
+DA.cleanup_datasets()     # Remove the local datasets forcing a reinstall

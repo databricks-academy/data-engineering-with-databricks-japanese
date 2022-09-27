@@ -7,8 +7,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="c84bb70e-0f3a-4cb9-a8b4-882200c7c940"/>
 # MAGIC 
 # MAGIC # レイクハウスの増分マルチホップ（Incremental Multi-Hop in the Lakehouse）
 # MAGIC 
@@ -23,8 +22,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="8f7d994a-fe1f-4628-825e-30c35b9ff187"/>
 # MAGIC 
 # MAGIC ## レイクハウスの増分更新（Incremental Updates in the Lakehouse）
 # MAGIC 
@@ -46,8 +44,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="9008b325-00b1-41a3-bc43-9c693bade882"/>
 # MAGIC 
 # MAGIC ## 使用するデータセット（Datasets Used）
 # MAGIC 
@@ -73,8 +70,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="7b621659-663d-4fea-b26c-5eefdf4d025a"/>
 # MAGIC 
 # MAGIC ## はじめる（Getting Started）
 # MAGIC 
@@ -82,12 +78,11 @@
 
 # COMMAND ----------
 
-# MAGIC %run ../Includes/Classroom-Setup-7.1
+# MAGIC %run ../Includes/Classroom-Setup-07.1
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="045c9907-e803-4506-8e69-4e370f06cd1d"/>
 # MAGIC 
 # MAGIC ## データシミュレーター（Data Simulator）
 # MAGIC Databricks Auto Loaderは、クラウドオブジェクトストアに到着したファイルを自動で処理します。
@@ -100,8 +95,7 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="d5d9393e-0a91-41f5-95f3-82f1be290add"/>
 # MAGIC 
 # MAGIC ## ブロンズテーブル：未加工のJSONレコーディングを取り込む（Bronze Table: Ingesting Raw JSON Recordings）
 # MAGIC 
@@ -123,8 +117,7 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="7fdec7ea-277e-4df4-911b-b2a4d3761b6a"/>
 # MAGIC 
 # MAGIC ここではソースファイルとそれが取り込まれた時間を示す追加のメタデータを用いることで、未加工のデータをエンリッチ化します。 この追加したメタデータは、破損したデータを検出した際に発生するエラーのトラブルシューティングに有益な情報をもたらしますが、ダウンストリームの処理中には無視することができます。
 
@@ -138,8 +131,7 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="6f60f3aa-65ff-4204-9cf8-00f456d4497b"/>
 # MAGIC 
 # MAGIC 以下のコードはエンリッチ化された未加工のデータをPySpark APIに渡し、Delta Lakeテーブルへの増分書き込みを処理します。
 
@@ -154,8 +146,7 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="6fd28dc4-1516-4f6a-8478-290d366a342c"/>
 # MAGIC 
 # MAGIC 次のセルを用いて別ファイルの到着をトリガーすると、書き込んだストリーミングクエリによって変更が素早く検出されることを確認できます。
 
@@ -165,8 +156,7 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="4d7848cc-ecff-474d-be27-21717d9f08d1"/>
 # MAGIC 
 # MAGIC ### 静的ルックアップテーブルをロードする（Load Static Lookup Table）
 # MAGIC Delta LakeがデータにもたらすACID保証はテーブルレベルで管理され、完全で正常なコミットのみをテーブルに反映するようにします。 これらのデータを他のデータソースと統合する場合、それらのソースがどのようにデータをバージョン管理するのか、そしてどのような整合性がそれらを保証するのかに注目してください。
@@ -179,7 +169,7 @@ DA.data_factory.load()
       .format("csv")
       .schema("mrn STRING, name STRING")
       .option("header", True)
-      .load(f"{DA.paths.data_source}/patient/patient_info.csv")
+      .load(f"{DA.paths.datasets}/healthcare/patient/patient_info.csv")
       .createOrReplaceTempView("pii"))
 
 # COMMAND ----------
@@ -189,8 +179,7 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="00ed3fc7-7c17-44f0-b56f-5e824a72bd9c"/>
 # MAGIC 
 # MAGIC ## シルバーテーブル：エンリッチ化されたレコーディングデータ（Silver Table: Enriched Recording Data）
 # MAGIC シルバーレベルの2番目のホップとして、以下のエンリッチ処理とチェックを行います。
@@ -225,8 +214,7 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="f7f66dc8-f5b5-4682-bfb6-e97aab650874"/>
 # MAGIC 
 # MAGIC 別の新しいファイルをトリガーし、前の両方のクエリを介して伝播するのを待ちます。
 
@@ -241,8 +229,7 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="d6a2ecd9-043e-4488-8a70-3ee3389cf681"/>
 # MAGIC 
 # MAGIC ## ゴールドテーブル：一日の平均（Gold Table: Daily Averages）
 # MAGIC 
@@ -264,8 +251,7 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="de6370ea-e1a0-4212-98eb-53fd012e73b0"/>
 # MAGIC 
 # MAGIC 以下では  **`.trigger(availableNow=True)`** を使用している点に注意してください。 これににより、すべての利用可能なデータをマイクロバッチで処理するようこの1回限りのジョブをトリガーする際、構造化ストリーミングの強みを生かし続けることが可能になります。 要約すると、その強みとは以下の通りです。
 # MAGIC - 1回限りのエンドツーエンド・フォールトトレランス処理
@@ -282,13 +268,12 @@ DA.data_factory.load()
       .format("delta")
       .outputMode("complete")
       .option("checkpointLocation", f"{DA.paths.checkpoints}/daily_avg")
-      .trigger(once=True)
+      .trigger(availableNow=True)
       .table("daily_patient_avg"))
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="5ffbd353-850f-431e-8455-827f87cad2ca"/>
 # MAGIC 
 # MAGIC #### Deltaを使った完全な出力に関する重要な考察（Important Considerations for complete Output with Delta）
 # MAGIC 
@@ -305,8 +290,7 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="bcca7247-9716-44ed-8424-e72170f0a2dc"/>
 # MAGIC 
 # MAGIC 上記のテーブルには、全ユーザーの全日程が含まれていることに注意してください。 アドホッククエリの述語がここでエンコードされたデータと一致する場合、ソースにあるファイルへ述語をプッシュダウンして、より限定された集約ビューを迅速に生成できます。
 
@@ -319,8 +303,7 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="0822f785-38af-4b30-9154-8d82eb9fe000"/>
 # MAGIC 
 # MAGIC ## 残りのレコードを処理する（Process Remaining Records）
 # MAGIC 次のセルは、2020年の残り期間の追加ファイルをソースディレクトリに配置します。 これらの処理はDelta Lakeの最初の3つのテーブルを通して確認できますが、最後のクエリを再実行して **`daily_patient_avg`** テーブルを更新する必要があります。なぜなら、このクエリはtrigger available now構文を使っているからです。
@@ -331,8 +314,7 @@ DA.data_factory.load(continuous=True)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="f1f576bc-2b5d-46cf-9acb-6c7c4807c1af"/>
 # MAGIC 
 # MAGIC ## まとめ（Wrapping Up）
 # MAGIC 
@@ -344,8 +326,7 @@ DA.cleanup()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="82928cc5-5e2b-4368-90bd-dff62a27ff12"/>
 # MAGIC 
 # MAGIC ## 概要（Summary）
 # MAGIC 
@@ -353,8 +334,7 @@ DA.cleanup()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="e60b0dac-92ed-4480-a969-d0568ce83494"/>
 # MAGIC 
 # MAGIC ## 追加のトピックとリソース（Additional Topics & Resources）
 # MAGIC 

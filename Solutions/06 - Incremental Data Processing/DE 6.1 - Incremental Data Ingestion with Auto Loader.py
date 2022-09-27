@@ -7,8 +7,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="82f45276-7911-4045-b57d-c2891df6f785"/>
 # MAGIC 
 # MAGIC # Auto Loaderを使った増分データの取り込み
 # MAGIC 
@@ -19,6 +18,7 @@
 # MAGIC もともとデータレイクからデータベースへファイルを取り込むのは、複雑なプロセスでした。
 # MAGIC 
 # MAGIC Databricks Auto Loaderは、クラウドファイルストレージに新しいデータファイルが到着すると、段階的かつ効率的な処理を行う簡易メカニズムを提供します。 このノートブックでは、そのAuto Loaderの操作を見ていきます。
+# MAGIC ![](https://files.training.databricks.com/images/autoloader-detection-modes.png)
 # MAGIC 
 # MAGIC Auto Loaderが提供する利点と拡張性を考えると、Databricksはクラウドオブジェクトストレージからデータを取り込む際の一般的な**ベストプラクティス**として、Auto Loaderの活用をお勧めします。
 # MAGIC 
@@ -40,9 +40,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="3b8b82a4-9dd3-4b4d-a591-dca88bd064c6"/>
 # MAGIC 
 # MAGIC ## はじめる（Getting Started）
 # MAGIC 
@@ -50,12 +48,11 @@
 
 # COMMAND ----------
 
-# MAGIC %run ../Includes/Classroom-Setup-6.1
+# MAGIC %run ../Includes/Classroom-Setup-06.1
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="188f9a32-fc72-40da-844a-b87cd14e358e"/>
 # MAGIC 
 # MAGIC ## Auto Loaderを使う（Using Auto Loader）
 # MAGIC 
@@ -90,8 +87,7 @@ def autoload_to_table(data_source, source_format, table_name, checkpoint_directo
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="cf70df0f-f945-4efb-b8d0-e90d86d0bf9b"/>
 # MAGIC 
 # MAGIC 以下のセルでは、既に定義された関数とセットアップスクリプトで指定したいくつかのパス変数を使ってAuto Loaderストリームを開始します。
 # MAGIC 
@@ -104,11 +100,9 @@ query = autoload_to_table(data_source = f"{DA.paths.working_dir}/tracker",
                           table_name = "target_table",
                           checkpoint_directory = f"{DA.paths.checkpoints}/target_table")
 
-
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="6d136721-85f1-474f-aaa1-3de8c2981e21"/>
 # MAGIC 
 # MAGIC Auto LoaderはSpark構造化ストリーミングを使用して段階的にデータをロードするため、上記のコードは実行を終了していないかのように映ります。
 # MAGIC 
@@ -116,8 +110,7 @@ query = autoload_to_table(data_source = f"{DA.paths.working_dir}/tracker",
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="96a80d56-2fea-4865-8d80-73aea7a0169a"/>
 # MAGIC 
 # MAGIC ## ストリーミングレッスン用のヘルパー関数（Helper Function for Streaming Lessons）
 # MAGIC 
@@ -138,8 +131,7 @@ block_until_stream_is_ready(query)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="56f6dfa2-c638-4812-8d7b-d4d480f97364"/>
 # MAGIC 
 # MAGIC ## ターゲットテーブルを照会する（Query Target Table）
 # MAGIC 
@@ -152,8 +144,7 @@ block_until_stream_is_ready(query)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="2bcece5b-7175-4b55-ab2c-40a67115a764"/>
 # MAGIC 
 # MAGIC 形式が正しくなくテーブルに収まらないデータをキャプチャするため、 **`_rescued_data`** の列はAuto Loaderによって自動的に追加されることに留意しましょう。
 # MAGIC 
@@ -166,8 +157,7 @@ block_until_stream_is_ready(query)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="96d695c6-45f5-4d3e-b822-2fec12d72664"/>
 # MAGIC 
 # MAGIC 以下のセルを用いて、ターゲットテーブルのレコーディングを要約するテンポラリビューを定義します。
 # MAGIC 
@@ -185,8 +175,7 @@ block_until_stream_is_ready(query)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="8048e413-c4c9-406c-be74-c541f976c8e3"/>
 # MAGIC 
 # MAGIC ## 新しいデータの配置（Land New Data）
 # MAGIC 
@@ -201,8 +190,7 @@ display(files)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="f7573e55-b6ab-46ad-9eae-cd037b4f554f"/>
 # MAGIC 
 # MAGIC 今この場所に単一のJSONファイルが確認できるはずです。
 # MAGIC 
@@ -214,8 +202,7 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="a8eeb778-e14e-42fc-90d1-86ed69ad06fb"/>
 # MAGIC 
 # MAGIC 以下のセルを用いて、 **`source_path`** のコンテンツを再び表示します。 先ほどのセルを実行した回数だけ、追加のJSONファイルが確認できるはずです。
 
@@ -226,8 +213,7 @@ display(files)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="d8323fbe-942c-405a-b3f1-5f4a3785ad95"/>
 # MAGIC 
 # MAGIC ## 取り込みの進捗状況を追跡する（Tracking Ingestion Progress）
 # MAGIC 
@@ -244,8 +230,7 @@ display(files)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="b630929e-6d09-46d8-9cd0-2d5418b5840c"/>
 # MAGIC 
 # MAGIC 先ほど構成したAuto Loaderクエリは、自動的にレコードを検出してソースディレクトリからターゲットテーブルに処理します。 レコードが取り込まれるためわずかな遅延が発生しますが、デフォルトのストリーミング構成で実行するAuto Loaderクエリはほぼリアルタイムで結果を更新します。
 # MAGIC 
@@ -258,8 +243,7 @@ display(files)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="a01651f5-70c8-45a4-859e-f9976eacf7a1"/>
 # MAGIC 
 # MAGIC ## クリーンアップ（Clean up）
 # MAGIC 引き続き、上記のセルを使って新しいデータを配置し、テーブル結果を探ってみましょう。

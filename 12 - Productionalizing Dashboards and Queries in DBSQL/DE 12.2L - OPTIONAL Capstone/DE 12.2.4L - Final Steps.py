@@ -7,9 +7,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="405115f0-8ffe-4a64-861b-b4a6772972be"/>
 # MAGIC 
 # MAGIC # レイクハウスでのエンドツーエンドETL（End-to-End ETL in the Lakehouse）
 # MAGIC ## 最終ステップ（Final Steps）
@@ -27,8 +25,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="ce3151f0-a3dc-4cd5-9f92-a075c851101a"/>
 # MAGIC 
 # MAGIC ## クエリを実行して破損しているデータを修復する（Execute a Query to Repair Broken Data）
 # MAGIC 
@@ -44,8 +41,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="25e86690-7fc4-45ea-b567-c6a229cef220"/>
 # MAGIC 
 # MAGIC デモンストレーションの目的上、データとシステムを手動で徹底的に確認した結果、通常は正しい心拍数の記録が場合によっては負の値として返されることに気づいたと仮定します。
 # MAGIC 
@@ -58,8 +54,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="6f853894-27ff-4edb-8e64-ff2fa3c0be39"/>
 # MAGIC 
 # MAGIC データセットを完成させるために、これらの固定レコードをシルバーの **`recordings_enriched`** テーブルに挿入します。
 # MAGIC 
@@ -84,8 +79,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="03ebb8bd-781d-4d5d-87ff-f4a842e2419a"/>
 # MAGIC 
 # MAGIC 以下のセルを使用して、この更新が成功したことを手動またはプログラムで確認します。
 # MAGIC 
@@ -98,8 +92,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="9b9685f0-dc1a-490c-92e9-ec068c7064d5"/>
 # MAGIC 
 # MAGIC ## 本番データの権限を検討する（Consider Production Data Permissions）
 # MAGIC 
@@ -111,14 +104,13 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="15d7d859-5788-4c66-88f8-f276dba39347"/>
 # MAGIC 
 # MAGIC ## 本番インフラストラクチャをシャットダウンする（Shut Down Production Infrastructure）
 # MAGIC 
 # MAGIC Databricksジョブ、DLTパイプライン、およびスケジュールされたDBSQLクエリとダッシュボードはすべて、本番コードを継続的に実行できるように設計されていることに注意してください。 このエンドツーエンドのデモでは、継続的なデータ処理のためにジョブとパイプラインを設定しました。 これらのワークロードが引き続き実行されないように、Databricksジョブを**Pause**してDLTパイプラインを**Stop**しましょう。 これらのアセットを削除すると、本番インフラストラクチャも確実に終了します。
 # MAGIC 
-# MAGIC **注**：前のレッスンのDBSQLアセットスケジューリングのすべての手順には、更新スケジュールを明日終了するように設定しましょうと書かれていました。 DBSQLエンドポイントがそれまでオンのままにならないように、戻ってこれらの更新をキャンセルすることもできます。
+# MAGIC **注**：前のレッスンのDBSQLアセットスケジューリングのすべての手順には、更新スケジュールを明日終了するように設定しましょうと書かれていました。 SQLウェアハウスがそれまでオンのままにならないように、戻ってこれらの更新をキャンセルすることもできます。
 
 # COMMAND ----------
 

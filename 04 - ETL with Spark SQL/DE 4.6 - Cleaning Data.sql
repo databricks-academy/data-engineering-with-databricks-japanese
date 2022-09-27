@@ -7,8 +7,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="84dff2fc-1e27-46ea-8120-0a501795da47"/>
 -- MAGIC 
 -- MAGIC # データのクリーンアップ（Cleaning Data）
 -- MAGIC 
@@ -33,8 +32,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="763d80d3-b7ed-4baf-98f1-ec6e0fb03d67"/>
 -- MAGIC 
 -- MAGIC ## セットアップを実行する（Run Setup）
 -- MAGIC 
@@ -42,12 +40,11 @@
 
 -- COMMAND ----------
 
--- MAGIC %run ../Includes/Classroom-Setup-4.6
+-- MAGIC %run ../Includes/Classroom-Setup-04.6
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="fe2033f4-7752-408a-9175-1dc28d63b445"/>
 -- MAGIC 
 -- MAGIC このレッスンでは、 **`users_dirty`** テーブルにある新しいユーザーレコードを扱います。
 
@@ -57,8 +54,7 @@ SELECT * FROM users_dirty
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="9b9352ce-28ed-420c-814d-dbf773067e32"/>
 -- MAGIC 
 -- MAGIC ## データを調べる（Inspect Data）
 -- MAGIC 
@@ -71,10 +67,9 @@ FROM users_dirty
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="1770892b-4fc9-40a8-a03a-c72353507b01"/>
 -- MAGIC 
--- MAGIC 
--- MAGIC  **`count(col)`** は特定の列もしくは式をカウントするときに **`NULL`** 値をスキップするのでご注意ください。
+-- MAGIC **`count(col)`** は特定の列もしくは式をカウントするときに **`NULL`** 値をスキップするのでご注意ください。
 -- MAGIC 
 -- MAGIC ただし、 **`count(*)`** は、行の総数（ **`NULL`** 値のみの行を含む）をカウントする特例です。
 -- MAGIC 
@@ -91,15 +86,13 @@ FROM users_dirty
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="7e48564f-85a8-4c9c-8b0a-2f1c1606109b"/>
 -- MAGIC 
 -- MAGIC これらのすべてのフィールドにはnull値がある程度あります。 これの原因を突き止めてみましょう。
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="f6662ed5-cb5e-44a9-ad9e-d036cbc9df26"/>
 -- MAGIC 
 -- MAGIC ## 個別のレコード（Distinct Records）
 -- MAGIC 
@@ -117,10 +110,9 @@ FROM users_dirty
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="df59b9d2-9931-472c-9149-1d1bd33a2995"/>
 -- MAGIC 
--- MAGIC 
--- MAGIC  **`user_id`** が **`user_first_touch_timestamp`** と同時に生成されるため、これらのフィールドのカウントは常に同じなはずです。
+-- MAGIC **`user_id`** が **`user_first_touch_timestamp`** と同時に生成されるため、これらのフィールドのカウントは常に同じなはずです。
 
 -- COMMAND ----------
 
@@ -129,8 +121,7 @@ FROM users_dirty
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="4814a464-6333-445f-b178-1bf65c62a7d5"/>
 -- MAGIC 
 -- MAGIC ここでは、合計行数に比べて重複するレコードがいくつかありますが、ユニークな値の数のほうがはるかに多いことに注意しましょう。
 -- MAGIC 
@@ -151,8 +142,7 @@ FROM users_dirty
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="e83d57db-b194-444a-bcd7-7ff748da4983"/>
 -- MAGIC 
 -- MAGIC 上記の概要から次のことが分かります：
 -- MAGIC * メールアドレスは全部固有
@@ -161,8 +151,7 @@ FROM users_dirty
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="240c6103-ced1-4b14-a772-4172e01f39bd"/>
 -- MAGIC 
 -- MAGIC ## 行の重複排除（Deduplicate Rows）
 -- MAGIC 上記の動作からすれば、 **`DISTINCT *`** を使用して重複レコードを排除しようとした場合はどうなると思いますか？
@@ -176,8 +165,7 @@ SELECT * FROM users_deduped
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="363ae50a-0345-4b86-9dee-8a0c277872f9"/>
 -- MAGIC 
 -- MAGIC 上記のプレビューにはnull値がありますが、 **`COUNT(DISTINCT(*))`** はそのnull値を除外しました。
 -- MAGIC 
@@ -189,8 +177,7 @@ SELECT COUNT(*) FROM users_deduped
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="61822099-55ff-4c28-8f34-51bf22e46e73"/>
 -- MAGIC 
 -- MAGIC 全く別の数字になったことにご注意ください。
 -- MAGIC 
@@ -209,8 +196,7 @@ WHERE
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="ef1c4bde-aa99-4cde-bd49-f976a770e071"/>
 -- MAGIC 
 -- MAGIC ## 特定の列に基づいて重複を排除する（Deduplicate Based on Specific Columns）
 -- MAGIC 
@@ -226,8 +212,7 @@ WHERE user_id IS NOT NULL
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="08631519-40fe-45f5-bdf7-3267ec3229c3"/>
 -- MAGIC 
 -- MAGIC ここでは、ユニークなペアを使用してデータから不要な行を削除します。
 -- MAGIC 
@@ -247,8 +232,7 @@ SELECT count(*) FROM deduped_users
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="09a6b88a-e02c-4835-ab62-0e82a1162c22"/>
 -- MAGIC 
 -- MAGIC ## データセットの検証（Validate Datasets）
 -- MAGIC 手動で確認して、カウントが予想通りであることを目で確認しました。
@@ -266,9 +250,7 @@ SELECT max(row_count) <= 1 no_duplicate_ids FROM (
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="39a69a24-b1e1-42cc-83f1-115b69a2b891"/>
 -- MAGIC 
 -- MAGIC 各メールアドレスが少なくとも1つの **`user_id`** と関連付けられていることを確認します。
 
@@ -282,8 +264,7 @@ SELECT max(user_id_count) <= 1 at_most_one_id FROM (
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="17288207-e22e-43cc-8785-4d993cf71a1c"/>
 -- MAGIC 
 -- MAGIC ## 日付の形式と正規表現 （Date Format and Regex）
 -- MAGIC nullフィールドをなくして重複を排除しましたので、データからさらに価値を引き出しましょう。
@@ -307,8 +288,7 @@ FROM (
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="8678a7d8-2d31-4022-84b6-785a6ae260e9"/>
 -- MAGIC 
 -- MAGIC 次のセルを実行して、このレッスンに関連するテーブルとファイルを削除してください。
 

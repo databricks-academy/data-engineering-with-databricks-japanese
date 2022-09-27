@@ -7,8 +7,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="bc50b1e9-781a-405d-bed4-c80dbd97e0d1"/>
 -- MAGIC 
 -- MAGIC # 高度なSQL変換（Advanced SQL Transformations）
 -- MAGIC 
@@ -27,8 +26,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="4c84edde-f73e-4873-aa45-aca0cf4c7159"/>
 -- MAGIC 
 -- MAGIC ## セットアップを実行する（Run Setup）
 -- MAGIC 
@@ -36,12 +34,11 @@
 
 -- COMMAND ----------
 
--- MAGIC %run ../Includes/Classroom-Setup-4.7
+-- MAGIC %run ../Includes/Classroom-Setup-04.7
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="836f7278-abe6-42e5-8e54-73410c439a55"/>
 -- MAGIC 
 -- MAGIC ## JSONデータの取り扱い（Interacting with JSON Data）
 -- MAGIC 
@@ -59,8 +56,7 @@ SELECT * FROM events_strings
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="c758863e-eb79-4b7b-b397-255b78699287"/>
 -- MAGIC 
 -- MAGIC Spark SQLには、文字列として保存されているJSONデータを扱うための組み込み機能があります。  **`:`** 構文を使用して、ネスト化したデータ構造を移動できます。
 
@@ -71,8 +67,7 @@ FROM events_strings
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="773a02a1-6208-4f7c-ad6a-e50850be0055"/>
 -- MAGIC 
 -- MAGIC Spark SQLには、JSONオブジェクトを構造体型（ネスト化した属性を持つネイティブのSpark型）に解析する機能もあります。
 -- MAGIC 
@@ -88,8 +83,7 @@ LIMIT 1
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="99cdb6bd-f03b-487d-a581-98ecf5fb86a3"/>
 -- MAGIC 
 -- MAGIC また、Spark SQLには、例からJSONスキーマを導き出す **`schema_of_json`** 関数もあります。 ここでは、サンプルのJSONをコピーして関数に貼り付け、それを **`from_json`** 関数にチェーンして、 **`value`** フィールドを構造体タイプに変換します。
 
@@ -103,8 +97,7 @@ SELECT * FROM parsed_events
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="72757378-3490-4160-af61-cc8e86986633"/>
 -- MAGIC 
 -- MAGIC JSON文字列が構造体型にアンパックされると、Sparkがサポートしているフィールドを列にフラット化するための **`*`** （スター）アンパックを使用できます。
 
@@ -118,8 +111,7 @@ SELECT * FROM new_events_final
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="71294bed-5a75-4577-8e34-d6cf319f7925"/>
 -- MAGIC 
 -- MAGIC ## データ構造体を調べる（Explore Data Structures）
 -- MAGIC 
@@ -133,10 +125,9 @@ DESCRIBE events
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="50bc40ad-f9fc-42f9-bb00-e1afecceff26"/>
 -- MAGIC 
--- MAGIC 
--- MAGIC  **`ecommerce`** フィールドは、doubleと2つのlongを含む構造体です。
+-- MAGIC **`ecommerce`** フィールドは、doubleと2つのlongを含む構造体です。
 -- MAGIC 
 -- MAGIC このフィールドのサブフィールドは、JSONでネスト化したデータを移動する方法と同様に、標準の **`.`** 構文を使用して操作できます。
 
@@ -148,25 +139,42 @@ WHERE ecommerce.purchase_revenue_in_usd IS NOT NULL
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="0c5d4757-46c8-4ddd-8ad0-b81bcfd6d178"/>
 -- MAGIC 
+-- MAGIC ## 配列の取り扱い (Working with Arrays)
+-- MAGIC 
+-- MAGIC **`events`** テーブルの **`items`** フィールドは構造体の配列です。
+-- MAGIC 
+-- MAGIC Spark SQLには、特に配列を処理するための関数が多数あります。
+-- MAGIC 
+-- MAGIC たとえば、 **`size`** 関数は、各行の配列内のアイテム数をカウントします。
+-- MAGIC 
+-- MAGIC これを使用して、3つ以上のアイテムを含む配列を持つイベント レコードをフィルター処理してみましょう。
+
+-- COMMAND ----------
+
+SELECT user_id, event_timestamp, event_name, items
+FROM events
+WHERE size(items) > 2
+
+-- COMMAND ----------
+
+-- MAGIC %md <i18n value="0167fd9c-9374-4b86-90cf-53ae9feae297"/>
 -- MAGIC 
 -- MAGIC ## 配列の分割（Explode Arrays）
--- MAGIC  **`events`** テーブルにある **`items`** フィールドは構造体の配列です。
 -- MAGIC 
--- MAGIC Spark SQLには配列の操作に特化した関数がいくつかあります。
--- MAGIC 
--- MAGIC  **`explode`** 関数を使用すると、配列にある各要素をそれぞれの列に配置できます。
+-- MAGIC  **`explode`** 関数を使用すると、配列にある各要素をそれぞれの行に配置できます。
+-- MAGIC  これを使用して、3つ以上のアイテムを持つイベント レコードを、配列内の各アイテムに1つずつ、別々の行に配置してみましょう。
 
 -- COMMAND ----------
 
-SELECT user_id, event_timestamp, event_name, explode(items) AS item 
+SELECT user_id, event_timestamp, event_name, explode(items) AS item
 FROM events
+WHERE size(items) > 2
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="df218c13-c1e9-4644-8859-d1d66106f224"/>
 -- MAGIC 
 -- MAGIC ## 配列を集める（Collect Arrays）
 -- MAGIC 
@@ -188,8 +196,7 @@ GROUP BY user_id
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="211f8b57-6202-4fdb-a60c-50dab87f48ca"/>
 -- MAGIC 
 -- MAGIC ## テーブルの結合（Join Tables）
 -- MAGIC 
@@ -211,8 +218,7 @@ SELECT * FROM sales_enriched
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="ee523edb-b563-41af-82e1-f9b28a076989"/>
 -- MAGIC 
 -- MAGIC ## Set演算子（Set Operators）
 -- MAGIC Spark SQLは、 **`UNION`** 、 **`MINUS`** 、および **`INTERSECT`** のセット演算子をサポートしています。
@@ -229,10 +235,9 @@ SELECT * FROM new_events_final
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="99487e80-251a-4468-98e2-6f7d25b147ef"/>
 -- MAGIC 
--- MAGIC 
--- MAGIC  **`INTERSECT`** は、両方のリレーションで見つかったすべての行を返します。
+-- MAGIC **`INTERSECT`** は、両方のリレーションで見つかったすべての行を返します。
 
 -- COMMAND ----------
 
@@ -242,8 +247,7 @@ SELECT * FROM new_events_final
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="c00adc33-1831-407b-b787-8d3bfaddadf9"/>
 -- MAGIC 
 -- MAGIC この2つのデータセットに共通の値がないため、上記のクエリは結果を返しません。
 -- MAGIC 
@@ -251,9 +255,7 @@ SELECT * FROM new_events_final
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="e43bb5f8-d2d6-440f-a8f5-15387bd5bff1"/>
 -- MAGIC 
 -- MAGIC ## ピボットテーブル（Pivot Tables）
 -- MAGIC  **`PIVOT`** 句は、データの全体像を見るために使用されます。 特定の列の値に基づいて集計された値を取得できます。この値は、 **`SELECT`** 句で使用される複数の列に変換されます。  **`PIVOT`** 句はテーブル名もしくはサブクエリの後に指定できます。
@@ -302,9 +304,7 @@ SELECT * FROM transactions
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="d1ed83fa-4d2f-4138-b343-4d070c0d0e40"/>
 -- MAGIC 
 -- MAGIC ## 高階関数（Higher Order Functions）
 -- MAGIC Spark SQLで高階関数を使用すると、複雑なデータ型を直接操作できます。 階層データを操作する場合、レコードは配列またはよくマップ型のオブジェクトとして保存されます。 高階関数を使用すると、元の構造を維持しながらデータを変換できます。
@@ -317,8 +317,7 @@ SELECT * FROM transactions
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="5fcad266-d5a0-4255-9c6b-be3634ea9e79"/>
 -- MAGIC 
 -- MAGIC ## フィルタ（Filter）
 -- MAGIC  **`items`** 列にあるすべてのキング（King）サイズじゃない項目を削除します。  **`FILTER`** の関数を使用すると、その値が各配列から排除されている新しい列を作成できます。
@@ -343,8 +342,7 @@ FROM sales
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="7ef7b728-dfad-4cdf-8f41-8c72a76d4310"/>
 -- MAGIC 
 -- MAGIC 作ったフィルタが、作成された列に多くの空の配列を作成してしまう場合があります。 そういった場合は、 **`WHERE`** 句を使用して、返された列に空でない配列の値のみを表示させるのが便利です。
 -- MAGIC 
@@ -366,8 +364,7 @@ SELECT * FROM king_size_sales
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="e30bf997-6eb6-4ee7-94b8-6827ecdcce7d"/>
 -- MAGIC 
 -- MAGIC ## 変換（Transform）
 -- MAGIC 組み込み関数は、セルにある単一で単純なデータ型を操作するためのもので、配列の値を処理することができません。  **`TRANSFORM`** は、配列の各要素に既存の関数を適用する場合に特に便利です。
@@ -394,11 +391,9 @@ FROM king_size_sales;
 
 SELECT * FROM king_item_revenues
 
-
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="6c15bff7-7667-4118-9b72-27068d6fa6be"/>
 -- MAGIC 
 -- MAGIC ## 概要（Summary）
 -- MAGIC Spark SQLは、高度にネスト化したデータを操作するための包括的なネイティブ機能を備えています。
@@ -407,8 +402,7 @@ SELECT * FROM king_item_revenues
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="2f9ae39d-2908-4ee1-9609-594c3d043a38"/>
 -- MAGIC 
 -- MAGIC 次のセルを実行して、このレッスンに関連するテーブルとファイルを削除してください。
 

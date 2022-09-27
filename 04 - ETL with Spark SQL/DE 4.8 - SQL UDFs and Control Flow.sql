@@ -7,8 +7,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="931bf77d-810b-4930-b45c-b00c184029a0"/>
 -- MAGIC 
 -- MAGIC # SQLのUDFと制御流れ（SQL UDFs and Control Flow）
 -- MAGIC 
@@ -27,20 +26,18 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="df80ac46-fb12-44ed-bb37-dcc5a4d73d4a"/>
 -- MAGIC 
 -- MAGIC ## セットアップ（Setup）
 -- MAGIC 次のセルを実行して、環境をセットアップします。
 
 -- COMMAND ----------
 
--- MAGIC %run ../Includes/Classroom-Setup-4.8
+-- MAGIC %run ../Includes/Classroom-Setup-04.8
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="f4fec594-3cd7-43c9-b88e-3ccd3a99c6be"/>
 -- MAGIC 
 -- MAGIC ## 簡単なデータセットを作成する（Create a Simple Dataset）
 -- MAGIC 
@@ -58,8 +55,7 @@ SELECT * FROM foods
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="65577a77-c917-441c-895b-8ba146c837ff"/>
 -- MAGIC 
 -- MAGIC ## SQL UDF
 -- MAGIC SQL UDFには少なくとも、関数名、任意のパラメーター、戻り値の型、いくつかのカスタムロジックが必要です。
@@ -74,8 +70,7 @@ RETURN concat(upper(text), "!!!")
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="4cffc92d-3133-45ba-97c8-b0bc4c9e419b"/>
 -- MAGIC 
 -- MAGIC この関数が列にあるすべての値にSpark処理エンジン内で平行に適用されることにご注意ください。 SQL UDFを使用すると、Databricksでの実行に最適化されているカスタムロジックを効率的に定義できます。
 
@@ -85,8 +80,7 @@ SELECT yelling(food) FROM foods
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="e1749d08-2186-4e1c-9214-18c8199388af"/>
 -- MAGIC 
 -- MAGIC ## SQL UDFの範囲と権限（Scoping and Permissions of SQL UDFs）
 -- MAGIC 
@@ -100,8 +94,7 @@ DESCRIBE FUNCTION yelling
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="6a6eb6c6-ffc8-49d9-a39a-a5e1f6c230af"/>
 -- MAGIC 
 -- MAGIC DESCRIBE EXTENDEDを実行するとさらに多くの情報を表示できます。
 -- MAGIC 
@@ -113,8 +106,7 @@ DESCRIBE FUNCTION EXTENDED yelling
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="a31a4ad1-5608-4bfb-aae4-a411fe460385"/>
 -- MAGIC 
 -- MAGIC SQL UDFsはメタストア内のオブジェクトとして存在し、データベース、テーブル、ビューと同じテーブルACLによって管理されます。
 -- MAGIC 
@@ -122,8 +114,7 @@ DESCRIBE FUNCTION EXTENDED yelling
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="155c70b7-ed5e-47d2-9832-963aa18f3869"/>
 -- MAGIC 
 -- MAGIC ## CASE/WHEN
 -- MAGIC 
@@ -144,8 +135,7 @@ FROM foods
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="50bc0847-94d2-4167-befe-66e42b287ad0"/>
 -- MAGIC 
 -- MAGIC ## 簡単な流れ制御の関数（Simple Control Flow Functions）
 -- MAGIC 
@@ -166,8 +156,7 @@ END;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="05cb00cc-097c-4607-8738-ab4353536dda"/>
 -- MAGIC 
 -- MAGIC このメソッドをこのデータに使用すると、予想した結果が得られます。
 
@@ -177,8 +166,7 @@ SELECT foods_i_like(food) FROM foods
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="24ee3267-9ddb-4cf5-9081-273502f5252a"/>
 -- MAGIC 
 -- MAGIC ここに用意されている例は簡単な文字列のメソッドですが、この基本原理を使用してカスタムの計算およびSpark SQLでのネイティブの実行のためのロジックを追加できます。
 -- MAGIC 
@@ -186,8 +174,7 @@ SELECT foods_i_like(food) FROM foods
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="9405ddea-5fb0-4168-9fd2-2b462d5809d9"/>
 -- MAGIC 
 -- MAGIC 次のセルを実行して、このレッスンに関連するテーブルとファイルを削除してください。
 

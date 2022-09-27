@@ -7,8 +7,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="3a66b3fc-6b92-436c-8b22-95b91bddeac3"/>
 -- MAGIC 
 -- MAGIC # Deltaテーブルへの書き込み（Writing to Delta Tables）
 -- MAGIC Delta Lakeテーブルでは、クラウドのオブジェクトストレージにあるデータファイルによってバックアップされているテーブルへのACIDに準拠した更新が可能です。
@@ -24,8 +23,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="3fa1b6f1-9faa-453f-b033-c5f2cf011703"/>
 -- MAGIC 
 -- MAGIC ## セットアップを実行する（Run Setup）
 -- MAGIC 
@@ -33,12 +31,11 @@
 
 -- COMMAND ----------
 
--- MAGIC %run ../Includes/Classroom-Setup-4.4
+-- MAGIC %run ../Includes/Classroom-Setup-04.4
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="3a8cba57-5d9e-4514-b589-d263a2f02f74"/>
 -- MAGIC 
 -- MAGIC ## 完全な上書き（Complete Overwrites）
 -- MAGIC 
@@ -57,12 +54,11 @@
 -- COMMAND ----------
 
 CREATE OR REPLACE TABLE events AS
-SELECT * FROM parquet.`${da.paths.datasets}/raw/events-historical`
+SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/events-historical`
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="a4090f92-557e-4d23-a808-155356270d1b"/>
 -- MAGIC 
 -- MAGIC テーブル履歴を確認すると、テーブルの以前のバージョンが置き換えられたことが分かります。
 
@@ -72,10 +68,9 @@ DESCRIBE HISTORY events
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="06628fba-431d-4cb7-bd52-449fdc203cb2"/>
 -- MAGIC 
--- MAGIC 
--- MAGIC  **`INSERT OVERWRITE`** では、ほとんど同じ結果を得られます。ターゲットテーブルのデータがクエリのデータに置き換えられます。
+-- MAGIC **`INSERT OVERWRITE`** では、ほとんど同じ結果を得られます。ターゲットテーブルのデータがクエリのデータに置き換えられます。
 -- MAGIC 
 -- MAGIC  **`INSERT OVERWRITE`** は：
 -- MAGIC 
@@ -86,12 +81,11 @@ DESCRIBE HISTORY events
 -- COMMAND ----------
 
 INSERT OVERWRITE sales
-SELECT * FROM parquet.`${da.paths.datasets}/raw/sales-historical/`
+SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/sales-historical/`
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="c668da22-a355-441f-aeab-a513997b8d71"/>
 -- MAGIC 
 -- MAGIC CRAS文とは異なるメトリックが表示されることにご注意ください。 テーブル履歴に操作が記録される方法も異なります。
 
@@ -101,8 +95,7 @@ DESCRIBE HISTORY sales
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="4fa20011-e560-45d5-85c0-c82930974804"/>
 -- MAGIC 
 -- MAGIC ここでの主な違いは、Delta Lakeが書き込み時にスキーマを強制する方法に関係しています。
 -- MAGIC 
@@ -113,13 +106,11 @@ DESCRIBE HISTORY sales
 -- COMMAND ----------
 
 -- INSERT OVERWRITE sales
--- SELECT *, current_timestamp() FROM parquet.`${da.paths.datasets}/raw/sales-historical`
+-- SELECT *, current_timestamp() FROM parquet.`${da.paths.datasets}/ecommerce/raw/sales-historical`
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="02c9c3f2-2996-42b5-9d56-60967a0031c0"/>
 -- MAGIC 
 -- MAGIC ## 行の追加（Append Rows）
 -- MAGIC 
@@ -130,21 +121,17 @@ DESCRIBE HISTORY sales
 -- COMMAND ----------
 
 INSERT INTO sales
-SELECT * FROM parquet.`${da.paths.datasets}/raw/sales-30m`
+SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/sales-30m`
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="3a0a94f8-43fa-4dc3-be0c-110b07f1db89"/>
 -- MAGIC 
 -- MAGIC 同じレコードを何度も追加してしまうのを防ぐ組み込み保証は **`INSERT INTO`** にはありませんので、ご注意ください。 上記のセルを再実行するとターゲットテーブルに同一のレコードが書き込まれ、重複レコードにつながります。
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="cad7b32f-3e35-4962-a911-823d92f2f653"/>
 -- MAGIC 
 -- MAGIC ## 更新のマージ（Merge Updates）
 -- MAGIC 
@@ -164,14 +151,13 @@ SELECT * FROM parquet.`${da.paths.datasets}/raw/sales-30m`
 
 CREATE OR REPLACE TEMP VIEW users_update AS 
 SELECT *, current_timestamp() AS updated 
-FROM parquet.`${da.paths.datasets}/raw/users-30m`
+FROM parquet.`${da.paths.datasets}/ecommerce/raw/users-30m`
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="edc2f42c-8cd2-47c6-a8e6-09b1541e1e00"/>
 -- MAGIC 
--- MAGIC 
--- MAGIC  **`MERGE`** の主な利点は：
+-- MAGIC **`MERGE`** の主な利点は：
 -- MAGIC * 新、挿入、削除が単一のトランザクションとして行われる
 -- MAGIC * 一致するフィールドの他にも、複数の条件文を追加できる
 -- MAGIC * カスタムロジックを実装するための方法がたくさんある
@@ -191,15 +177,13 @@ WHEN NOT MATCHED THEN INSERT *
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="90e330ce-5596-4fa8-a474-78442e48ae67"/>
 -- MAGIC 
--- MAGIC 
--- MAGIC  **`MATCHED`** および **`NOT MATCHED`** の両方の条件においても、この関数の動作を明示的に指定していることにご注意ください。ここに示されている例は、すべての **`MERGE`** の動作を表すものではなく、適用できるロジックの一例にすぎません。
+-- MAGIC **`MATCHED`** および **`NOT MATCHED`** の両方の条件においても、この関数の動作を明示的に指定していることにご注意ください。ここに示されている例は、すべての **`MERGE`** の動作を表すものではなく、適用できるロジックの一例にすぎません。
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="493c7f22-4011-4b08-ad79-4b2a4ef2a12f"/>
 -- MAGIC 
 -- MAGIC ## 重複排除のためのInsert-Onlyマージ（Insert-Only Merge for Deduplication）
 -- MAGIC 
@@ -221,8 +205,7 @@ WHEN NOT MATCHED AND b.traffic_source = 'email' THEN
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="1162da2b-3c56-42ff-b6b8-2532276b03cd"/>
 -- MAGIC 
 -- MAGIC ## 段階的な読み込み（Load Incrementally）
 -- MAGIC 
@@ -239,13 +222,12 @@ WHEN NOT MATCHED AND b.traffic_source = 'email' THEN
 -- COMMAND ----------
 
 COPY INTO sales
-FROM "${da.paths.datasets}/raw/sales-30m"
+FROM "${da.paths.datasets}/ecommerce/raw/sales-30m"
 FILEFORMAT = PARQUET
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="567f82f1-956b-42c5-98d7-7914675b105e"/>
 -- MAGIC 
 -- MAGIC 次のセルを実行して、このレッスンに関連するテーブルとファイルを削除してください。
 

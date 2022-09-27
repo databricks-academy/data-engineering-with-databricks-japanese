@@ -7,8 +7,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="ce4b28fc-fbe2-47d3-976a-776345ac869b"/>
 -- MAGIC 
 -- MAGIC # Delta Lakeのバージョン管理、最適化、バキューム処理（Delta Lake Versioning, Optimization, and Vacuuming）
 -- MAGIC 
@@ -23,20 +22,18 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="f75fd28d-aa78-4d58-b9b7-b8ea93a99b1b"/>
 -- MAGIC 
 -- MAGIC ## セットアップ（Setup）
 -- MAGIC 次のスクリプトを実行して必要な変数をセットアップし、このノートブックにおける過去の実行を消去します。 このセルを再実行するとラボを再起動できる点に注意してください。
 
 -- COMMAND ----------
 
--- MAGIC %run ../Includes/Classroom-Setup-2.4L
+-- MAGIC %run ../Includes/Classroom-Setup-02.4L
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="ea2fae13-227c-4c03-8617-87e06826526e"/>
 -- MAGIC 
 -- MAGIC ## Beanコレクションの履歴を再作成する（Recreate the History of your Bean Collection）
 -- MAGIC 
@@ -93,8 +90,7 @@ WHEN NOT MATCHED AND b.delicious = true THEN
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="ec611b15-e52e-4bce-8a74-7d55e72d3189"/>
 -- MAGIC 
 -- MAGIC ## テーブル履歴を確認する（Review the Table History）
 -- MAGIC 
@@ -109,8 +105,7 @@ DESCRIBE HISTORY beans
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="6c5aaad5-d6ac-4a46-943f-81720d7d1d92"/>
 -- MAGIC 
 -- MAGIC 以前の全操作が説明通りに完了している場合、テーブルの7つのバージョンが確認できるはずです（**注**：Delta Lakeのバージョン管理は0から始まるので、バージョンの最大値は6です）。
 -- MAGIC 
@@ -134,8 +129,7 @@ DESCRIBE HISTORY beans
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="4cb66440-1d20-4f76-8110-6f872dc59800"/>
 -- MAGIC 
 -- MAGIC ## 特定のバージョンを照会する（Query a Specific Version）
 -- MAGIC 
@@ -149,8 +143,7 @@ SELECT * FROM beans VERSION AS OF 1
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="3043618d-abb4-46db-9b13-bd1c4a02d235"/>
 -- MAGIC 
 -- MAGIC そして今度は、データの現在の状態を確認します。
 
@@ -160,8 +153,7 @@ SELECT * FROM beans
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="91947cec-f2ff-4590-9bdb-d996fa93cd04"/>
 -- MAGIC 
 -- MAGIC レコードを削除する前に、beanの重量を確認したいとします。
 -- MAGIC 
@@ -179,8 +171,7 @@ SELECT * FROM pre_delete_vw
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="b10dccdf-cf1e-43fe-bed0-1da2166f0884"/>
 -- MAGIC 
 -- MAGIC 以下のセルを実行して、正しいバージョンを取り込んだことを確認してください。
 
@@ -193,8 +184,7 @@ SELECT * FROM pre_delete_vw
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="bcedb128-6a39-46a6-b418-c889a2587751"/>
 -- MAGIC 
 -- MAGIC ## 以前のバージョンを復元する（Restore a Previous Version）
 -- MAGIC 
@@ -209,8 +199,7 @@ RESTORE TABLE beans TO VERSION AS OF 5
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="b0ca1fc8-da6f-444e-9105-f0d6bc7893d9"/>
 -- MAGIC 
 -- MAGIC テーブルの履歴を確認します。 以前のバージョンに復元したことで、新たなテーブルバージョンを追加したという事実についてメモします。
 
@@ -227,8 +216,7 @@ DESCRIBE HISTORY beans
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="e16c9c00-1ac7-444e-9f99-6ceccb7795d3"/>
 -- MAGIC 
 -- MAGIC ## ファイルの圧縮（File Compaction）
 -- MAGIC 元に戻す間のトランザクションメトリクスを見て、こんなにも小さなデータコレクションにたくさんのファイルがあることに驚きます。
@@ -245,8 +233,7 @@ ZORDER BY name
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="f97af267-9d81-4035-803b-2d54e5f037af"/>
 -- MAGIC 
 -- MAGIC データは1つのファイルに圧縮されたはずです。次のセルを実行することにより、これを手動で確認してください。
 
@@ -256,8 +243,7 @@ DESCRIBE DETAIL beans
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="4510898e-045e-493b-8882-26d1366219ff"/>
 -- MAGIC 
 -- MAGIC 以下のセルを実行してテーブルを正常に最適化し、インデックスを付けたことを確認してください。
 
@@ -270,8 +256,7 @@ DESCRIBE DETAIL beans
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="2704d55d-c54a-4e44-baf8-6bf186363870"/>
 -- MAGIC 
 -- MAGIC ## 古いデータファイルのクリーンアップ（Cleaning Up Stale Data Files）
 -- MAGIC 
@@ -294,8 +279,7 @@ SET spark.databricks.delta.vacuum.logging.enabled = true;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="b4aa9f86-b65a-4b58-a303-01ce01c1dda9"/>
 -- MAGIC 
 -- MAGIC データファイルを完全に削除する前に、 **`DRY RUN`** オプションを使ってそれらを手動で確認してください。
 
@@ -305,8 +289,7 @@ VACUUM beans RETAIN 0 HOURS DRY RUN
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="d9ebfa03-c7b2-4eba-8e25-71b41a78965d"/>
 -- MAGIC 
 -- MAGIC 現バージョンのテーブルにないデータファイルはすべて、上のプレビューに表示されます。
 -- MAGIC 
@@ -320,10 +303,9 @@ VACUUM beans RETAIN 0 HOURS
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="21bb3d2d-5c7b-4e49-ad16-b27eeecbd915"/>
 -- MAGIC 
--- MAGIC 
--- MAGIC  **`VACUUM`** は重要なデータセットにとって非常に破壊的な行為となる可能性があるので、保持期間のチェックをオンに戻すのをおすすめします。 以下のセルを実行して、この設定を再び有効にしてください。
+-- MAGIC **`VACUUM`** は重要なデータセットにとって非常に破壊的な行為となる可能性があるので、保持期間のチェックをオンに戻すのをおすすめします。 以下のセルを実行して、この設定を再び有効にしてください。
 
 -- COMMAND ----------
 
@@ -331,8 +313,7 @@ SET spark.databricks.delta.retentionDurationCheck.enabled = true
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="fdd81ce0-d88a-4cf4-9fe3-6bfdd2319a9b"/>
 -- MAGIC 
 -- MAGIC テーブル履歴が、 **`VACUUM`** 操作を完了したユーザー、削除したファイルの数、この操作中に保持チェックが無効だったというログを示すことに注意してください。
 
@@ -342,8 +323,7 @@ DESCRIBE HISTORY beans
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="c28d1de2-ff12-426c-9c97-11fced9145cc"/>
 -- MAGIC 
 -- MAGIC 再度テーブルを照会して、まだ現バージョンが利用可能なことを確認してください。
 
@@ -353,8 +333,7 @@ SELECT * FROM beans
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="a9d17cf0-7d2e-4537-93ed-35c37801bdae"/>
 -- MAGIC 
 -- MAGIC <img src="https://files.training.databricks.com/images/icon_warn_32.png" /> Deltaキャッシュは、現在のセッションでクエリされたファイルのコピーを現在アクティブなクラスタにデプロイされたストレージボリュームに保存するため、以前のテーブルバージョンに一時的にアクセスできる可能性があります（しかし、システムをこうした動作を期待するように設計**しない**ほうがいいです）。
 -- MAGIC 
@@ -368,8 +347,7 @@ SELECT * FROM beans
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="6381dbea-0e05-4dae-9015-cfa9c8bdf40a"/>
 -- MAGIC 
 -- MAGIC このラボでは次のことを学びました。
 -- MAGIC * 標準的なDelta Lakeテーブルの作成およびデータ操作コマンドの完了
@@ -380,8 +358,7 @@ SELECT * FROM beans
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="6fa65337-c805-4e8e-a3ab-13820a60e6fb"/>
 -- MAGIC 
 -- MAGIC 次のセルを実行して、このレッスンに関連するテーブルとファイルを削除してください。
 

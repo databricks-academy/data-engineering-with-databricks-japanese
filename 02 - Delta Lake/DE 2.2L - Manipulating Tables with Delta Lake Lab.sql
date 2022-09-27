@@ -7,9 +7,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="a209ac48-08a6-4b89-b728-084a515fd335"/>
 -- MAGIC 
 -- MAGIC # Delta Lakeを使用してテーブルを操作する（Manipulating Tables with Delta Lake）
 -- MAGIC 
@@ -24,26 +22,22 @@
 -- MAGIC   -  **`UPDATE`** 
 -- MAGIC   -  **`DELETE`** 
 -- MAGIC   -  **`MERGE`** 
--- MAGIC   -  **`DROP TABLE`** 
+-- MAGIC   -  **`DROP TABLE`**
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="6582dbcd-72c7-496b-adbd-23aef98e20e9"/>
 -- MAGIC 
 -- MAGIC ## セットアップ（Setup）
 -- MAGIC 次のスクリプトを実行して必要な変数をセットアップし、このノートブックにおける過去の実行を消去します。 このセルを再実行するとラボを再起動できる点に注意してください。
 
 -- COMMAND ----------
 
--- MAGIC %run ../Includes/Classroom-Setup-2.2L
+-- MAGIC %run ../Includes/Classroom-Setup-02.2L
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="0607f2ed-cfe6-4a38-baa4-e6754ec1c664"/>
 -- MAGIC 
 -- MAGIC ## テーブルを作成する（Create a Table）
 -- MAGIC 
@@ -67,9 +61,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="2167d7d7-93d1-4704-a7cb-a0335eaf8da7"/>
 -- MAGIC 
 -- MAGIC **注**：このラボでは、Pythonを使って時々チェックを実行します。 手順に従っていない場合、次のセルは変更すべきことについてのメッセージを記載したエラーを返します。 セルを実行しても出力がない場合、このステップは完了です。
 
@@ -82,8 +74,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="89004ef0-db16-474b-8cce-eff85c225a65"/>
 -- MAGIC 
 -- MAGIC ## データを挿入する（Insert Data）
 -- MAGIC 
@@ -98,9 +89,7 @@ INSERT INTO beans VALUES
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="48d649a1-cde1-491f-a90d-95d2e336e140"/>
 -- MAGIC 
 -- MAGIC 手動でテーブルの内容を確認し、データが期待通りに書き込まれたことを確認します。
 
@@ -111,9 +100,7 @@ INSERT INTO beans VALUES
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="f0406eef-6973-47c9-8f89-a667c53cfea7"/>
 -- MAGIC 
 -- MAGIC 以下に用意された追加のレコードを挿入します。 これは必ず単一のトランザクションとして実行してください。
 
@@ -127,9 +114,7 @@ INSERT INTO beans VALUES
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="e1764f9f-8052-47bb-a862-b52ca438378a"/>
 -- MAGIC 
 -- MAGIC 以下のセルを実行して、データが適切な状態にあることを確認しましょう。
 
@@ -142,9 +127,7 @@ INSERT INTO beans VALUES
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="e38adafa-bd10-4191-9c69-e6a4363532ec"/>
 -- MAGIC 
 -- MAGIC ## レコードの更新（Update Records）
 -- MAGIC 
@@ -160,9 +143,7 @@ WHERE name = "jelly"
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="d8637fab-6d23-4458-bc08-ff777021e30c"/>
 -- MAGIC 
 -- MAGIC うっかり、うずら豆の重量を間違って入力したことに気づきます。
 -- MAGIC 
@@ -175,9 +156,7 @@ WHERE name = "jelly"
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="954bf892-4db6-4b25-9a9a-83b0f6ecc123"/>
 -- MAGIC 
 -- MAGIC 以下のセルを実行して、これが適切に完了したことを確認しましょう。
 
@@ -192,9 +171,7 @@ WHERE name = "jelly"
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="f36d551a-f588-43e4-84a2-6aa49a420c04"/>
 -- MAGIC 
 -- MAGIC ## レコードの削除（Delete Records）
 -- MAGIC 
@@ -209,9 +186,7 @@ WHERE name = "jelly"
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="1c8d924c-3e97-49a0-b5e4-0378c5acd3c8"/>
 -- MAGIC 
 -- MAGIC 次のセルを実行して、この操作が成功したことを確認します。
 
@@ -223,9 +198,7 @@ WHERE name = "jelly"
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="903473f1-ddca-41ea-ae2f-dc2fac64936e"/>
 -- MAGIC 
 -- MAGIC ## マージを使ってレコードをアップサートする（Using Merge to Upsert Records）
 -- MAGIC 
@@ -243,9 +216,7 @@ SELECT * FROM new_beans
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="58d50e50-65f1-403b-b74e-1143cde49356"/>
 -- MAGIC 
 -- MAGIC 以下のセルでは、上のビューを使ってMERGE文を書き出し、1つのトランザクションとして **`beans`** テーブルを更新して新しいレコードを挿入します。
 -- MAGIC 
@@ -261,9 +232,7 @@ SELECT * FROM new_beans
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="9fbb65eb-9119-482f-ab77-35e11af5fb24"/>
 -- MAGIC 
 -- MAGIC 以下のセルを実行して、結果を確認します。
 
@@ -281,9 +250,7 @@ SELECT * FROM new_beans
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="4a668d7c-e16b-4061-a5b7-1ec732236308"/>
 -- MAGIC 
 -- MAGIC ## テーブルの削除（Dropping Tables）
 -- MAGIC 
@@ -300,9 +267,7 @@ SELECT * FROM new_beans
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="4cc5c126-5e56-423e-a814-f6c422312802"/>
 -- MAGIC 
 -- MAGIC 以下のセルを実行し、テーブルがもう存在しないことをアサートします。
 
@@ -313,9 +278,7 @@ SELECT * FROM new_beans
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="f4d330e3-dc40-4b6e-9911-34902bab22ae"/>
 -- MAGIC 
 -- MAGIC ## まとめ（Wrapping Up）
 -- MAGIC 
@@ -324,9 +287,7 @@ SELECT * FROM new_beans
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="d59f9828-9b13-4e0e-ae98-7e852cd32198"/>
 -- MAGIC 
 -- MAGIC 次のセルを実行して、このレッスンに関連するテーブルとファイルを削除してください。
 

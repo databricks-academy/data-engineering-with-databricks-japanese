@@ -7,8 +7,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="d2c3cdc2-5fcf-4edc-8101-2964a9355000"/>
 -- MAGIC 
 -- MAGIC # データを抽出して読み込むラボ（Extract and Load Data Lab）
 -- MAGIC 
@@ -23,8 +22,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="e261fd97-ffd7-44b2-b1ca-61b843ee8961"/>
 -- MAGIC 
 -- MAGIC ## セットアップを実行する（Run Setup）
 -- MAGIC 
@@ -32,12 +30,11 @@
 
 -- COMMAND ----------
 
--- MAGIC %run ../Includes/Classroom-Setup-4.5L
+-- MAGIC %run ../Includes/Classroom-Setup-04.5L
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="d7759322-f9b9-4abe-9b30-25f5a7e30d9c"/>
 -- MAGIC 
 -- MAGIC ## データの概要（Overview of the Data）
 -- MAGIC 
@@ -58,8 +55,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="f2cd70fe-65a1-4dce-b264-c0c7d225640a"/>
 -- MAGIC 
 -- MAGIC ## JSONファイルから未加工のイベントを抽出する（Extract Raw Events From JSON Files）
 -- MAGIC データを正しくDeltaに読み込むには、まずは正しいスキーマを使用してJSONデータを抽出する必要があります。
@@ -69,12 +65,11 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN> ${da.paths.datasets}/raw/events-kafka/
+<FILL_IN> ${da.paths.datasets}/ecommerce/raw/events-kafka/
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="07ce3850-fdc7-4dea-9335-2a093c2e200c"/>
 -- MAGIC 
 -- MAGIC **注**：このラボでは、Pythonを使って時々チェックを実行します。 手順に従っていない場合、次のセルは変更すべきことについてのメッセージを記載したエラーを返します。 セルを実行しても出力がない場合、このステップは完了です。
 
@@ -90,9 +85,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="ae3b8554-d0e7-4fd7-b25a-27bfbc5f7c13"/>
 -- MAGIC 
 -- MAGIC ## Deltaテーブルに未加工のイベントを挿入する（Insert Raw Events Into Delta Table）
 -- MAGIC 同じスキーマを使用して **`events_raw`** というの空のマネージドDeltaテーブルを作成します。
@@ -104,9 +97,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="3d56975b-47ba-4678-ae7b-7c5e4ac20a97"/>
 -- MAGIC 
 -- MAGIC 以下のセルを実行して、テーブルが正しく作成されたことを確認します。
 
@@ -120,9 +111,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="61815a62-6d4f-47fb-98a9-73c39842ac56"/>
 -- MAGIC 
 -- MAGIC 抽出されたデータとDeltaテーブルの準備ができたら、 **`events_json`** のテーブルから新しい **`events_raw`** のDeltaテーブルにJSONレコードを挿入します。
 
@@ -133,8 +122,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="4f545052-31c6-442b-a5e8-4c5892ec912f"/>
 -- MAGIC 
 -- MAGIC 手動でテーブルの内容を確認し、データが期待通りに書き込まれたことを確認します。
 
@@ -145,9 +133,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="0d66f26b-3df6-4819-9d84-22da9f55aeaa"/>
 -- MAGIC 
 -- MAGIC 次のセルを実行してデータが正しく読み込まれたことを確認しましょう。
 
@@ -159,9 +145,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="e9565088-1762-4f89-a06f-49576a53526a"/>
 -- MAGIC 
 -- MAGIC ## クエリからDeltaテーブルを作成する（Create Delta Table from a Query）
 -- MAGIC 新しいイベントデータに加えて、コースの後半で使用する製品の詳細を獲得できる小さなルックアップテーブルも読み込みましょう。 CTAS文を使用して、以下のparquetディレクトリからデータを抽出する **`item_lookup`** というのマネージドDeltaテーブルを作成します。
@@ -169,13 +153,11 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN> ${da.paths.datasets}/raw/item-lookup
+<FILL_IN> ${da.paths.datasets}/ecommerce/raw/item-lookup
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="9f1ad20f-1238-4a12-ad2a-f10169ed6475"/>
 -- MAGIC 
 -- MAGIC 次のセルを実行してルックアップテーブルが正しく読み込まれていることを確認しましょう。
 
@@ -183,12 +165,11 @@
 
 -- MAGIC %python
 -- MAGIC assert spark.table("item_lookup").count() == 12, "The table should have 12 records"
--- MAGIC assert set(row['item_id'] for row in spark.table("item_lookup").select("item_id").limit(5).collect()) == {'M_PREM_F', 'M_PREM_K', 'M_PREM_Q', 'M_PREM_T', 'M_STAN_F'}, "Make sure you have not modified the data provided"
+-- MAGIC assert set(row['item_id'] for row in spark.table("item_lookup").select("item_id").orderBy('item_id').limit(5).collect()) == {'M_PREM_F', 'M_PREM_K', 'M_PREM_Q', 'M_PREM_T', 'M_STAN_F'}, "Make sure you have not modified the data provided"
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="c24885ea-010e-4b76-9e9d-cc749f10993a"/>
 -- MAGIC 
 -- MAGIC 次のセルを実行して、このレッスンに関連するテーブルとファイルを削除してください。
 

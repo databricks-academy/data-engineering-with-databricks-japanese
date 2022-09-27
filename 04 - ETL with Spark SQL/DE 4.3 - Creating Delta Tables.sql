@@ -7,8 +7,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="25ac8d75-ee97-4c88-8028-94ba991d0dba"/>
 -- MAGIC 
 -- MAGIC # Deltaテーブルの作成（Creating Delta Tables）
 -- MAGIC 
@@ -28,8 +27,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="ae119ec7-0185-469d-8986-75c0e3d0a68f"/>
 -- MAGIC 
 -- MAGIC ## セットアップを実行する（Run Setup）
 -- MAGIC 
@@ -37,13 +35,11 @@
 
 -- COMMAND ----------
 
--- MAGIC %run ../Includes/Classroom-Setup-4.3
+-- MAGIC %run ../Includes/Classroom-Setup-04.3
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="26c0731b-b738-4034-acdc-0dd2761031e4"/>
 -- MAGIC 
 -- MAGIC ## Selectした結果で新しいテーブルを作成する（CTAS)（Create Table as Select (CTAS)）
 -- MAGIC 
@@ -52,14 +48,13 @@
 -- COMMAND ----------
 
 CREATE OR REPLACE TABLE sales AS
-SELECT * FROM parquet.`${da.paths.datasets}/raw/sales-historical/`;
+SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/sales-historical`;
 
 DESCRIBE EXTENDED sales;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="db0df24b-95f8-45bc-8651-44e4af4537e2"/>
 -- MAGIC 
 -- MAGIC CTAS文は、自動的にクエリの結果からスキーマ情報を推測して、手動のスキーマ宣言をサポート**しません**。
 -- MAGIC 
@@ -72,14 +67,13 @@ DESCRIBE EXTENDED sales;
 -- COMMAND ----------
 
 CREATE OR REPLACE TABLE sales_unparsed AS
-SELECT * FROM csv.`${da.paths.datasets}/raw/sales-csv/`;
+SELECT * FROM csv.`${da.paths.datasets}/ecommerce/raw/sales-csv`;
 
 SELECT * FROM sales_unparsed;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="2d99fed5-4e51-45ea-bcbf-e6da504c5e93"/>
 -- MAGIC 
 -- MAGIC Delta Lakeテーブルにこのようなデータを正しく取り込ませるには、オプションを指定できるファイルへの参照を使用する必要があります。
 -- MAGIC 
@@ -91,9 +85,9 @@ CREATE OR REPLACE TEMP VIEW sales_tmp_vw
   (order_id LONG, email STRING, transactions_timestamp LONG, total_item_quantity INTEGER, purchase_revenue_in_usd DOUBLE, unique_items INTEGER, items STRING)
 USING CSV
 OPTIONS (
-  path "${da.paths.datasets}/raw/sales-csv",
-  header "true",
-  delimiter "|"
+  path = "${da.paths.datasets}/ecommerce/raw/sales-csv",
+  header = "true",
+  delimiter = "|"
 );
 
 CREATE TABLE sales_delta AS
@@ -103,8 +97,7 @@ SELECT * FROM sales_delta
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="3f6875ab-5363-43df-8c36-faeff2933cbe"/>
 -- MAGIC 
 -- MAGIC ## 既存のテーブルの列のフィルタリングと名前変更（Filtering and Renaming Columns from Existing Tables）
 -- MAGIC 
@@ -124,8 +117,7 @@ SELECT * FROM purchases
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="e2eb9bb3-e6ec-4842-85a9-895007411f02"/>
 -- MAGIC 
 -- MAGIC 以下の通り、ビューでも同じ目標を達成できたことにご注意ください。
 
@@ -139,8 +131,7 @@ SELECT * FROM purchases_vw
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="5961066a-e322-415f-9ddf-0cc34247f5cf"/>
 -- MAGIC 
 -- MAGIC ## 生成した列を含むスキーマを宣言する（Declare Schema with Generated Columns）
 -- MAGIC 
@@ -157,7 +148,7 @@ SELECT * FROM purchases_vw
 
 CREATE OR REPLACE TABLE purchase_dates (
   id STRING, 
-  transaction_timestamp STRING, 
+  transaction_timestamp LONG, 
   price STRING,
   date DATE GENERATED ALWAYS AS (
     cast(cast(transaction_timestamp/1e6 AS TIMESTAMP) AS DATE))
@@ -165,11 +156,9 @@ CREATE OR REPLACE TABLE purchase_dates (
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="13084a7f-10a0-453f-aa53-1f75a7e74dd9"/>
 -- MAGIC 
--- MAGIC 
--- MAGIC 
--- MAGIC  **`date`** は生成された列なので、 **`date`** の列の値を指定せずに **`purchase_dates`** に書き込んだ場合、値は自動的にDelta Lakeに計算されます。
+-- MAGIC **`date`** は生成された列なので、 **`date`** の列の値を指定せずに **`purchase_dates`** に書き込んだ場合、値は自動的にDelta Lakeに計算されます。
 -- MAGIC 
 -- MAGIC **注**：以下のセルでは、Delta Lakeの **`MERGE`** 文を使用する際に列の生成を可能にする設定を行います。 この構文の詳細は、コースの後半で紹介します。
 
@@ -185,8 +174,7 @@ WHEN NOT MATCHED THEN
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="4d535b90-f71e-49ac-8101-45f328ec0349"/>
 -- MAGIC 
 -- MAGIC 以下を見ると、このフィールドの値はソースデータにも挿入クエリにも指定されていなかったのにも関わらず、データの挿入時にすべての日付が正しく計算されたことが分かります。
 -- MAGIC 
@@ -198,9 +186,7 @@ SELECT * FROM purchase_dates
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="7035036b-6829-4a4e-bbea-9c9bbdc85776"/>
 -- MAGIC 
 -- MAGIC 本来生成されるはずだったフィールドがテーブルへの挿入処理に含まれている場合、指定された値が、生成された列を定義するために使用されるロジックによって算出されるはずの値と完全一致しないと、この挿入は失敗するのでご注意ください。
 -- MAGIC 
@@ -213,8 +199,7 @@ SELECT * FROM purchase_dates
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="f8f1d9d6-be28-493e-9736-c6384cbbe944"/>
 -- MAGIC 
 -- MAGIC ## テーブルの制約を追加する（Add a Table Constraint）
 -- MAGIC 
@@ -236,8 +221,7 @@ ALTER TABLE purchase_dates ADD CONSTRAINT valid_date CHECK (date > '2020-01-01')
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="604861c2-0d45-434e-be65-41c1da7b2bbf"/>
 -- MAGIC 
 -- MAGIC テーブルの制約は **`TBLPROPERTIES`** フィールドに表示されます。
 
@@ -247,8 +231,7 @@ DESCRIBE EXTENDED purchase_dates
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="3de6a201-9b87-4d79-9bb1-4fc2f122d55e"/>
 -- MAGIC 
 -- MAGIC ## オプションとメタデータを追加してテーブルをエンリッチ化する（Enrich Tables with Additional Options and Metadata）
 -- MAGIC 
@@ -282,14 +265,13 @@ AS
     cast(cast(user_first_touch_timestamp/1e6 AS TIMESTAMP) AS DATE) first_touch_date, 
     current_timestamp() updated,
     input_file_name() source_file
-  FROM parquet.`${da.paths.datasets}/raw/users-historical/`;
+  FROM parquet.`${da.paths.datasets}/ecommerce/raw/users-historical/`;
   
 SELECT * FROM users_pii;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="c1aa43f4-9681-4104-824d-c4ce4bc72914"/>
 -- MAGIC 
 -- MAGIC テーブルに追加されたメタデータフィールドには、レコードがどこから、いつ挿入されたかの便利な情報が載っています。 これは、ソースデータで問題をトラブルシューティングすることが必要になった場合に特に便利です。
 -- MAGIC 
@@ -303,8 +285,7 @@ DESCRIBE EXTENDED users_pii
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="afad6329-9739-4397-b410-7b49ad9118ce"/>
 -- MAGIC 
 -- MAGIC テーブルに使用されている場所を表示させると、 **`first_touch_date`** にある固有の値がデータディレクトリの作成に使用されていることが分かります。
 
@@ -316,8 +297,7 @@ DESCRIBE EXTENDED users_pii
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="ac7e881c-3076-4997-8dcc-4daa5c84a226"/>
 -- MAGIC 
 -- MAGIC ## Delta Lakeテーブルの複製（Cloning Delta Lake Tables）
 -- MAGIC Delta Lakeテーブルを効率的に複製するために、Delta Lakeには2つの方法があります。
@@ -331,8 +311,7 @@ DEEP CLONE purchases
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="a42c51a7-ac07-4e67-94ea-ed06b6db126c"/>
 -- MAGIC 
 -- MAGIC すべてのデータファイルをコピーする必要があるため、大きなデータセットの場合、この処理は、長時間がかかる場合があります。
 -- MAGIC 
@@ -345,15 +324,13 @@ SHALLOW CLONE purchases
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="e9b91c6a-2581-4a0b-8f84-2e100f053980"/>
 -- MAGIC 
 -- MAGIC いずれにしても、テーブルの複製バージョンに適用されたデータ変更は、ソースとはまた別に追跡および保管されます。 複製は、開発中にSQLコードを試すためにテーブルを設定する良い方法です。
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="64bb6112-b07c-424c-a668-da4cfa29be1f"/>
 -- MAGIC 
 -- MAGIC ## 概要（Summary）
 -- MAGIC 
@@ -361,8 +338,7 @@ SHALLOW CLONE purchases
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="c78f9f19-f13b-49b4-9ad0-20181528f924"/>
 -- MAGIC 
 -- MAGIC 次のセルを実行して、このレッスンに関連するテーブルとファイルを削除してください。
 

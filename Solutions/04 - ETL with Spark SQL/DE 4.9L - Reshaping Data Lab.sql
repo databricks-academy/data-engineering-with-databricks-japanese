@@ -7,8 +7,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="7d67b345-b680-4f39-a384-31655b390a78"/>
 -- MAGIC 
 -- MAGIC # データ再形成のラボ（Reshaping Data Lab）
 -- MAGIC 
@@ -23,8 +22,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="db657989-4a07-41c5-acc8-18d6ceabbc85"/>
 -- MAGIC 
 -- MAGIC ## セットアップを実行する（Run Setup）
 -- MAGIC 
@@ -32,12 +30,11 @@
 
 -- COMMAND ----------
 
--- MAGIC %run ../Includes/Classroom-Setup-4.9L
+-- MAGIC %run ../Includes/Classroom-Setup-04.9L
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="3b76127f-ef49-4024-a970-67ac52a1fa63"/>
 -- MAGIC 
 -- MAGIC ## データセットを再形成してクリックパスを作成する（Reshape Datasets to Create Click Paths）
 -- MAGIC この操作は、 **`events`** と **`transactions`** のテーブルのデータを結合して、ユーザーがサイト上で行ったアクションとその最終注文のレコードを作成します。
@@ -46,16 +43,14 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="a4124fa1-e5cc-467f-8a7c-fb5978fefad1"/>
 -- MAGIC 
 -- MAGIC ### 1.  **`events`** をパイボットして、各ユーザーに対してアクションをカウントします
--- MAGIC 各ユーザーが、 **`event_name`** 列に記載されている特定のイベントを行った数を集計したいと思います。 これを行うには、 **`user`** でグループ化して **`event_name`** でパイボットして各種のイベントのカウントを独自の列に記録し、その結果、以下のスキーマになります。
+-- MAGIC 各ユーザーが、 **`event_name`** 列に記載されている特定のイベントを行った数を集計したいと思います。 これを行うには、 **`user_id`** でグループ化して **`event_name`** でパイボットして各種のイベントのカウントを独自の列に記録し、その結果、以下のスキーマになります。
 -- MAGIC 
 -- MAGIC | フィールド         | 型      |
 -- MAGIC | ------------- | ------ |
--- MAGIC | user          | STRING |
+-- MAGIC | user_id       | STRING |
 -- MAGIC | cart          | BIGINT |
 -- MAGIC | pillows       | BIGINT |
 -- MAGIC | login         | BIGINT |
@@ -96,9 +91,7 @@ SELECT * FROM (
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="8646882a-e334-4293-ba4d-550e86a2ed79"/>
 -- MAGIC 
 -- MAGIC **注**：このラボでは、Pythonを使って時々チェックを実行します。 手順に従っていない場合、以下のヘルパー関数は変更すべきことについてのメッセージを記載したエラーを返します。 出力がない場合、このステップは完了です。
 
@@ -112,9 +105,7 @@ SELECT * FROM (
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="75fd31d6-3674-48c4-bc6b-c321a47ade9b"/>
 -- MAGIC 
 -- MAGIC 以下のセルを実行して、ビューが正しく作成されたことを確認します。
 
@@ -126,9 +117,7 @@ SELECT * FROM (
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="bb41e6ea-aeae-4f4f-97c5-cad043d151cd"/>
 -- MAGIC 
 -- MAGIC ### 2. すべてのユーザーに対してイベントカウントとトランザクションを結合します
 -- MAGIC 
@@ -169,9 +158,7 @@ JOIN transactions b
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="db501e67-0444-4988-a850-e7f374b38f3e"/>
 -- MAGIC 
 -- MAGIC 以下のセルを実行して、テーブルが正しく作成されたことを確認します。
 
@@ -183,11 +170,10 @@ JOIN transactions b
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="ed22d836-9233-469c-8aa1-4bea42f84517"/>
 -- MAGIC 
 -- MAGIC ## 購入した商品の種類にフラグを立てる（Flag Types of Products Purchased）
--- MAGIC ここでは高階関数である **`EXISTS`** を使用して、購入された商品がマットレスか枕かを示す **`mattress`** と **`pillow`** というブールの列を作成します。
+-- MAGIC ここでは高階関数である **`EXISTS`** を使用して、 **`sales`** テーブルのデータから購入された商品がマットレスか枕かを示す **`mattress`** と **`pillow`** というブールの列を作成します。
 -- MAGIC 
 -- MAGIC 例えば、  **`items`** 列の **`item_name`** が **`"Mattress"`** という文字列で終わる場合、 **`mattress`** 列の値は **`true`** で **`pillow`** 列の値は **`false`** になります。 以下は、項目とその結果の値の例です。
 -- MAGIC 
@@ -212,9 +198,7 @@ FROM sales
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="3d56b9b4-957d-4ea2-8c49-f4e92a4918c9"/>
 -- MAGIC 
 -- MAGIC 以下のセルを実行して、テーブルが正しく作成されたことを確認します。
 
@@ -227,8 +211,7 @@ FROM sales
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="e78c6d7f-bd25-4af8-8d01-a6943f24b8d6"/>
 -- MAGIC 
 -- MAGIC 次のセルを実行して、このレッスンに関連するテーブルとファイルを削除してください。
 

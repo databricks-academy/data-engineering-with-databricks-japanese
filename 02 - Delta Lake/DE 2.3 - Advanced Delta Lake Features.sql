@@ -7,8 +7,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="d2b35611-0c56-4262-b664-3a89a1d62662"/>
 -- MAGIC 
 -- MAGIC # Delta Lakeの高度な機能（Advanced Delta Lake Features）
 -- MAGIC 
@@ -31,20 +30,18 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="75224cfc-51b5-4c3d-8eb3-4db08469c99f"/>
 -- MAGIC 
 -- MAGIC ## セットアップを実行する（Run Setup）
 -- MAGIC まずはセットアップスクリプトを実行します。 セットアップスクリプトは、ユーザー名、ユーザーホーム、各ユーザーを対象とするデータベースを定義します。
 
 -- COMMAND ----------
 
--- MAGIC %run ../Includes/Classroom-Setup-2.3
+-- MAGIC %run ../Includes/Classroom-Setup-02.3
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="7e85feea-be41-41f7-9cd7-df2c140d6286"/>
 -- MAGIC 
 -- MAGIC ## 履歴のあるDeltaテーブルを作成する（Creating a Delta Table with History）
 -- MAGIC 
@@ -92,8 +89,7 @@ WHEN NOT MATCHED AND u.type = "insert"
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="5f6b0330-42f2-4307-9ff2-0b534947b286"/>
 -- MAGIC 
 -- MAGIC ## テーブルの詳細を調べる（Examine Table Details）
 -- MAGIC 
@@ -107,17 +103,25 @@ DESCRIBE EXTENDED students
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="5495f382-2841-4cf5-b872-db4dd3828ee5"/>
 -- MAGIC 
+-- MAGIC **`DESCRIBE DETAIL`** はテーブルのメタデータを確認できるもう一つのコマンドです。
+
+-- COMMAND ----------
+
+DESCRIBE DETAIL students
+
+-- COMMAND ----------
+
+-- MAGIC %md <i18n value="4ab0fa4f-72cb-4f3b-8ea3-228b13be1baf"/>
 -- MAGIC 
--- MAGIC  **`Location`** 行に注意してください。
+-- MAGIC **`Location`** 項目に注意してください。
 -- MAGIC 
 -- MAGIC これまでは、テーブルをデータベース内の単なるリレーショナルエンティティとして考えてきましたが、Delta Lakeテーブルは実のところ、クラウドオブジェクトストレージに保存されたファイルのコレクションを元にしています。
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="10e37764-bbfd-4669-a967-addd58041d47"/>
 -- MAGIC 
 -- MAGIC ## Delta Lakeファイルを調べる（Explore Delta Lake Files）
 -- MAGIC 
@@ -132,8 +136,7 @@ DESCRIBE EXTENDED students
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="075483eb-7ddd-46ef-bbb1-33ee7005923b"/>
 -- MAGIC 
 -- MAGIC ディレクトリには、多数のParquetデータファイルと **`_delta_log`** というのディレクトリが含まれていることに注意してください。
 -- MAGIC 
@@ -150,15 +153,13 @@ DESCRIBE EXTENDED students
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="1bcbb8d1-f871-451a-ad16-762dfa91c0a3"/>
 -- MAGIC 
 -- MAGIC 各トランザクションごとに、新しいJSONファイルがDelta Lakeトランザクションログに書き込まれます。 ここでは、このテーブル（Delta Lakeのインデックスは0から始まります）に対して合計8つのトランザクションがあることがわかります。
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="c2fbd6d7-ea8e-4000-9702-e21408f3ef78"/>
 -- MAGIC 
 -- MAGIC ## データファイルについて推論する（Reasoning about Data Files）
 -- MAGIC 
@@ -172,10 +173,9 @@ DESCRIBE DETAIL students
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="adf1dc55-37a4-4376-86df-78895bfcf6b8"/>
 -- MAGIC 
--- MAGIC 
--- MAGIC ここでは、現バージョンのテーブルに、現在3つのデータファイルが含まれていることがわかります。 では、なんでこれら他のParquetファイルがテーブルディレクトリに入っているのでしょうか？
+-- MAGIC ここでは、現バージョンのテーブルに、現在4つのデータファイルが含まれていることがわかります。 では、なんでこれら他のParquetファイルがテーブルディレクトリに入っているのでしょうか？
 -- MAGIC 
 -- MAGIC Delta Lakeは、変更データを含むファイルを上書きしたり、すぐに削除したりするのではなく、トランザクションログを使って、現バージョンのテーブルでファイルが有効であるかどうかを示します。
 -- MAGIC 
@@ -188,17 +188,15 @@ DESCRIBE DETAIL students
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="85e8bce8-c168-4ac6-9835-f694cab5b43c"/>
 -- MAGIC 
--- MAGIC 
--- MAGIC  **`add`** 列には、テーブルに書き込まれる新しいすべてのファイルのリストが含まれています。 **`remove`** 列は、もうテーブルに含めるべきでないファイルを示しています。
+-- MAGIC **`add`** 列には、テーブルに書き込まれる新しいすべてのファイルのリストが含まれています。 **`remove`** 列は、もうテーブルに含めるべきでないファイルを示しています。
 -- MAGIC 
 -- MAGIC Delta Lakeテーブルを照会する場合、クエリエンジンはトランザクションログを使って、現バージョンで有効なファイルをすべて特定し、他のデータファイルはすべて無視します。
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="c69bbf45-e75e-419f-a149-fd18f76daab6"/>
 -- MAGIC 
 -- MAGIC ## 小さなファイルの圧縮とインデックスの作成（Compacting Small Files and Indexing）
 -- MAGIC 
@@ -217,15 +215,13 @@ ZORDER BY id
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="15475907-e307-491c-9bab-4d8afc363ec5"/>
 -- MAGIC 
 -- MAGIC ここで扱うデータは非常に小さいので、 **`ZORDER`** のメリットは何もありませんが、この操作によって生じるメトリックスをすべて確認できます。
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="5684dfb4-0b33-49f1-a4f8-cb2f8d88bf09"/>
 -- MAGIC 
 -- MAGIC ## Delta Lakeトランザクションの確認（Reviewing Delta Lake Transactions）
 -- MAGIC 
@@ -237,8 +233,7 @@ DESCRIBE HISTORY students
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="56de8919-b5d0-4d1f-81d8-ccf22fdf6da0"/>
 -- MAGIC 
 -- MAGIC 期待通り、 **`OPTIMIZE`** はテーブルの別バージョンを作成したので、バージョン8が最新のバージョンになります。
 -- MAGIC 
@@ -255,15 +250,13 @@ FROM students VERSION AS OF 3
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="0499f01b-7700-4381-80cc-9b4fb093017a"/>
 -- MAGIC 
 -- MAGIC タイムトラベルについて注意すべきなのは、現バージョンに対するトランザクションを取り消すことにより、以前の状態のテーブルを再作成しているわけではなく、指定されたバージョンの時点で有効と示されたすべてのデータファイルを照会しているだけだということです。
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="f569a57f-24cc-403a-88ab-709b4f1a7548"/>
 -- MAGIC 
 -- MAGIC ## バージョンのロールバック（Rollback Versions）
 -- MAGIC 
@@ -275,8 +268,7 @@ DELETE FROM students
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="b7d46e40-1c41-4e8a-8f25-25325da065cb"/>
 -- MAGIC 
 -- MAGIC 削除の影響を受けた列の数に **`-1`** が表示されている場合、データのディレクトリ全体が削除されたことに注意してください。
 -- MAGIC 
@@ -288,26 +280,23 @@ SELECT * FROM students
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="0477fb25-7248-4552-98a1-ffee4cd7b5b0"/>
 -- MAGIC 
 -- MAGIC テーブルのすべてのレコードを削除することは、たぶん望んだ結果ではありません。 幸い、このコミットを簡単にロールバックすることができます。
 
 -- COMMAND ----------
 
-RESTORE TABLE students TO VERSION AS OF 8 
+RESTORE TABLE students TO VERSION AS OF 8
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="4fbc3b91-8b73-4644-95cb-f9ca2f1ac6a3"/>
 -- MAGIC 
--- MAGIC 
--- MAGIC  **`RESTORE`** <a href="https://docs.databricks.com/spark/latest/spark-sql/language-manual/delta-restore.html" target="_blank">コマンド</a>がトランザクションとして記録されていることに注意してください。うっかり、テーブルのレコードをすべて削除してしまったという事実は完全には隠せませんが、この操作を取り消し、テーブルを望ましい状態に戻すことはできます。
+-- MAGIC **`RESTORE`** <a href="https://docs.databricks.com/spark/latest/spark-sql/language-manual/delta-restore.html" target="_blank">コマンド</a>がトランザクションとして記録されていることに注意してください。うっかり、テーブルのレコードをすべて削除してしまったという事実は完全には隠せませんが、この操作を取り消し、テーブルを望ましい状態に戻すことはできます。
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="789ca5cf-5eb1-4a81-a595-624994a512f1"/>
 -- MAGIC 
 -- MAGIC ## 古いファイルのクリーンアップ（Cleaning Up Stale Files）
 -- MAGIC 
@@ -325,8 +314,7 @@ RESTORE TABLE students TO VERSION AS OF 8
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="6a3b0b37-1387-4b41-86bf-3f181ddc1562"/>
 -- MAGIC 
 -- MAGIC デフォルトでは、 **`VACUUM`** は7日間未満のファイルを削除できないようにします。これは、長時間実行される操作が削除対象ファイルを参照しないようにするためです。 Deltaテーブルに対して **`VACUUM`** を実行すると、指定したデータ保持期間以前のバージョンにタイムトラベルで戻れなくなります。  デモでは、Databricksが **`0 HOURS`** の保持を指定したコードを実行するのが表示されるかもしれません。 これはあくまで、この機能を示すためであり、通常、本番環境ではこのようなことはしません。
 -- MAGIC 
@@ -344,10 +332,9 @@ VACUUM students RETAIN 0 HOURS DRY RUN
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="be50e096-ba08-43be-8056-d56ad5ae7914"/>
 -- MAGIC 
--- MAGIC 
--- MAGIC  **`VACUUM`** を実行して上の9つのファイルを削除することで、これらのファイルの具現化を必要とするバージョンのテーブルへのアクセスを永久に削除します。
+-- MAGIC **`VACUUM`** を実行して上の10個のファイルを削除することで、これらのファイルの具現化を必要とするバージョンのテーブルへのアクセスを永久に削除します。
 
 -- COMMAND ----------
 
@@ -355,8 +342,7 @@ VACUUM students RETAIN 0 HOURS
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="a847e55a-0ecf-4b10-85ab-5aa8566ff4e1"/>
 -- MAGIC 
 -- MAGIC テーブルディレクトリを確認して、ファイルが正常に削除されたことを示します。
 
@@ -367,8 +353,7 @@ VACUUM students RETAIN 0 HOURS
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="b854a50f-635b-4cdc-8f18-38c5ab595648"/>
 -- MAGIC 
 -- MAGIC 次のセルを実行して、このレッスンに関連するテーブルとファイルを削除してください。
 

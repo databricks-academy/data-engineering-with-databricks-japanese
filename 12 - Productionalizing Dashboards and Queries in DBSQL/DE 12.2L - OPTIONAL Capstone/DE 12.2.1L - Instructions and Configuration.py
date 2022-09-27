@@ -7,9 +7,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="01f3c782-1973-4a69-812a-7f9721099941"/>
 # MAGIC 
 # MAGIC ## レイクハウスでのエンドツーエンドETL（End-to-End ETL in the Lakehouse）
 # MAGIC 
@@ -29,8 +27,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="f9cf3bbc-aa6a-45c2-9d26-a3785e350e1f"/>
 # MAGIC 
 # MAGIC ## セットアップを実行する（Run Setup）
 # MAGIC 次のセルを実行して、このラボに関連しているすべてのデータベースとディレクトリをリセットします。
@@ -41,8 +38,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="3fe92b6e-3e10-4771-8eef-8f4b060dd48f"/>
 # MAGIC 
 # MAGIC ## 初期データの配置（Land Initial Data）
 # MAGIC 先に進む前に、データを用いてランディングゾーンをシードします。
@@ -53,37 +49,35 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="806818f8-e931-45ba-b86f-d65cdf76f215"/>
 # MAGIC 
 # MAGIC ## DLTパイプラインを作成し構成する（Create and Configure a DLT Pipeline）
 # MAGIC **注**：ここでの手順とDLTを使用した以前のラボでの手順の主な違いは、この場合、**プロダクション**モードで**連続**に実行するためにパイプラインを設定することです。
 
 # COMMAND ----------
 
-print_pipeline_config()
+DA.print_pipeline_config()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="e1663032-caa8-4b99-af1a-3ab27deaf130"/>
 # MAGIC 
 # MAGIC 手順は、次の通りです。
-# MAGIC 1. サイドバーの**ジョブ**ボタンをクリックします
+# MAGIC 1. サイドバーの**ワークフロー**をクリックします
 # MAGIC 1. **Delta Live Tables**タブを選択します。
 # MAGIC 1. **パイプラインを作成**をクリックします。
-# MAGIC 1. **パイプライン名**を入力します。これらの名前は一意である必要があるため、上記のセルに記載されている**Pipeline Name**使用することをおすすめします。
-# MAGIC 1. **ノートブックライブラリ**では、ナビゲーターを使って**DE 12.2.2L - DLTタスク**という付録のノートブックを探して選択します。
-# MAGIC     * または、上記のセルに記載されている**Notebook Path**をコピーして、用意されているフィールドに貼り付けることもできます。
-# MAGIC 1. ソースの構成
-# MAGIC     *  **`構成を追加`** をクリックします
-# MAGIC     * **Key**フィールドに **`source`** という単語を入力します
-# MAGIC     * 上で指定されている**Source**値を **`Value`** フィールドに入力します
-# MAGIC 1. **ターゲット**フィールドに、上記のセルで**Target**の隣に表示されているデータベースの名前を指定します。<br/> データベースの名前は **`dbacademy_<username>_dewd_cap_12`** というパターンに従っているはずです。
+# MAGIC 1. **パイプライン名**を入力します。名前は一意である必要があるため、上記のセルに記載されている**Pipeline Name**使用することをおすすめします。
+# MAGIC 1. **ノートブックライブラリ**では、上記のセルに記載されているノートブックを探して選択します。
+# MAGIC 1. **構成**の下に, 3つの構成パラメータを追加します：
+# MAGIC    * **構成を追加**をクリックし, "key"を**spark.master**、 "value"を **local[\*]** にします。
+# MAGIC    * **構成を追加**をクリックし, "key"を**datasets_path**、 "value"を上記セルに記載されている値にします。
+# MAGIC    * **構成を追加**をクリックし, "key"を**source**、 "value"を上記セルに記載されている値にします。
+# MAGIC 1. **ターゲット**フィールドに、上記のセルで記載されているデータベースの名前を指定します。<br/> データベースの名前は **`da_<name>_<hash>_dewd_cap_12`** というパターンに従っているはずです。
 # MAGIC 1. **ストレージの場所**フィールドに、上記で出力されている通りディレクトリをコピーします
 # MAGIC 1. **Pipeline Mode**では、**連続**を選択します。
-# MAGIC 1. **オートパイロットオプション**ボックスのチェックを外します
-# MAGIC 1. ワーカーの数を **`1`** （1つ）に設定します。
+# MAGIC 1. **オートスケーリングを有効化**ボックスのチェックを外します。(**オートスケーリングを有効化**がUIになければ、**Cluster mode**から**Fixed size**を選択します)
+# MAGIC 1. ワーカーの数を **`0`** （０個）に設定します。
+# MAGIC 1. **Photonアクセラレータを使用**をチェックします。
 # MAGIC 1. **作成**をクリックします
 # MAGIC 1. UIが更新されたら、**開発**モードから**プロダクション**モードに変更します
 # MAGIC 
@@ -91,8 +85,11 @@ print_pipeline_config()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+DA.validate_pipeline_config()
+
+# COMMAND ----------
+
+# MAGIC %md <i18n value="6c8bd13c-938a-4283-b15a-bc1a598fb070"/>
 # MAGIC 
 # MAGIC ## ノートブックジョブをスケジュールする（Schedule a Notebook Job）
 # MAGIC 
@@ -104,45 +101,47 @@ print_pipeline_config()
 
 # COMMAND ----------
 
-print_job_config()
+DA.print_job_config()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="df989e07-97d4-4a34-9729-fad02399a908"/>
 # MAGIC 
 # MAGIC 手順は、次の通りです。
-# MAGIC 1. Databricksの左側のナビゲーションバーを使って、Jobs UIに移動します。
+# MAGIC 1. Databricksの左側のナビゲーションバーを使って、ワークフローに移動します。
+# MAGIC 1. **ジョブ**を選択します。
 # MAGIC 1. 青色の**ジョブ作成**ボタンをクリックします
-# MAGIC 1. タスクを構成します：
+# MAGIC 1. タスクを設定します：
 # MAGIC     1. タスク名として**Land-Data**と入力します
-# MAGIC     1. ノートブックピッカーを使って**DE 12.2.3L - 新しいデータの配置**のノートブックを選択します
-# MAGIC     1. **Cluster**のドロップダウンから**既存の多目的クラスター**の下にあるクラスタを選択します
+# MAGIC     1. **種類**から**ノートブック**を選択します。
+# MAGIC     1. **Path**に上記セルに記載されている**Notebook Path**を選択します
+# MAGIC     1. **クラスター**のドロップダウンから**既存の多目的クラスター**の下にあるクラスタを選択します
 # MAGIC     1. **作成**をクリックします
-# MAGIC 1. 画面の左上でジョブ（タスクではなく）を **`Land-Data`** （デフォルトの値）から前のセルに記載されている**ジョブの名前**に変更します。
+# MAGIC 1. 画面の左上でジョブ（タスクではなく）を **`Land-Data`** （デフォルトの値）から前のセルに記載されている**Job Name**に変更します。
 # MAGIC 
-# MAGIC <img src="https://files.training.databricks.com/images/icon_note_24.png" /> **注**：汎用クラスタを選択する際、汎用コンピュートとして請求されるという警告が表示されます。 本番環境のジョブは常に、ワークロードにサイズを合わせた新しいジョブクラスタに対してスケジュールしたほうが良いです。こうしたほうが、費用を抑えられます。
+# MAGIC <img src="https://files.training.databricks.com/images/icon_note_24.png" /> **注**：汎用クラスタを選択する際、All-purposeコンピュートとして請求される警告が表示されます。 本番環境のジョブは常に、ワークロードにサイズを合わせた新しいジョブクラスタに対してスケジュールしたほうが良いです。こうしたほうが、費用を抑えられます。
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="3994f3ee-e335-48c7-8770-64e1ef0dfab7"/>
 # MAGIC 
 # MAGIC ## ジョブの時系列のスケジュールを設定する（Set a Chronological Schedule for your Job）
+# MAGIC 
 # MAGIC 手順は、次の通りです。
-# MAGIC 1. **Jobs UI**に移動し、先ほど作成したジョブをクリックします。
-# MAGIC 1. 右側のサイドパネルで**スケジュール**セクションを見つけます。
-# MAGIC 1. **スケジュールを編集**ボタンをクリックして、スケジュールオプションを確認します。
-# MAGIC 1. **スケジュールのタイプ**フィールドを**手動**から**スケジュール済み**に変更すると、cronスケジューリングUIが表示されます。
-# MAGIC 1. スケジュールの更新間隔を**00**から**毎2分**に設定します
+# MAGIC 1. **スケジュール**をクリックします。
+# MAGIC 1. **スケジュールのタイプ**を **手動（一時停止）** から **スケジュール済み** に変更すると、cronスケジューリングUIが表示されます。
+# MAGIC 1. スケジュールの更新間隔を**毎2** **分**に設定します
 # MAGIC 1. **保存**をクリックします
 # MAGIC 
 # MAGIC **注**：必要に応じて、**今すぐ実行**をクリックして最初の実行をトリガーするか、次の1分が経過するまで待って、スケジュールが正常に機能することを確認します。
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+DA.validate_job_config()
+
+# COMMAND ----------
+
+# MAGIC %md <i18n value="30df4ffa-22b9-4e2c-b8d8-54aa09a8d4ed"/>
 # MAGIC 
 # MAGIC ## DBSQLを使用して照会するためのDLTイベントメトリックを登録する（Register DLT Event Metrics for Querying with DBSQL）
 # MAGIC 
@@ -158,8 +157,7 @@ DA.generate_register_dlt_event_metrics_sql()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="e035ddc7-4af9-4e9c-81f8-530e8db7c504"/>
 # MAGIC 
 # MAGIC ## ゴールドテーブルでクエリを定義する（Define a Query on the Gold Table）
 # MAGIC 
@@ -173,8 +171,7 @@ DA.generate_daily_patient_avg()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="679db36c-b257-4248-b2fe-56b85099d0b9"/>
 # MAGIC 
 # MAGIC ## 折れ線グラフのビジュアライゼーションを追加する（Add a Line Plot Visualization）
 # MAGIC 
@@ -189,8 +186,7 @@ DA.generate_daily_patient_avg()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="7351e179-68f8-4091-a6ee-647974f010ce"/>
 # MAGIC 
 # MAGIC ## データ処理の進捗状況を追跡する（Track Data Processing Progress）
 # MAGIC 
@@ -209,8 +205,7 @@ DA.generate_visualization_query()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="5f94b102-d42e-40f1-8253-c14cbf86d717"/>
 # MAGIC 
 # MAGIC ## ダッシュボードを更新して結果を追跡する（Refresh your Dashboard and Track Results）
 # MAGIC 
@@ -220,9 +215,7 @@ DA.generate_visualization_query()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="b61bf387-2c1b-4ae6-8968-c4189beb477f"/>
 # MAGIC 
 # MAGIC すべてを設定したら、ノートブックでラボの最後の部分 \[DE 12.2.4L - 最終ステップ\]($./DE 12.2.4L - 最終ステップ）に進むことができます
 

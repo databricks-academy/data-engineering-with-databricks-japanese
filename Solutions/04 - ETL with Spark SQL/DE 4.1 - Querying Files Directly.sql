@@ -7,8 +7,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="ba5cb184-9677-4b79-b000-f42c5fff9044"/>
 -- MAGIC 
 -- MAGIC # データをファイルから直接抽出する方法（Extracting Data Directly from Files）
 -- MAGIC 
@@ -23,8 +22,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="e9800a3a-c96c-4ce2-a835-b5f058e26ead"/>
 -- MAGIC 
 -- MAGIC ## セットアップを実行する（Run Setup）
 -- MAGIC 
@@ -32,12 +30,11 @@
 
 -- COMMAND ----------
 
--- MAGIC %run ../Includes/Classroom-Setup-4.1
+-- MAGIC %run ../Includes/Classroom-Setup-04.1
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="fedca70d-2bf7-415b-8ab9-1691c2366b24"/>
 -- MAGIC 
 -- MAGIC ## データの概要（Data Overview）
 -- MAGIC 
@@ -56,24 +53,21 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="00f263ec-293b-4adf-bf4b-b81f04de6e31"/>
 -- MAGIC 
 -- MAGIC ソースディレクトリにたくさんのJSONファイルが含まれていることにご注意ください。
 
 -- COMMAND ----------
 
 -- MAGIC %python
--- MAGIC dataset_path = f"{DA.paths.datasets}/raw/events-kafka"
--- MAGIC print(dataset_path)
+-- MAGIC print(DA.paths.kafka_events)
 -- MAGIC 
--- MAGIC files = dbutils.fs.ls(dataset_path)
+-- MAGIC files = dbutils.fs.ls(DA.paths.kafka_events)
 -- MAGIC display(files)
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="f4cbde61-2f10-4758-82ca-786e16606d60"/>
 -- MAGIC 
 -- MAGIC ここでは、DBFSルートに書き込まれたデータへの相対ファイルパスを使用します。
 -- MAGIC 
@@ -85,8 +79,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="8e04a0d2-4d79-4547-b2b2-765eefaf6285"/>
 -- MAGIC 
 -- MAGIC ## 単一のファイルを照会する（Query a Single File）
 -- MAGIC 
@@ -98,19 +91,17 @@
 
 -- COMMAND ----------
 
-SELECT * FROM json.`${da.paths.datasets}/raw/events-kafka/001.json`
+SELECT * FROM json.`${DA.paths.kafka_events}/001.json`
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="02c296c6-80be-4bd8-99cc-29f2e44e1d2d"/>
 -- MAGIC 
 -- MAGIC こちらのプレビューには、ソースファイルの321行すべてが表示されています。
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="01cd5a22-a236-4ef6-bf65-7c40379d7ef9"/>
 -- MAGIC 
 -- MAGIC ## ファイルのディレクトリを照会する（Query a Directory of Files）
 -- MAGIC 
@@ -118,19 +109,17 @@ SELECT * FROM json.`${da.paths.datasets}/raw/events-kafka/001.json`
 
 -- COMMAND ----------
 
-SELECT * FROM json.`${da.paths.datasets}/raw/events-kafka`
+SELECT * FROM json.`${DA.paths.kafka_events}`
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="f36c3a77-4b84-41a0-95ae-a8f999a0f60e"/>
 -- MAGIC 
 -- MAGIC デフォルトでは、このクエリは、最初の1000行のみを表示します。
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="46590bb8-cf4b-4c3d-a9c6-e431bad4a5e9"/>
 -- MAGIC 
 -- MAGIC ## ファイルへの参照の作成（Create References to Files）
 -- MAGIC ファイルとディレクトリを直接クエリできるのは、ファイルに対するクエリに追加のSparkロジックを連結できるということです。
@@ -140,14 +129,13 @@ SELECT * FROM json.`${da.paths.datasets}/raw/events-kafka`
 -- COMMAND ----------
 
 CREATE OR REPLACE TEMP VIEW events_temp_view
-AS SELECT * FROM json.`${da.paths.datasets}/raw/events-kafka/`;
+AS SELECT * FROM json.`${DA.paths.kafka_events}`;
 
 SELECT * FROM events_temp_view
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="0a627f4b-ec2c-4002-bf9b-07a788956f03"/>
 -- MAGIC 
 -- MAGIC ## テキストファイルを未加工の文字列として抽出する（Extract Text Files as Raw Strings）
 -- MAGIC 
@@ -155,12 +143,11 @@ SELECT * FROM events_temp_view
 
 -- COMMAND ----------
 
-SELECT * FROM text.`${da.paths.datasets}/raw/events-kafka/`
+SELECT * FROM text.`${DA.paths.kafka_events}`
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="ffae0f7a-b956-431d-b1cb-6d2be33b4f6c"/>
 -- MAGIC 
 -- MAGIC ## ファイルの未加工のバイトとメタデータを抽出する（Extract the Raw Bytes and Metadata of a File）
 -- MAGIC 
@@ -170,12 +157,11 @@ SELECT * FROM text.`${da.paths.datasets}/raw/events-kafka/`
 
 -- COMMAND ----------
 
-SELECT * FROM binaryFile.`${da.paths.datasets}/raw/events-kafka/`
+SELECT * FROM binaryFile.`${DA.paths.kafka_events}`
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="fa8fcc72-31c0-4825-ae6f-bf194d715f14"/>
 -- MAGIC 
 -- MAGIC 次のセルを実行して、このレッスンに関連するテーブルとファイルを削除してください。
 

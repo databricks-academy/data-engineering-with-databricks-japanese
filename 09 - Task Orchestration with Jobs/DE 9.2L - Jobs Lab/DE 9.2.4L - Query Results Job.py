@@ -1,10 +1,9 @@
 # Databricks notebook source
-# MAGIC %run ../../Includes/Classroom-Setup-9.2.4L
+# MAGIC %run ../../Includes/Classroom-Setup-09.2.4L
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="1372d675-796a-4bbb-9d83-356d3b1b297e"/>
 # MAGIC 
 # MAGIC # DLTパイプラインの結果を調べる（Exploring the Results of a DLT Pipeline）
 # MAGIC 
@@ -17,8 +16,7 @@ display(files)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="9a19b4f8-479b-4dfb-80a8-05e08cfd9eb0"/>
 # MAGIC 
 # MAGIC **system**ディレクトリは、パイプラインに関連付けられたイベントをキャプチャします。
 
@@ -29,8 +27,7 @@ display(files)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="da333edd-ee6d-4892-9da0-29f38d96e14f"/>
 # MAGIC 
 # MAGIC これらのイベントログはDeltaテーブルとして保存されます。
 # MAGIC 
@@ -43,8 +40,7 @@ display(files)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="303e482b-e3cd-48eb-b9be-5357e07803aa"/>
 # MAGIC 
 # MAGIC *テーブル*ディレクトリの内容を見ていきましょう。
 
@@ -55,8 +51,7 @@ display(files)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="6c5ffd14-74db-4ec2-8764-526da08840ab"/>
 # MAGIC 
 # MAGIC ゴールドテーブルを照会しましょう。
 
@@ -68,4 +63,3 @@ display(files)
 # COMMAND ----------
 
 DA.cleanup()
-

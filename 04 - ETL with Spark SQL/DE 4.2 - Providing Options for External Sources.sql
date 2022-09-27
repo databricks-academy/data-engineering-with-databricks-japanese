@@ -7,8 +7,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="469222b4-7728-4980-a105-a850e5234a3c"/>
 -- MAGIC 
 -- MAGIC # 外部ソース用にオプションを指定する（Providing Options for External Sources）
 -- MAGIC ファイルを直接照会することは自己記述的な形式には適していますが、多くのデータソースでは適切にレコードを取り込むためには追加の設定もしくはスキーマの宣言が必要となります。
@@ -23,8 +22,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="b0456896-d5ed-416c-bfab-7d4f54a24288"/>
 -- MAGIC 
 -- MAGIC ## セットアップを実行する（Run Setup）
 -- MAGIC 
@@ -32,12 +30,11 @@
 
 -- COMMAND ----------
 
--- MAGIC %run ../Includes/Classroom-Setup-4.2
+-- MAGIC %run ../Includes/Classroom-Setup-04.2
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="7ba475f1-5a89-46ee-b400-b8846699d5b5"/>
 -- MAGIC 
 -- MAGIC ## 直接的なクエリを使用できない場合 （When Direct Queries Don't Work）
 -- MAGIC 
@@ -47,12 +44,11 @@
 
 -- COMMAND ----------
 
-SELECT * FROM csv.`${da.paths.working_dir}/sales-csv`
+SELECT * FROM csv.`${DA.paths.sales_csv}`
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="7ae3fe20-46e7-42be-95d6-4f933b758ef7"/>
 -- MAGIC 
 -- MAGIC 上記から次のことが分かります：
 -- MAGIC 1. ヘッダの列がテーブルの列として抽出されています
@@ -62,8 +58,7 @@ SELECT * FROM csv.`${da.paths.working_dir}/sales-csv`
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="f371955b-5e96-41d3-b413-ed5bb51820fc"/>
 -- MAGIC 
 -- MAGIC ## 読み取りオプションを使用して外部データに対してテーブルを登録する（Registering Tables on External Data with Read Options）
 -- MAGIC 
@@ -84,8 +79,7 @@ SELECT * FROM csv.`${da.paths.working_dir}/sales-csv`
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="ea38261e-12c1-4bba-9670-9c4144c19494"/>
 -- MAGIC 
 -- MAGIC 以下のセルでは、Spark SQL DDLを使用して、外部のCSVソースに対して次の情報を指定したテーブルを作成する方法を示します：
 -- MAGIC 1. 列の名前と型
@@ -103,14 +97,15 @@ OPTIONS (
   header = "true",
   delimiter = "|"
 )
-LOCATION "${da.paths.working_dir}/sales-csv"
+LOCATION "${DA.paths.sales_csv}"
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="a9b747d0-1811-4bbe-b6d6-c89671289286"/>
 -- MAGIC 
+-- MAGIC テーブルの宣言時にはデータが移動していないことにご注意ください。 
 -- MAGIC 
--- MAGIC テーブルの宣言時にはデータが移動していないことにご注意ください。 ファイルを直接クエリしてビューを作成したときと同様に、あくまで外部の場所に保存されているファイルを指しているだけです。
+-- MAGIC ファイルを直接クエリしてビューを作成したときと同様に、あくまで外部の場所に保存されているファイルを指しているだけです。
 -- MAGIC 
 -- MAGIC 次のセルを実行してデータが正しく読み込まれていることを確認しましょう。
 
@@ -124,8 +119,7 @@ SELECT COUNT(*) FROM sales_csv
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="d0ad4268-b339-40cc-88be-1b07e9759d5e"/>
 -- MAGIC 
 -- MAGIC テーブルの宣言時に渡されたメタデータとオプションはすべてメタストアに保持され、この場所のデータが常にこのオプションを使用して読み取られるようにします。
 -- MAGIC 
@@ -139,8 +133,7 @@ DESCRIBE EXTENDED sales_csv
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="39ee6311-f095-4f86-8fe5-c5be569b6a10"/>
 -- MAGIC 
 -- MAGIC ## 外部のデータソースを使用したテーブルの制限（Limits of Tables with External Data Sources）
 -- MAGIC 
@@ -153,15 +146,17 @@ DESCRIBE EXTENDED sales_csv
 -- COMMAND ----------
 
 -- MAGIC %python
--- MAGIC (spark.table("sales_csv")
+-- MAGIC (spark.read
+-- MAGIC       .option("header", "true")
+-- MAGIC       .option("delimiter", "|")
+-- MAGIC       .csv(DA.paths.sales_csv)
 -- MAGIC       .write.mode("append")
 -- MAGIC       .format("csv")
--- MAGIC       .save(f"{DA.paths.working_dir}/sales-csv"))
+-- MAGIC       .save(DA.paths.sales_csv))
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="cad47cd2-c64d-4658-9b95-400ea7303f7f"/>
 -- MAGIC 
 -- MAGIC テーブルにある現在のレコード数を見ても、表示される数字にはこれらの新しく挿入された列は反映されません。
 
@@ -171,8 +166,7 @@ SELECT COUNT(*) FROM sales_csv
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="e9bb05a1-81db-4360-a131-bd14453af87e"/>
 -- MAGIC 
 -- MAGIC 以前、このデータソースを照会したとき、Sparkはその元になっているデータを自動的にローカルストレージのキャッシュに格納しました。 これにより、その後のクエリでSparkは、このローカルのキャッシュを照会するだけで最適なパフォーマンスを実現できます。
 -- MAGIC 
@@ -186,8 +180,7 @@ REFRESH TABLE sales_csv
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="b7005568-3b03-4c4a-9ed0-122f14de6f7b"/>
 -- MAGIC 
 -- MAGIC テーブルを更新するとキャッシュが無効になるため、元のデータソースを再スキャンしてすべてのデータをまたメモリに取り込む必要が出てくることにご注意ください。
 -- MAGIC 
@@ -199,8 +192,7 @@ SELECT COUNT(*) FROM sales_csv
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="524835ab-53b7-435e-8c3a-9abcc81bab2e"/>
 -- MAGIC 
 -- MAGIC ## SQLデータベースからデータを抽出（Extracting Data from SQL Databases）
 -- MAGIC SQLデータベースは、非常に一般的なデータソースであり、Databricksにはさまざまな種類のSQLに接続するための標準JDBCドライバが備わっています。
@@ -231,14 +223,13 @@ DROP TABLE IF EXISTS users_jdbc;
 CREATE TABLE users_jdbc
 USING JDBC
 OPTIONS (
-  url = "jdbc:sqlite:/${da.username}_ecommerce.db",
+  url = "jdbc:sqlite:${DA.paths.ecommerce_db}",
   dbtable = "users"
 )
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="1f4c4ac6-dd8f-4198-a552-e2a65ce140d0"/>
 -- MAGIC 
 -- MAGIC これで、ローカルで定義されているかのようにこのテーブルを照会できます。
 
@@ -248,9 +239,11 @@ SELECT * FROM users_jdbc
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="4d1ac331-1a39-4cca-b834-e4f848dd3e64"/>
 -- MAGIC 
--- MAGIC 
+-- MAGIC Looking at the table metadata reveals that we have captured the schema information from the external system.
+-- MAGIC Storage properties (which would include the username and password associated with the connection) are automatically redacted.
+-- MAGIC   
 -- MAGIC テーブルのメタデータを確認すると、外部システムからスキーマの情報を取り込んだことが分かります。 （この接続に関連づけられているユーザー名とパスワードが含まれる）ストレージのプロパティは自動的に編集されます。
 
 -- COMMAND ----------
@@ -259,24 +252,24 @@ DESCRIBE EXTENDED users_jdbc
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="2b8ce5b8-d76a-4be9-a2d3-9284ab701db7"/>
 -- MAGIC 
 -- MAGIC テーブルは **`MANAGED`** として表示されますが、指定された場所の中身を表示するとローカルに保持されているデータがないことが分かります。
 
 -- COMMAND ----------
 
 -- MAGIC %python
--- MAGIC jdbc_users_path = f"{DA.paths.user_db}/users_jdbc/"
--- MAGIC print(jdbc_users_path)
+-- MAGIC import pyspark.sql.functions as F
 -- MAGIC 
--- MAGIC files = dbutils.fs.ls(jdbc_users_path)
+-- MAGIC location = spark.sql("DESCRIBE EXTENDED users_jdbc").filter(F.col("col_name") == "Location").first()["data_type"]
+-- MAGIC print(location)
+-- MAGIC 
+-- MAGIC files = dbutils.fs.ls(location)
 -- MAGIC print(f"Found {len(files)} files")
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="2a090fa9-b419-43cb-8249-0b0bc8f92918"/>
 -- MAGIC 
 -- MAGIC データウェアハウスなど、一部のSQLシステムにはカスタムのドライバがあることにご注意ください。 Sparkがさまざまな外部のデータソースと相互作用する方法は異なりますが、2つの基本的な方法は次の通り要約できます：
 -- MAGIC 1. ソーステーブルを丸ごとDatabricksに移動させて、現在アクティブなクラスタでロジックを実行する
@@ -288,8 +281,7 @@ DESCRIBE EXTENDED users_jdbc
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="7084cc69-4fea-45b7-9ab3-27ad8cd3e84c"/>
 -- MAGIC 
 -- MAGIC 次のセルを実行して、このレッスンに関連するテーブルとファイルを削除してください。
 

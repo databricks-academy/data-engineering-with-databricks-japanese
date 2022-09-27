@@ -7,8 +7,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="358d2c22-9d78-4888-a7ec-54b7d5f3db64"/>
 # MAGIC 
 # MAGIC # Databricks SQLに最低限必要なPythonのラボ（Just Enough Python for Databricks SQL Lab）
 # MAGIC 
@@ -20,12 +19,11 @@
 
 # COMMAND ----------
 
-# MAGIC %run ../Includes/Classroom-Setup-5.3L
+# MAGIC %run ../Includes/Classroom-Setup-05.3L
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="97cba873-1459-478f-831b-b52fc54265eb"/>
 # MAGIC 
 # MAGIC # Python基本の復習（Reviewing Python Basics）
 # MAGIC 
@@ -53,8 +51,7 @@ display(df)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="bc8fda28-92ad-4cd5-aa24-34022269698a"/>
 # MAGIC 
 # MAGIC 1. **コマンド5**は変数に文字列を割り当てます。 変数の割り当てが成功すると、ノートブックに出力は表示されません。 新しい変数が現在の実行環境に追加されます。
 # MAGIC 1. **コマンド6**はSQLクエリを実行し、DataFrameのスキーマを **`DataFrame`** という単語と一緒に表示します。 この場合、SQLクエリは文字列を選択するためだけのものなので、環境に変更はありません。
@@ -62,8 +59,7 @@ display(df)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="ef0b350e-c470-4e89-9617-948e49dd1710"/>
 # MAGIC 
 # MAGIC ## 開発環境のセットアップ（Setting Up a Development Environment）
 # MAGIC 
@@ -90,8 +86,7 @@ print(f"working_dir: {working_dir}")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="1273f7a3-823a-4b1f-914a-ce6eaaa867b3"/>
 # MAGIC 
 # MAGIC 以下では、このロジックに単純な制御流れ文を追加して、このユーザー固有のデータベースを作成および使用します。
 # MAGIC 
@@ -122,15 +117,13 @@ create_database(course)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="cfa0adf3-cc23-4ba1-8daf-2c70af7fa079"/>
 # MAGIC 
 # MAGIC 定義されているこのロジックは、教育目的で共有ワークスペース内の学生を分離することを目的としていますが、同じ基本設計を利用して、本番環境にプッシュする前に分離された環境で新しいロジックをテストできます。
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="1c994e19-2b72-45c3-a174-8a7e21701688"/>
 # MAGIC 
 # MAGIC ## エラーの適切な処理（Handling Errors Gracefully）
 # MAGIC 
@@ -161,8 +154,7 @@ def query_or_make_demo_table(table_name):
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="5a449d08-9811-4b0d-9004-74b8bb04eef5"/>
 # MAGIC 
 # MAGIC 次のセルを実行する前に、次のことを確認してください：
 # MAGIC 1. セル実行の期待される出力
@@ -175,8 +167,7 @@ query_or_make_demo_table("demo_table")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="8ddb2ea1-9e4e-4ac7-a369-ff984114653f"/>
 # MAGIC 
 # MAGIC 次に、以下の同じクエリを実行する前に、同じ3つの質問に答えてください。
 
@@ -186,8 +177,7 @@ query_or_make_demo_table("demo_table")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="6efbda51-9c51-440a-aaaf-7276ad175398"/>
 # MAGIC 
 # MAGIC - 最初の実行では、テーブル **`demo_table`**  はまだ存在していませんでした。 そのため、テーブルの内容を返そうとするとエラーが発生し、その結果、 **`except`** ブロックのロジックが実行されました。 このブロックは：
 # MAGIC   1. テーブルを作成した
@@ -197,8 +187,7 @@ query_or_make_demo_table("demo_table")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="a0f957ea-7604-46b9-9b06-d672b73efcec"/>
 # MAGIC 
 # MAGIC ## SQLをPythonに適応させる（Adapting SQL to Python）
 # MAGIC 上で作成したデモテーブルに対する次のSQLクエリについて考えてみましょう。
@@ -212,9 +201,7 @@ query_or_make_demo_table("demo_table")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="c4abcb35-3733-4565-8f8c-0df4b23f1e71"/>
 # MAGIC 
 # MAGIC これは、PySparkAPIと **`display`**  関数を使用して次のように表現することもできます。
 
@@ -225,8 +212,7 @@ display(results)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="6a4e7e96-c53a-4b8e-abf5-412fe4170c27"/>
 # MAGIC 
 # MAGIC この簡単な例を使用して、任意の機能を追加するPython関数の作成を練習してみましょう。
 # MAGIC 
@@ -263,8 +249,7 @@ def preview_values(state=None, render_results=False):
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="060207a1-a34c-4817-abee-f6e0b9c3b48a"/>
 # MAGIC 
 # MAGIC 以下のassert文を使用して、関数が意図したとおりに機能するかどうかを確認できます。
 

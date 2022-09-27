@@ -7,9 +7,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="5f2cfc0b-1998-4182-966d-8efed6020eb2"/>
 # MAGIC 
 # MAGIC # Databricksプラットフォーム入門（Getting Started with the Databricks Platform）
 # MAGIC 
@@ -25,9 +23,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="05dca5e4-6c50-4b39-a497-a35cd6d99434"/>
 # MAGIC 
 # MAGIC # ノートブックの名称変更（Renaming a Notebook）
 # MAGIC 
@@ -35,9 +31,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="f07b8dd7-436d-4719-9c17-18cd47f493fe"/>
 # MAGIC 
 # MAGIC # クラスタのアタッチ（Attaching a cluster）
 # MAGIC 
@@ -49,9 +43,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="68805a5e-3b2c-4f79-819f-273d4ca95137"/>
 # MAGIC 
 # MAGIC # %runを使う（Using %run）
 # MAGIC 
@@ -67,7 +59,7 @@
 # MAGIC   1.   **`name = "John"`**  
 # MAGIC   2.   **`print(f"Hello {name}")`**   
 # MAGIC   3.   **`%run ./Notebook_B`**  
-# MAGIC   4.   **`print(f"Welcome back {full_name}`**  
+# MAGIC   4.   **`print(f"Welcome back {full_name}")`**
 # MAGIC 
 # MAGIC  **`Notebook_B`**  にはコマンドが1つしかありません：
 # MAGIC   1.   **`full_name = f"{name} Doe"`**  
@@ -80,23 +72,23 @@
 # MAGIC 1.  **`name = "John"`** 
 # MAGIC 2.  **`print(f"Hello {name}")`** 
 # MAGIC 3.  **`full_name = f"{name} Doe"`** 
-# MAGIC 4.  **`print(f"Welcome back {full_name}`** 
+# MAGIC 4.  **`print(f"Welcome back {full_name}")`**
 # MAGIC 
 # MAGIC そしてこの結果、期待通りに動作します：
 # MAGIC *  **`Hello John`** 
-# MAGIC *  **`Welcome back John Doe`** 
+# MAGIC *  **`Welcome back John Doe`**
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="260e99b3-4126-41b7-8210-b6ff01b98790"/>
 # MAGIC 
 # MAGIC このノートブックを含むフォルダには、 **`ExampleSetupFolder`** というのサブフォルダが含まれています。このサブフォルダには同様に、 **`example-setup`** というのノートブックが含まれています。
 # MAGIC 
 # MAGIC この単純なノートブックは変数 **`my_name`** を宣言し、それを **`None`** に設定してから、 **`example_df`** というのデータフレームを作成します。
 # MAGIC 
 # MAGIC example-setupノートブックを開き、名前が **`None`** ではなく、自分の名前 （または誰かの名前）を引用符で囲むように変更します。次の2つのセルは、 **`AssertionError`** を出さずに実行されます。
+# MAGIC 
+# MAGIC <img src="https://files.training.databricks.com/images/icon_note_24.png"> **`_utility-methods`**  と **`DBAcademyHelper`** もコースの設定に含まれているがこの練習には不要なので無視してください。
 
 # COMMAND ----------
 
@@ -109,9 +101,7 @@ print(my_name)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="ece094f7-d013-4b24-aa54-e934f4ab7dbd"/>
 # MAGIC 
 # MAGIC ## Pythonセルを実行する（Run a Python cell）
 # MAGIC 
@@ -123,23 +113,7 @@ display(example_df)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
-# MAGIC 
-# MAGIC # クラスタのデタッチと再アタッチ（Detach and Reattach a Cluster）
-# MAGIC 
-# MAGIC クラスタへのアタッチはかなり一般的な作業ですが、1回の操作でデタッチと再アタッチを行うと便利な場合があります。 これによる主な副作用は、実行状態のクリアです。 これは、セルを個別にテストしたい場合や、単に実行状態をリセットしたい場合に便利です。
-# MAGIC 
-# MAGIC クラスタのドロップダウンに再度アクセスします。 現在アタッチされているクラスタを表すメニュー項目で、**デタッチと再アタッチ**リンクを選択します。
-# MAGIC 
-# MAGIC 結果と実行状態は無関係であるため、上のセルからの出力は残りますが、実行状態はクリアされていることに注意してください。 これは、上のセルを再実行してみると確認できます。  **`example_df`** 変数が残りの状態とともにクリアされているため、これは失敗します。
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="ce392afd-2e73-4a51-adc4-7d654dad6215"/>
 # MAGIC 
 # MAGIC # 言語の変更（Change Language）
 # MAGIC 
@@ -149,9 +123,7 @@ display(example_df)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="dfce7fd1-08e8-4cc3-92ac-a2eb74f804ef"/>
 # MAGIC 
 # MAGIC # Markdownセルを作成する（Create a Markdown Cell）
 # MAGIC 
@@ -162,9 +134,7 @@ display(example_df)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="a54470bc-2a69-4a34-acbb-fe28c4dee284"/>
 # MAGIC 
 # MAGIC ## SQLセルを実行する（Run a SQL cell）
 # MAGIC 
@@ -173,26 +143,35 @@ display(example_df)
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC SELECT * FROM delta.`/databricks-datasets/nyctaxi-with-zipcodes/subsampled`
+# MAGIC SELECT * FROM delta.`${DA.paths.datasets}/nyctaxi-with-zipcodes/data`
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="7499c6b6-b3f3-4641-88d9-5a260d3c11f8"/>
 # MAGIC 
 # MAGIC 次のセルを実行して、このテーブルが基づいている基本ファイルを表示します。
 
 # COMMAND ----------
 
-files = dbutils.fs.ls("/databricks-datasets/nyctaxi-with-zipcodes/subsampled")
+files = dbutils.fs.ls(f"{DA.paths.datasets}/nyctaxi-with-zipcodes/data")
 display(files)
 
 # COMMAND ----------
 
-# MAGIC %md
+# MAGIC %md <i18n value="a17b5667-53bc-4f8a-8601-5599f4ebb819"/>
 # MAGIC 
-# MAGIC 
+# MAGIC # ノートブックの状態をクリアする (Clearing notebook state)
+# MAGIC ノートブックで定義されているすべての変数をクリアして、最初からやり直す必要な場合があります。例えば、セルを単独でテストしたり、実行状態をリセットしたりする場合にノートブックの状態をクリアします。
+# MAGIC **消去** メニューにアクセスし、**状態とセルの出力をクリア** を選択します。
+# MAGIC 下のセルを実行してみてください。上のセルを再実行するまで、以前に定義した変数が定義されていないことに注目してください。
+
+# COMMAND ----------
+
+print(my_name)
+
+# COMMAND ----------
+
+# MAGIC %md <i18n value="8bff18c2-3ecf-484a-9a8c-dadab7eaf0a1"/>
 # MAGIC 
 # MAGIC # 変更を確認する（Review Changes）
 # MAGIC 
@@ -205,9 +184,7 @@ display(files)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="cb3c335a-dd4c-4620-9f10-6946250f2e02"/>
 # MAGIC 
 # MAGIC ## まとめ（Wrapping Up）
 # MAGIC 

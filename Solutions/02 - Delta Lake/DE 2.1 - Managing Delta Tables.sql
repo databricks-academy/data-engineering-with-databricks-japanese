@@ -7,9 +7,7 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="7aa87ebc-24dd-4b39-bb02-7c59fa083a14"/>
 -- MAGIC 
 -- MAGIC # Deltaテーブルの管理（Managing Delta Tables）
 -- MAGIC 
@@ -29,21 +27,18 @@
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
+-- MAGIC %md <i18n value="add37b8c-6a95-423f-a09a-876e489ef17d"/>
 -- MAGIC 
 -- MAGIC ## セットアップを実行する（Run Setup）
 -- MAGIC まずはセットアップスクリプトを実行します。 セットアップスクリプトは、ユーザー名、ユーザーホーム、各ユーザーを対象とするデータベースを定義します。
 
 -- COMMAND ----------
 
--- MAGIC %run ../Includes/Classroom-Setup-2.1
+-- MAGIC %run ../Includes/Classroom-Setup-02.1
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="3b9c0755-bf72-480e-a836-18a4eceb97d2"/>
 -- MAGIC 
 -- MAGIC ## Deltaテーブルの作成（Creating a Delta Table）
 -- MAGIC 
@@ -63,9 +58,7 @@ CREATE TABLE students
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="a00174f3-bbcd-4ee3-af0e-b8d4ccb58481"/>
 -- MAGIC 
 -- MAGIC 戻ってこのセルを再び実行しようとすると…エラーになります！ これは予想されたことです。そのテーブルはすでに存在するため、エラーが発生します。
 -- MAGIC 
@@ -78,9 +71,7 @@ CREATE TABLE IF NOT EXISTS students
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="408b1c71-b26b-43c0-b144-d5e92064a5ac"/>
 -- MAGIC 
 -- MAGIC ## データを挿入する（Insert Data）
 -- MAGIC ほとんどの場合、データは別のソースからのクエリの結果として、テーブルに挿入されます。
@@ -95,9 +86,7 @@ INSERT INTO students VALUES (3, "Elia", 3.3);
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="853dd803-9f64-42d7-b5e8-5477ea61029e"/>
 -- MAGIC 
 -- MAGIC 上のセルでは、3つの別々の **`INSERT`** 文を完成させました。 これらは独自のACID保証付きの別個のトランザクションとして処理されます。 ほとんどの場合、1回のトランザクションで多くのレコードを挿入します。
 
@@ -111,17 +100,13 @@ VALUES
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="7972982a-05be-46ce-954e-e9d29e3b7329"/>
 -- MAGIC 
 -- MAGIC Databricksには **`COMMIT`** キーワードがないことに注意してください。トランザクションは実行されるとすぐに開始され、成功するとコミットされます。
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="121bd36c-10c4-41fc-b730-2a6fb626c6af"/>
 -- MAGIC 
 -- MAGIC ## Deltaテーブルの照会（Querying a Delta Table）
 -- MAGIC 
@@ -133,9 +118,7 @@ SELECT * FROM students
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="4ecaf351-d4a4-4803-8990-5864995287a4"/>
 -- MAGIC 
 -- MAGIC しかし、Delta Lakeでは、テーブルに対する任意の読み取りが**常に**最新バージョンのテーブルを返すこと、そして進行中の操作によるデッドロック状態に遭遇することは決してないことを保証することにはまだ気づいていないかもしれません。
 -- MAGIC 
@@ -143,9 +126,7 @@ SELECT * FROM students
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="8a379d8d-7c48-43b0-8e25-3e653d8d6e86"/>
 -- MAGIC 
 -- MAGIC ## レコードの更新（Updating Records）
 -- MAGIC 
@@ -161,9 +142,7 @@ WHERE name LIKE "T%"
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="b307b3e7-5ed2-4df8-bdd5-6c25acfd072f"/>
 -- MAGIC 
 -- MAGIC 再びテーブルのクエリを行って、これらの変更が適用されているか確かめます。
 
@@ -173,9 +152,7 @@ SELECT * FROM students
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="d581b9a2-f450-43dc-bff3-2ea9cc46ad4c"/>
 -- MAGIC 
 -- MAGIC ## レコードの削除（Deleting Records）
 -- MAGIC 
@@ -190,9 +167,7 @@ WHERE value > 6
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="b5b346b8-a3df-45f2-88a7-8cf8dea6d815"/>
 -- MAGIC 
 -- MAGIC ## マージを使う（Using Merge）
 -- MAGIC 
@@ -214,9 +189,7 @@ SELECT * FROM updates;
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="6fe009d5-513f-4b93-994f-1ae9a0f30a80"/>
 -- MAGIC 
 -- MAGIC これまで見てきた構文を使えば、このビューを種類ごとにフィルタリングして、レコードの挿入、更新、削除をそれぞれ1つずつ、計3つの文を書くことができます。 ですがこの結果、3つの別個のトランザクションが発生します。これらのトランザクションのいずれかが失敗すれば、データが無効な状態になる可能性があります。
 -- MAGIC 
@@ -240,19 +213,15 @@ WHEN NOT MATCHED AND u.type = "insert"
 
 -- COMMAND ----------
 
--- MAGIC %md
+-- MAGIC %md <i18n value="77cee0a0-f94b-4016-a20b-08e4857d13db"/>
 -- MAGIC 
--- MAGIC 
--- MAGIC 
--- MAGIC  **`MERGE`** 文により3つのレコードだけが影響を受けたことに注目してください。updatesテーブルのレコードの1つはstudentsテーブル内で一致している **`id`** がありませんでしたが、 **`update`** と印が付いています。 カスタムロジックに基づき、挿入するよりはむしろこのレコードを無視しました。
+-- MAGIC **`MERGE`** 文により3つのレコードだけが影響を受けたことに注目してください。updatesテーブルのレコードの1つはstudentsテーブル内で一致している **`id`** がありませんでしたが、 **`update`** と印が付いています。 カスタムロジックに基づき、挿入するよりはむしろこのレコードを無視しました。
 -- MAGIC 
 -- MAGIC 最終的な **`INSERT`** 句に **`update`** の印がついた一致しないレコードを含めるには、上の文をどのように変更しますか？
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="4eca2c53-e457-4964-875e-d39d9205c3c6"/>
 -- MAGIC 
 -- MAGIC ## テーブルの削除（Dropping a Table）
 -- MAGIC 
@@ -266,9 +235,7 @@ DROP TABLE students
 
 -- COMMAND ----------
 
--- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC %md <i18n value="08cbbda5-96b2-4ae8-889f-b1f4c04d1496"/>
 -- MAGIC 
 -- MAGIC 次のセルを実行して、このレッスンに関連するテーブルとファイルを削除してください。
 

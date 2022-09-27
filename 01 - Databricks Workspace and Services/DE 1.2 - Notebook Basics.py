@@ -7,8 +7,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="48031791-53af-4737-8c15-280e45fb9226"/>
 # MAGIC 
 # MAGIC # ノートブックの基本（Notebook Basics）
 # MAGIC 
@@ -30,8 +29,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="96041d75-d411-45db-8add-986022e62159"/>
 # MAGIC 
 # MAGIC ## クラスタにアタッチする（Attach to a Cluster）
 # MAGIC 
@@ -43,8 +41,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="9f021e76-692f-4df7-8e80-fec41d03c719"/>
 # MAGIC 
 # MAGIC ## ノートブックの基本（Notebooks Basics）
 # MAGIC 
@@ -64,15 +61,13 @@ print("I'm running Python!")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="cea571b2-8a27-495f-a1ee-7e270d688d62"/>
 # MAGIC 
 # MAGIC **注**：セルごとのコードの実行では、セルを複数回実行したり、順序が狂ったりする可能性があります。 明確に指示されない限り、このコースのノートブックは、上から下に向かって一度に一つずつセルを実行すると思ってください。 エラーが発生した場合は、トラブルシューティングを試みる前に、セルの前後のテキストを読んで、エラーが意図的な学習の機会ではないことを確認してください。 ほとんどのエラーは、見落としていた以前のセルをノートブックで実行するか、ノートブック全体を上から再実行することで解決できます。
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="702cb769-7d37-4b1a-8131-292f37d4c8e6"/>
 # MAGIC 
 # MAGIC ### ノートブックのデフォルト言語の設定（Setting the Default Notebook Language）
 # MAGIC 
@@ -92,8 +87,7 @@ print("I'm running Python!")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="0e12c7f2-4169-40d6-b065-5b6e1454ae2a"/>
 # MAGIC 
 # MAGIC ### SQLセルを作成して実行する（Create and Run a SQL Cell）
 # MAGIC 
@@ -106,8 +100,7 @@ print("I'm running Python!")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="828d14d2-a661-45e4-a555-0b86896c31d4"/>
 # MAGIC 
 # MAGIC ## MAGICコマンド
 # MAGIC * Magicコマンドは、Databricksノートブック固有のものです
@@ -119,8 +112,7 @@ print("I'm running Python!")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="19380cb5-20d3-4bd6-abd6-ae09082f2451"/>
 # MAGIC 
 # MAGIC ### 言語MAGIC（Language Magics）
 # MAGIC 言語MAGICコマンドを使えば、ノートブックのデフォルト以外の言語のコードを実行できます。 このコースでは、次の言語MAGICが見られます：
@@ -145,9 +137,7 @@ print("Hello Python!")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC %md <i18n value="81f29d75-0c8f-47d3-a052-7664f3e2bc83"/>
 # MAGIC 
 # MAGIC ### Markdown
 # MAGIC 
@@ -166,9 +156,9 @@ print("Hello Python!")
 # MAGIC これは、*イタリック体* の単語を含むテキストです。
 # MAGIC 
 # MAGIC これは順序付きリストです
-# MAGIC 0. 一
-# MAGIC 0. 二
-# MAGIC 0. 三
+# MAGIC 1. 一
+# MAGIC 1. 二
+# MAGIC 1. 三
 # MAGIC 
 # MAGIC これは順不同のリストです
 # MAGIC * リンゴ
@@ -189,8 +179,7 @@ print("Hello Python!")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="8bdf271e-346f-4ec8-b49c-a7593a5f1f6c"/>
 # MAGIC 
 # MAGIC ### %run
 # MAGIC * MAGICコマンド **%run** を使うと、ノートブックを別のノートブックから実行できます
@@ -199,8 +188,7 @@ print("Hello Python!")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="739cd1b9-dac7-40f7-8c33-9a3c91eec348"/>
 # MAGIC 
 # MAGIC 次のセルからコメントアウトを外して実行すると次のエラーが発生します：<br/> **`Error in SQL statement: AnalysisException: Table or view not found: demo_tmp_vw`**
 
@@ -211,23 +199,24 @@ print("Hello Python!")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="d9e357e2-f605-4aae-be7d-9254361e2147"/>
 # MAGIC 
 # MAGIC しかし、このセルを実行することで、それと他のいくつかの変数と関数を宣言できます：
 
 # COMMAND ----------
 
-# MAGIC %run ../Includes/Classroom-Setup-1.2
+# MAGIC %run ../Includes/Classroom-Setup-01.2
 
 # COMMAND ----------
 
-# MAGIC %md
+# MAGIC %md <i18n value="e7a9c7ec-1d61-42d6-91c9-ece07d2aa2a3"/>
 # MAGIC 
+# MAGIC The **`../Includes/Classroom-Setup-01.2`** notebook we referenced includes logic to create and **`USE`** a database, as well as creating the temp view **`demo_temp_vw`**.
+# MAGIC We can see this temp view is now available in our current notebook session with the following query.
 # MAGIC 
-# MAGIC 参照した **`../Includes/Classroom-Setup-1.2`** ノートブックには、データベースを作成し、 **`USE`** するためのロジックとテンポラリビュー **`demo_temp_vw`** を作成するロジックが含まれています。
+# MAGIC 参照した **`../Includes/Classroom-Setup-01.2`** ノートブックには、データベースを作成し、 **`USE`** するためのロジックとテンポラリビュー **`demo_temp_vw`** の作成するも含まれています。
 # MAGIC 
-# MAGIC このテンポラリビューは、次のクエリを使って現在のノートブックセッションで利用できるようになっていることがわかります。
+# MAGIC 次のクエリを使って、このテンポラリビューは、現在のノートブックセッションで利用できるようになっていることが確認できます。
 
 # COMMAND ----------
 
@@ -236,8 +225,7 @@ print("Hello Python!")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="fd9afa7b-7efd-421e-9a22-61e7d6533a52"/>
 # MAGIC 
 # MAGIC このパターンの「セットアップ」ノートブックをコース全体で使用して、レッスンとラボの環境構成に役立てます。
 # MAGIC 
@@ -258,8 +246,7 @@ print(f"DA.db_name:           {DA.db_name}")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="f28a5e07-c955-460c-8779-6eb3f7306b19"/>
 # MAGIC 
 # MAGIC これに加えて、これらの同じ変数がSQLコンテキストに「注入される」ため、SQL文の中で使えます。
 # MAGIC 
@@ -276,8 +263,7 @@ print(f"DA.db_name:           {DA.db_name}")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="cf6ff3b4-2f4b-4fed-9d56-1e5f1b4fbb83"/>
 # MAGIC 
 # MAGIC ## Databricksユーティリティ（Databricks Utilities）
 # MAGIC Databricksノートブックには、環境を設定したり操作したりするためのユーティリティコマンドが多数用意されています：<a href="https://docs.databricks.com/user-guide/dev-tools/dbutils.html" target="_blank">dbutils docs</a>
@@ -286,12 +272,12 @@ print(f"DA.db_name:           {DA.db_name}")
 
 # COMMAND ----------
 
-dbutils.fs.ls("/databricks-datasets")
+path = f"{DA.paths.datasets}"
+dbutils.fs.ls(path)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="b58df4d5-09b7-4a63-89d8-69363d32e37b"/>
 # MAGIC 
 # MAGIC ## display()
 # MAGIC 
@@ -303,12 +289,13 @@ dbutils.fs.ls("/databricks-datasets")
 
 # COMMAND ----------
 
-display(dbutils.fs.ls("/databricks-datasets"))
+path = f"{DA.paths.datasets}"
+files = dbutils.fs.ls(path)
+display(files)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="4ee5258a-3c18-47d5-823c-01596b4787c4"/>
 # MAGIC 
 # MAGIC **`display()`** コマンドには次の機能と制限があります：
 # MAGIC * 結果のプレビューの上限は1000レコードまで
@@ -317,8 +304,7 @@ display(dbutils.fs.ls("/databricks-datasets"))
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="b1e79003-3240-4a4e-84e3-a7902f969631"/>
 # MAGIC 
 # MAGIC ## ノートブックのダウンロード
 # MAGIC 
@@ -353,8 +339,7 @@ display(dbutils.fs.ls("/databricks-datasets"))
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="37f4f2b0-5f6e-45d6-9ee4-3f90348f8277"/>
 # MAGIC 
 # MAGIC ## さらに学ぶ（Learning More）
 # MAGIC 
@@ -371,8 +356,7 @@ display(dbutils.fs.ls("/databricks-datasets"))
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="b3cc4b2f-a3ee-4602-bee8-b2b8fad2684a"/>
 # MAGIC 
 # MAGIC ## もうひとつだけ！（One more note!）
 # MAGIC 

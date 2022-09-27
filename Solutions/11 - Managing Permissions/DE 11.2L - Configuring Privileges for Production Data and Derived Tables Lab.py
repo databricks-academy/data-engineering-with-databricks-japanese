@@ -7,8 +7,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="8c3bda3d-9889-40cc-9b21-f42cab247b73"/>
 # MAGIC 
 # MAGIC # 本番データおよび派生テーブルの権限を構成する（Configuring Privileges for Production Data and Derived Tables）
 # MAGIC 
@@ -28,8 +27,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="ed6459eb-0045-4614-9639-d3e3ff6dff2a"/>
 # MAGIC 
 # MAGIC ## パートナーとユーザー名を交換する（Exchange User Names with your Partner）
 # MAGIC ユーザー名とメールアドレスが一致するワークスペースを使用していない場合には、パートナーがあなたのユーザー名を把握していることを確認してください。
@@ -44,8 +42,7 @@ print(f"Your username: {DA.username}")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="6541f150-07b2-4acb-931b-3c33e66cdce0"/>
 # MAGIC 
 # MAGIC ## セットアップ文の生成（Generate Setup Statements）
 # MAGIC 
@@ -61,23 +58,21 @@ DA.generate_query()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="3c5a67e7-b871-49be-8097-998c2e698ee3"/>
 # MAGIC 
 # MAGIC 手順は、次の通りです。
 # MAGIC 1. 上のセルを実行します
 # MAGIC 1. 出力されたものをすべてクリップボードにコピーします
 # MAGIC 1. Databricks SQLワークスペースへと移動します
-# MAGIC 1. DBSQLエンドポイントが起動していることを確認します
+# MAGIC 1. SQLウェアハウスが起動していることを確認します
 # MAGIC 1. 左側のサイドバーを使用して、**SQLエディタ**を選択します
 # MAGIC 1. 上のクエリを貼り付け、右上にある青色の**実行**をクリックします
 # MAGIC 
-# MAGIC **注**：これらのクエリを正常に実行するためには、DBSQLエンドポイントに接続する必要があります。 DBSQLエンドポイントに接続できない場合には、管理者に連絡してアクセス権を付与してもらう必要があります。
+# MAGIC **注**：これらのクエリを正常に実行するためには、SQLウェアハウスに接続する必要があります。 SQLウェアハウスに接続できない場合には、管理者に連絡してアクセス権を付与してもらう必要があります。
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="b2ddfe82-c24e-474a-b3ec-0786e095dc69"/>
 # MAGIC 
 # MAGIC ## データベースを見つける（Find Your Database）
 # MAGIC Data Explorerで、以前作成したデータベース（これは **`dbacademy_<username>_dewd_acls_lab`** というパターンに従っているはずです）を見つけます。
@@ -90,8 +85,7 @@ DA.generate_query()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="8a89aab0-2d1e-45e9-a24b-44e1106ebc39"/>
 # MAGIC 
 # MAGIC ## データベース権限の変更（Change Database Permissions）
 # MAGIC 
@@ -106,8 +100,7 @@ DA.generate_query()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="b5803c49-52ce-4155-a448-10fc98a589fc"/>
 # MAGIC 
 # MAGIC ## クエリを実行して確認する（Run a Query to Confirm）
 # MAGIC 
@@ -126,8 +119,7 @@ DA.generate_confirmation_query("FILL_IN")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="3c23d5fc-0400-49fb-9e1e-fabd00f875f2"/>
 # MAGIC 
 # MAGIC ## Beansの結合を生成するクエリの実行（Execute a Query to Generate the Union of Your Beans）
 # MAGIC 
@@ -141,8 +133,7 @@ DA.generate_union_query()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="de0c1434-fa02-4296-aae0-f253e006e9f5"/>
 # MAGIC 
 # MAGIC ## 派生ビューのデータベースへの登録（Register a Derivative View to Your Database）
 # MAGIC 
@@ -154,8 +145,7 @@ DA.generate_derivative_view()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="0f32f538-b1dc-4d47-9ba9-4f1ccddf5e6f"/>
 # MAGIC 
 # MAGIC ## パートナーのビューを照会する（Query Your Partner's View）
 # MAGIC 
@@ -168,8 +158,7 @@ DA.generate_partner_view("FILL_IN")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="c06b7d01-464e-4265-b0a3-0fc5691e4073"/>
 # MAGIC 
 # MAGIC ## 変更権限の追加（Add Modify Permissions）
 # MAGIC 
@@ -194,8 +183,7 @@ DA.generate_delete_query("FILL_IN")
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="1b4b0745-e3d2-4024-ab59-8afd2f5b803f"/>
 # MAGIC 
 # MAGIC このクエリによって、目的のテーブルからすべてのレコードが正常に削除されたはずです。
 # MAGIC 

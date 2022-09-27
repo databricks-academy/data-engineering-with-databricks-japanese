@@ -7,8 +7,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="0c4e00b2-1879-4e05-8bad-70f2e471691c"/>
 # MAGIC 
 # MAGIC # データベース、テーブル、ビューの権限管理（Managing Permissions for Databases, Tables, and Views）
 # MAGIC 
@@ -30,8 +29,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="86552e2b-b893-4633-990e-4dd27255daa9"/>
 # MAGIC 
 # MAGIC ## セットアップ文の生成（Generate Setup Statements）
 # MAGIC 
@@ -45,23 +43,21 @@ DA.generate_users_table()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="0369413a-e3d4-4fe1-8948-143fb950584b"/>
 # MAGIC 
 # MAGIC 手順は、次の通りです。
 # MAGIC 1. 上のセルを実行します
 # MAGIC 1. 出力されたものをすべてクリップボードにコピーします
 # MAGIC 1. Databricks SQLワークスペースへと移動します
-# MAGIC 1. DBSQLエンドポイントが起動していることを確認します
+# MAGIC 1. SQLウェアハウスが起動していることを確認します
 # MAGIC 1. 左側のサイドバーを使用して、**SQLエディタ**を選択します
 # MAGIC 1. 上のクエリを貼り付け、右上にある青色の**実行**をクリックします
 # MAGIC 
-# MAGIC **注**：これらのクエリを正常に実行するためには、DBSQLエンドポイントに接続する必要があります。 DBSQLエンドポイントに接続できない場合には、管理者に連絡してアクセス権を付与してもらう必要があります。
+# MAGIC **注**：これらのクエリを正常に実行するためには、SQLウェアハウスに接続する必要があります。 SQLウェアハウスに接続できない場合には、管理者に連絡してアクセス権を付与してもらう必要があります。
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="c0629565-2278-4384-9919-f3d6f946eb11"/>
 # MAGIC 
 # MAGIC ## Data Explorerを使用する（Using Data Explorer）
 # MAGIC 
@@ -122,11 +118,11 @@ DA.generate_users_table()
 # MAGIC | READ_METADATA  | オブジェクトとそのメタデータを表示できるようになります。                           |
 # MAGIC | USAGE          | 権限の範囲は広くなりませんが、データベースオブジェクトに対してアクションを実行するための追加要件となります。 |
 # MAGIC | CREATE         | オブジェクトを作成できるようになります（例えば、データベース内のテーブルなど）。               |
+# MAGIC | CREATE_NAMED_FUNCTION |既存のカタログまたはスキーマに名前付きUDFを作成できるようになります。 |
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="e82e2a15-0fdd-4af1-9383-9681a2cddbb8"/>
 # MAGIC 
 # MAGIC ## デフォルトの権限を確認する（Review the Default Permissions）
 # MAGIC データエクスプローラで、以前作成したデータベース（これは **`dbacademy_<username>_acls_demo`** というパターンに従っているはずです）を見つけます。
@@ -137,8 +133,7 @@ DA.generate_users_table()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="87339040-a0f3-4889-bc16-065f1c8a25b6"/>
 # MAGIC 
 # MAGIC ## 所有権の割り当て（Assigning Ownership）
 # MAGIC 
@@ -148,8 +143,7 @@ DA.generate_users_table()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="86f51802-f151-4fe1-8835-a793a3ce5756"/>
 # MAGIC 
 # MAGIC ## データベース権限の変更（Change Database Permissions）
 # MAGIC 
@@ -166,8 +160,7 @@ DA.generate_users_table()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="f3026810-bf59-4558-bfd0-eb46636ceafb"/>
 # MAGIC 
 # MAGIC ## ビュー権限の変更（Change View Permissions）
 # MAGIC 
@@ -187,8 +180,7 @@ DA.generate_users_table()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="957dfb39-747b-45f3-86c3-c6d23496e19d"/>
 # MAGIC 
 # MAGIC ## クエリを実行して確認する（Run a Query to Confirm）
 # MAGIC 
@@ -202,8 +194,7 @@ DA.generate_users_table()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="5fece6bf-b060-46b3-bf10-1052baf1b6fe"/>
 # MAGIC 
 # MAGIC ## テーブル権限の変更（Change Table Permissions）
 # MAGIC 
@@ -219,8 +210,7 @@ DA.generate_users_table()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="77c59af7-3bcc-4e46-97c2-64bd3dc77d34"/>
 # MAGIC 
 # MAGIC ## ユーザーに **`DROP TABLE`** の実行を試してもらう（Have Users Attempt to **`DROP TABLE`** ）
 # MAGIC 
@@ -230,8 +220,7 @@ DA.generate_users_table()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="bc4d8d86-00a5-416e-a482-c843e58052d2"/>
 # MAGIC 
 # MAGIC ## 派生データセット用のデータベースを作成する（Create a Database for Derivative Datasets）
 # MAGIC 
@@ -247,8 +236,7 @@ DA.generate_create_database_with_grants()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="5f0e0657-1cf3-4728-9a31-07c0d57199e4"/>
 # MAGIC 
 # MAGIC ## ユーザーに新しいテーブルまたはビューを作成してもらう（Have Users Create New Tables or Views）
 # MAGIC 
@@ -258,8 +246,7 @@ DA.generate_create_database_with_grants()
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC 
+# MAGIC %md <i18n value="9e468552-03bc-4c5a-b0e7-fcf5052cc478"/>
 # MAGIC 
 # MAGIC ## 管理者設定（Admin Configuration）
 # MAGIC 
