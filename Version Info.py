@@ -12,8 +12,8 @@
 # MAGIC # プロジェクト情報 (Project Information)
 # MAGIC 
 # MAGIC * コース名: **Data Engineering with Databricks**
-# MAGIC * バージョン:  **2.3.6-JA**
-# MAGIC * 作成日時: **Sep 27, 2022 at 00:47:33 UTC**
+# MAGIC * バージョン:  **2.3.7-JA**
+# MAGIC * 作成日時: **Sep 27, 2022 at 22:02:18 UTC**
 
 # COMMAND ----------
 
