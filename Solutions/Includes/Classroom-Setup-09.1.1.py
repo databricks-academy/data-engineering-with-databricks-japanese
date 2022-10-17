@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %run ./_utility-methods
+# MAGIC %run ./_common
 
 # COMMAND ----------
 
@@ -25,7 +25,7 @@ def print_pipeline_config(self):
         <td><input type="text" value="{pipeline_name}" style="width:100%"></td></tr>
     <tr>
         <td style="white-space:nowrap; width:1em">Target:</td>
-        <td><input type="text" value="{DA.db_name}" style="width:100%"></td></tr>
+        <td><input type="text" value="{DA.schema_name}" style="width:100%"></td></tr>
     <tr>
         <td style="white-space:nowrap; width:1em">Storage Location:</td>
         <td><input type="text" value="{DA.paths.storage_location}" style="width:100%"></td></tr>
@@ -53,7 +53,7 @@ def create_pipeline(self):
     response = self.client.pipelines().create(
         name = pipeline_name, 
         storage = DA.paths.storage_location, 
-        target = DA.db_name, 
+        target = DA.schema_name, 
         notebooks = [path],
         configuration = {
             "spark.master": "local[*]",
@@ -82,7 +82,7 @@ def validate_pipeline_config(self):
     assert storage == DA.paths.storage_location, f"Invalid storage location. Found \"{storage}\", expected \"{DA.paths.storage_location}\" "
     
     target = spec.get("target")
-    assert target == DA.db_name, f"Invalid target. Found \"{target}\", expected \"{DA.db_name}\" "
+    assert target == DA.schema_name, f"Invalid target. Found \"{target}\", expected \"{DA.schema_name}\" "
     
     libraries = spec.get("libraries")
     assert libraries is None or len(libraries) > 0, f"The notebook path must be specified."
@@ -127,7 +127,7 @@ def validate_pipeline_config(self):
         }
         self.client.pipelines.create_or_update(name = pipeline_name,
                                                storage = DA.paths.storage_location,
-                                               target = DA.db_name,
+                                               target = DA.schema_name,
                                                notebooks = [path],
                                                configuration = {
                                                    "spark.master": "local[*]",
@@ -172,14 +172,11 @@ def create_job_v1(self):
     
     job_name, reset_notebook = self.get_job_config()
 
-    self.client.jobs.delete_by_name(job_name, success_only=False)
-    cluster_id = dbgems.get_tags().get("clusterId")
-    
     params = {
         "name": job_name,
         "tags": {
-            "dbacademy.course": self.course_name,
-            "dbacademy.source": self.course_name
+            "dbacademy.course": self.course_config.build_name,
+            "dbacademy.source": self.course_config.build_name
         },
         "email_notifications": {},
         "timeout_seconds": 7200,
@@ -193,7 +190,7 @@ def create_job_v1(self):
                     "notebook_path": reset_notebook,
                     "base_parameters": []
                 },
-                "existing_cluster_id": cluster_id
+                "existing_cluster_id": dbgems.get_tags().get("clusterId")
             },
         ],
     }
@@ -278,7 +275,6 @@ def create_job_v2(self):
     job_name, reset_notebook = self.get_job_config()
 
     self.client.jobs.delete_by_name(job_name, success_only=False)
-    cluster_id = dbgems.get_tags().get("clusterId")
     
     pipeline = self.client.pipelines().get_by_name(pipeline_name)
     pipeline_id = pipeline.get("pipeline_id")
@@ -286,8 +282,8 @@ def create_job_v2(self):
     params = {
         "name": job_name,
         "tags": {
-            "dbacademy.course": self.course_name,
-            "dbacademy.source": self.course_name
+            "dbacademy.course": self.course_config.build_name,
+            "dbacademy.source": self.course_config.build_name
         },
         "email_notifications": {},
         "timeout_seconds": 7200,
@@ -301,7 +297,7 @@ def create_job_v2(self):
                     "notebook_path": reset_notebook,
                     "base_parameters": []
                 },
-                "existing_cluster_id": cluster_id
+                "existing_cluster_id": dbgems.get_tags().get("clusterId")
             },
             {
                 "task_key": "DLT",
@@ -394,10 +390,11 @@ def start_job(self):
 # COMMAND ----------
 
 # jobs_demo_91 is specifically referenced in the lesson
+lesson_config.name = "jobs_demo_91"
 
-DA = DBAcademyHelper(lesson="jobs_demo_91", **helper_arguments)
-DA.reset_environment() # First in a series
-DA.init(install_datasets=True, create_db=True)
+DA = DBAcademyHelper(course_config, lesson_config)
+DA.reset_lesson() # First in a series
+DA.init()
 
 DA.paths.stream_path = f"{DA.paths.working_dir}/stream"
 DA.paths.storage_location = f"{DA.paths.working_dir}/storage"

@@ -15,7 +15,7 @@
 -- MAGIC 
 -- MAGIC ## 学習目標（Learning Objectives）
 -- MAGIC このラボでは、以下のことが学べます。
--- MAGIC - 次の操作を含めて、Delta Lakeテーブルを作成および操作をするための標準的な操作を実行する：
+-- MAGIC - 次の操作を含めて、Deltaテーブルを作成および操作をするための標準的な操作を実行する：
 -- MAGIC   -  **`CREATE TABLE`** 
 -- MAGIC   -  **`INSERT INTO`** 
 -- MAGIC   -  **`SELECT FROM`** 
@@ -43,7 +43,7 @@
 -- MAGIC 
 -- MAGIC このノートブックでは、豆のコレクションを管理するためのテーブルを作成します。
 -- MAGIC 
--- MAGIC 以下のセルを使って、 **`beans`** というのマネージドDelta Lakeテーブルを作成します。
+-- MAGIC 以下のセルを使って、 **`beans`** というのDeltaテーブルを作成します。
 -- MAGIC 
 -- MAGIC 次のスキーマを指定します：
 -- MAGIC 
@@ -146,7 +146,7 @@ WHERE name = "jelly"
 
 -- MAGIC %md <i18n value="d8637fab-6d23-4458-bc08-ff777021e30c"/>
 -- MAGIC 
--- MAGIC うっかり、うずら豆の重量を間違って入力したことに気づきます。
+-- MAGIC うっかり、うずら豆(pinto)の重量を間違って入力したことに気づきます。
 -- MAGIC 
 -- MAGIC このレコードの **`grams`** 列を正しい重量1500に更新してください。
 
@@ -249,11 +249,13 @@ WHEN NOT MATCHED AND b.delicious = true THEN
 -- COMMAND ----------
 
 -- MAGIC %python
--- MAGIC version = spark.sql("DESCRIBE HISTORY beans").selectExpr("max(version)").first()[0]
--- MAGIC last_tx = spark.sql("DESCRIBE HISTORY beans").filter(f"version={version}")
--- MAGIC assert last_tx.select("operation").first()[0] == "MERGE", "Transaction should be completed as a merge"
--- MAGIC metrics = last_tx.select("operationMetrics").first()[0]
--- MAGIC assert metrics["numOutputRows"] == "3", "Make sure you only insert delicious beans"
+-- MAGIC import pyspark.sql.functions as F
+-- MAGIC last_version = spark.sql("DESCRIBE HISTORY beans").orderBy(F.col("version").desc()).first()
+-- MAGIC 
+-- MAGIC assert last_version["operation"] == "MERGE", "Transaction should be completed as a merge"
+-- MAGIC 
+-- MAGIC metrics = last_version["operationMetrics"]
+-- MAGIC assert metrics["numOutputRows"] == "5", "Make sure you only insert delicious beans"
 -- MAGIC assert metrics["numTargetRowsUpdated"] == "1", "Make sure you match on name and color"
 -- MAGIC assert metrics["numTargetRowsInserted"] == "2", "Make sure you insert newly collected beans"
 -- MAGIC assert metrics["numTargetRowsDeleted"] == "0", "No rows should be deleted by this operation"
@@ -293,7 +295,7 @@ DROP TABLE beans
 -- MAGIC ## まとめ（Wrapping Up）
 -- MAGIC 
 -- MAGIC このラボでは次のことを学びました。
--- MAGIC * 標準的なDelta Lakeテーブルの作成およびデータ操作コマンドの完了
+-- MAGIC * 標準的なDeltaテーブルの作成およびデータ操作コマンドの完了
 
 -- COMMAND ----------
 

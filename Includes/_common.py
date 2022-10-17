@@ -1,8 +1,6 @@
 # Databricks notebook source
 # MAGIC %pip install \
-# MAGIC git+https://github.com/databricks-academy/dbacademy-gems@63bb19389fd2296f6cc5a74e463ab52ab1548767 \
-# MAGIC git+https://github.com/databricks-academy/dbacademy-rest@96351a554ed00b664e7c2d97249805df5611be06 \
-# MAGIC git+https://github.com/databricks-academy/dbacademy-helper@83de4080d8f0a00ceaeab7822069911d49f73336 \
+# MAGIC git+https://github.com/databricks-academy/dbacademy@v1.0.2 \
 # MAGIC --quiet --disable-pip-version-check
 
 # COMMAND ----------
@@ -12,22 +10,29 @@
 # COMMAND ----------
 
 import time
-from dbacademy_gems import dbgems
-from dbacademy_helper import DBAcademyHelper, Paths
+from dbacademy import dbgems
+from dbacademy.dbhelper import DBAcademyHelper, Paths, CourseConfig, LessonConfig
 
-helper_arguments = {
-    "course_code" : "dewd",            # The abreviated version of the course
-    "course_name" : "data-engineering-with-databricks",      # The full name of the course, hyphenated
-    "data_source_name" : "data-engineering-with-databricks", # Should be the same as the course
-    "data_source_version" : "v02",     # New courses would start with 01
-    "enable_streaming_support": True,  # This couse uses stream and thus needs checkpoint directories
-    "install_min_time" : "5 min",      # The minimum amount of time to install the datasets (e.g. from Oregon)
-    "install_max_time" : "15 min",     # The maximum amount of time to install the datasets (e.g. from India)
-    "remote_files": remote_files,      # The enumerated list of files in the datasets
-}
-# Start a timer so we can 
-# benchmark execution duration.
-setup_start = int(time.time())
+# The following attributes are externalized to make them easy
+# for content developers to update with every new course.
+
+course_config = CourseConfig(course_code = "dewd",
+                             course_name = "data-engineering-with-databricks",
+                             data_source_name = "data-engineering-with-databricks",
+                             data_source_version = "v02",
+                             install_min_time = "5 min",
+                             install_max_time = "15 min",
+                             remote_files = remote_files,
+                             supported_dbrs = ["11.3.x-scala2.12", "11.3.x-photon-scala2.12", "11.3.x-cpu-ml-scala2.12"],
+                             expected_dbrs = "11.3.x-scala2.12, 11.3.x-photon-scala2.12, 11.3.x-cpu-ml-scala2.12")
+
+# For this course, these values will be true 99% of the time.
+lesson_config = LessonConfig(name = None,
+                             create_schema = True,
+                             create_catalog = False,
+                             requires_uc = False,
+                             installing_datasets = True,
+                             enable_streaming_support = True)
 
 # COMMAND ----------
 
@@ -57,6 +62,7 @@ def update_cluster_params(self, params: dict, task_indexes: list):
         task["new_cluster"] = cluster_params
         
     return params
+
 
 # COMMAND ----------
 
@@ -104,9 +110,3 @@ class DltDataFactory:
 
             dbutils.fs.cp(f"{self.source}/{curr_file}", target_dir)
             self.curr_mo += 1
-
-# COMMAND ----------
-
-@DBAcademyHelper.monkey_patch
-def setup_completed(self):
-    print(f"\nSetup completed in {int(time.time())-setup_start} seconds")

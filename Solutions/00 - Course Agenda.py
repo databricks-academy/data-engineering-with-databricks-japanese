@@ -20,14 +20,14 @@
 # MAGIC #### 目的
 # MAGIC - Databricks Lakehouse Platformを活用し、データパイプライン開発の中核を担います。
 # MAGIC - SQLとPythonを使用して、Lakehouseのテーブルやビューにデータを抽出・変換・ロードするための本番データパイプラインを作成します。
-# MAGIC - Databricksのネイティブな機能と構文（Delta Live Tablesを含む）を使用して、データの取り込みと増分変更の伝達を簡素化します。
+# MAGIC - Databricksのネイティブな機能と構文（Delta Live Tablesを含む）を使用して、データの取り込みと増分変更を簡素化します。
 # MAGIC - プロダクションパイプラインをオーケストレーションし、アドホック分析およびダッシュボードに最新な結果を提供します。
 # MAGIC 
 # MAGIC #### 前提条件
-# MAGIC -  `SELECT`、`WHERE`、`GROUP BY`、`ORDER BY`、`LIMIT`、`JOIN`を使ってクエリの作成などSQLクエリ構文の基本知識を得ます。
-# MAGIC - データベースやテーブルを作成、変更、削除するためのSQL DDL文の基本的な知識を得ます。
-# MAGIC - DELETE`、`INSERT`、`UPDATE`、`MERGE`を含むSQL DML文の基本的な知識を得ます。
-# MAGIC - 仮想マシン、オブジェクトストレージ、ID管理、メタストアなどのクラウド機能を含む、クラウドプラットフォーム上でのデータエンジニアリングの実践経験または知識を得ます。
+# MAGIC - `SELECT`、`WHERE`、`GROUP BY`、`ORDER BY`、`LIMIT`、`JOIN`を使ったクエリの作成などSQLクエリ構文の基本知識
+# MAGIC - データベースやテーブルを作成、変更、削除するためのSQL DDL文の基本的な知識
+# MAGIC - `DELETE`、`INSERT`、`UPDATE`、`MERGE`を含むSQL DML文の基本的な知識
+# MAGIC - 仮想マシン、オブジェクトストレージ、ID管理、メタストアなどのクラウド機能を含む、クラウドプラットフォーム上でのデータエンジニアリングの実践経験または知識
 
 # COMMAND ----------
 

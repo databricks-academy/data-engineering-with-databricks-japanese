@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %run ./_utility-methods
+# MAGIC %run ./_common
 
 # COMMAND ----------
 
@@ -25,11 +25,11 @@ def create_eltwss_users_update():
 
 # COMMAND ----------
 
-DA = DBAcademyHelper(**helper_arguments)
-DA.reset_environment()
-DA.init(install_datasets=True, create_db=True)
+DA = DBAcademyHelper(course_config, lesson_config)
+DA.reset_lesson()
+DA.init()
 
 print()
 create_eltwss_users_update()
-    
+
 DA.conclude_setup()

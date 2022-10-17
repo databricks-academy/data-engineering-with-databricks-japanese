@@ -1,12 +1,14 @@
 # Databricks notebook source
-# MAGIC %run ./_utility-methods
+# MAGIC %run ./_common
 
 # COMMAND ----------
 
-# The lesson name is specifically named "acls_lab" as it is a significantly user-facing - JDP
-DA = DBAcademyHelper(lesson="acls_lab", **helper_arguments)
-DA.reset_environment() # Not sequenced, but "acls_lab" is directly referenced in the prose
-DA.init(install_datasets=True, create_db=False)
+lesson_config.name = "acls_lab"
+lesson_config.create_schema=False
+
+DA = DBAcademyHelper(course_config, lesson_config)
+DA.reset_lesson()
+DA.init()
 DA.conclude_setup()
 
 # COMMAND ----------
@@ -23,10 +25,10 @@ def generate_query(self):
     import random
 
     self.print_sql(23, f"""
-CREATE DATABASE IF NOT EXISTS {DA.db_name}
+CREATE DATABASE IF NOT EXISTS {DA.schema_name}
 LOCATION '{DA.paths.user_db}';
 
-USE {DA.db_name};
+USE {DA.schema_name};
     
 CREATE TABLE beans 
 (name STRING, color STRING, grams FLOAT, delicious BOOLEAN); 
@@ -52,7 +54,7 @@ AS SELECT * FROM beans WHERE delicious = true;
 def generate_confirmation_query(self, username):
     import re
     # clean_username = re.sub("[^a-zA-Z0-9]", "_", username)
-    database = DA.db_name #.replace(DA.clean_username, clean_username)
+    database = DA.schema_name #.replace(DA.clean_username, clean_username)
     
     self.print_sql(11, f"""
 USE {database};
@@ -71,7 +73,7 @@ WHERE name = 'black'
 @DBAcademyHelper.monkey_patch
 def generate_union_query(self):
     self.print_sql(6, f"""
-USE {DA.db_name};
+USE {DA.schema_name};
 
 SELECT * FROM beans
 UNION ALL TABLE beans;""")
@@ -81,7 +83,7 @@ UNION ALL TABLE beans;""")
 @DBAcademyHelper.monkey_patch
 def generate_derivative_view(self):
     self.print_sql(7, f"""
-USE {DA.db_name};
+USE {DA.schema_name};
 
 CREATE VIEW our_beans 
 AS SELECT * FROM beans
@@ -93,19 +95,19 @@ UNION ALL TABLE beans;
 @DBAcademyHelper.monkey_patch
 def get_their_db(self, their_username):
     import re
-    db_name_prefix = self.to_database_name(username=their_username, course_code=self.course_code)
+    schema_name_prefix = self.to_schema_name(username=their_username)
     
 #     da_name, da_hash = self.get_username_hash(their_username)
-#     db_name_prefix = f"da-{da_name}@{da_hash}-{self.course_code}"         # Composite all the values to create the "dirty" database name
-#     while "__" in db_name_prefix: 
-#         db_name_prefix = self.db_name_prefix.replace("__", "_")           # Replace all double underscores with single underscores
+#     schema_name_prefix = f"da-{da_name}@{da_hash}-{self.course_code}"         # Composite all the values to create the "dirty" database name
+#     while "__" in schema_name_prefix: 
+#         schema_name_prefix = self.schema_name_prefix.replace("__", "_")           # Replace all double underscores with single underscores
 
-    if DA.lesson is None: 
+    if DA.lesson_config.name is None: 
       # No lesson, database name is the same as prefix
-      return db_name_prefix                        
+      return schema_name_prefix                        
     else:
       # Database name includes the lesson name
-      return f"{db_name_prefix}_{DA.clean_lesson}"
+      return f"{schema_name_prefix}_{DA.lesson_config.clean_name}"
 
 # COMMAND ----------
 

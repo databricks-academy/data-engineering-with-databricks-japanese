@@ -1,11 +1,13 @@
 # Databricks notebook source
-# MAGIC %run ./_utility-methods
+# MAGIC %run ./_common
 
 # COMMAND ----------
 
-DA = DBAcademyHelper(**helper_arguments)
-DA.reset_environment()
-DA.init(install_datasets=True, create_db=False)
+lesson_config.create_schema = False
+
+DA = DBAcademyHelper(course_config, lesson_config)
+DA.reset_lesson()
+DA.init()
 DA.conclude_setup()
 
 # COMMAND ----------
@@ -18,10 +20,10 @@ def print_sql(rows, sql):
 
 def _generate_config():
     print_sql(33, f"""
-CREATE DATABASE IF NOT EXISTS {DA.db_name}
+CREATE DATABASE IF NOT EXISTS {DA.schema_name}
 LOCATION '{DA.paths.working_dir}';
 
-USE {DA.db_name};
+USE {DA.schema_name};
 
 CREATE TABLE user_ping 
 (user_id STRING, ping INTEGER, time TIMESTAMP); 
@@ -57,7 +59,7 @@ DA.generate_config = _generate_config
 
 def _generate_load():
     print_sql(12, f"""
-USE {DA.db_name};
+USE {DA.schema_name};
 
 INSERT INTO user_ping
 SELECT *, 
@@ -75,7 +77,7 @@ DA.generate_load = _generate_load
 
 def _generate_user_counts():
     print_sql(10, f"""
-USE {DA.db_name};
+USE {DA.schema_name};
 
 SELECT user_id, count(*) total_records
 FROM user_ping
@@ -91,7 +93,7 @@ DA.generate_user_counts = _generate_user_counts
 
 def _generate_avg_ping():
     print_sql(10, f"""
-USE {DA.db_name};
+USE {DA.schema_name};
 
 SELECT user_id, window.end end_time, mean(ping) avg_ping
 FROM user_ping
@@ -107,7 +109,7 @@ DA.generate_avg_ping = _generate_avg_ping
 
 def _generate_summary():
     print_sql(8, f"""
-USE {DA.db_name};
+USE {DA.schema_name};
 
 SELECT user_id, min(time) first_seen, max(time) last_seen, count(*) total_records, avg(ping) total_avg_ping
 FROM user_ping

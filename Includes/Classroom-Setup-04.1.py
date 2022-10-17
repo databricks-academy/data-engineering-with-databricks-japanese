@@ -1,13 +1,12 @@
 # Databricks notebook source
-# MAGIC %run ./_utility-methods
+# MAGIC %run ./_common
 
 # COMMAND ----------
 
-DA = DBAcademyHelper(**helper_arguments) # Create the DA object
-DA.reset_environment()                   # Reset by removing databases and files from other lessons
-DA.init(install_datasets=True,           # Initialize, install and validate the datasets
-        create_db=True)                  # Continue initialization, create the user-db
+DA = DBAcademyHelper(course_config, lesson_config)
+DA.reset_lesson()
+DA.init()
 
 DA.paths.kafka_events = f"{DA.paths.datasets}/ecommerce/raw/events-kafka"
 
-DA.conclude_setup()                      # Conclude setup by advertising environmental changes
+DA.conclude_setup()

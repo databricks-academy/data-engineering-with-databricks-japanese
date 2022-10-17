@@ -19,11 +19,11 @@
 -- MAGIC 
 -- MAGIC ## 学習目標（Learning Objectives）
 -- MAGIC このレッスンでは、以下のことが学べます。
--- MAGIC * Delta Lakeテーブルを作成する
--- MAGIC * Delta Lakeテーブルからデータを照会する
--- MAGIC * Delta Lakeテーブルでレコードを挿入、更新、削除をする
--- MAGIC * Delta Lakeでアップサーと文を作成する
--- MAGIC * Delta Lakeテーブルを削除する
+-- MAGIC * Deltaテーブルを作成する
+-- MAGIC * Deltaテーブルからデータを照会する
+-- MAGIC * Deltaテーブルでレコードを挿入、更新、削除をする
+-- MAGIC * Deltaテーブルでアップサーと文を作成する
+-- MAGIC * Deltaテーブルを削除する
 
 -- COMMAND ----------
 
@@ -42,7 +42,7 @@
 -- MAGIC 
 -- MAGIC ## Deltaテーブルの作成（Creating a Delta Table）
 -- MAGIC 
--- MAGIC Delta Lakeでは、あまりコードを書かずにテーブルを作成できます。 Delta Lakeテーブルの作成方法はいくつかあり、コース全体を通して見ていきます。 最も簡単な方法の1つから始めます：空のDelta Lakeテーブルの登録。
+-- MAGIC Delta Lakeでは、あまりコードを書かずにテーブルを作成できます。 Deltaテーブルの作成方法はいくつかあり、コース全体を通して見ていきます。最も簡単な方法の1つから始めます：空のDeltaテーブルの登録。
 -- MAGIC 
 -- MAGIC 必要なもの：
 -- MAGIC -  **`CREATE TABLE`** 文
@@ -110,7 +110,7 @@ VALUES
 -- MAGIC 
 -- MAGIC ## Deltaテーブルの照会（Querying a Delta Table）
 -- MAGIC 
--- MAGIC Delta Lakeテーブルを照会することが、標準的な **`SELECT`** 文を使うのと同じくらい簡単であることにはすでに気付いているかと思います。
+-- MAGIC Deltaテーブルを照会することが、標準的な **`SELECT`** 文を使うのと同じくらい簡単であることにはすでに気付いているかと思います
 
 -- COMMAND ----------
 
@@ -130,7 +130,7 @@ SELECT * FROM students
 -- MAGIC 
 -- MAGIC ## レコードの更新（Updating Records）
 -- MAGIC 
--- MAGIC レコードの更新により、アトミック性も保証されます：現バージョンのテーブルのスナップショット読み取りを行い、  **`WHERE`** 句と一致するすべてのフィールドを見つけ、記述された変更を適用します。
+-- MAGIC レコードの更新により、原子性も保証されます：現バージョンのテーブルのスナップショット読み取りを行い、  **`WHERE`** 句と一致するすべてのフィールドを見つけ、記述された変更を適用します。
 -- MAGIC 
 -- MAGIC 以下では、名前が**T**の文字で始まる受講者をすべて見つけ、その **`value`** の列の数字に1を足します。
 

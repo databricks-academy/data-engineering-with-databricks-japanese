@@ -57,7 +57,7 @@ display(files)
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC SELECT * FROM ${da.db_name}.sales_order_in_la
+# MAGIC SELECT * FROM ${da.schema_name}.sales_order_in_la
 
 # COMMAND ----------
 

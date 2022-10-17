@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %run ./_utility-methods
+# MAGIC %run ./_common
 
 # COMMAND ----------
 
@@ -11,7 +11,7 @@ def print_sql(self, rows, sql):
 
 @DBAcademyHelper.monkey_patch
 def generate_daily_patient_avg(self):
-    sql = f"SELECT * FROM {DA.db_name}.daily_patient_avg"
+    sql = f"SELECT * FROM {DA.schema_name}.daily_patient_avg"
     self.print_sql(3, sql)
 
 # COMMAND ----------
@@ -20,7 +20,7 @@ def generate_daily_patient_avg(self):
 def generate_visualization_query(self):
     sql = f"""
 SELECT flow_name, timestamp, int(details:flow_progress:metrics:num_output_rows) num_output_rows
-FROM {DA.db_name}.dlt_metrics
+FROM {DA.schema_name}.dlt_metrics
 ORDER BY timestamp DESC;"""
     
     self.print_sql(5, sql)
@@ -34,16 +34,16 @@ def generate_register_dlt_event_metrics_sql(self):
     global generate_register_dlt_event_metrics_sql_string
     
     generate_register_dlt_event_metrics_sql_string = f"""
-CREATE TABLE IF NOT EXISTS {DA.db_name}.dlt_events
+CREATE TABLE IF NOT EXISTS {DA.schema_name}.dlt_events
 LOCATION '{DA.paths.working_dir}/storage/system/events';
 
-CREATE VIEW IF NOT EXISTS {DA.db_name}.dlt_success AS
-SELECT * FROM {DA.db_name}.dlt_events
+CREATE VIEW IF NOT EXISTS {DA.schema_name}.dlt_success AS
+SELECT * FROM {DA.schema_name}.dlt_events
 WHERE details:flow_progress:metrics IS NOT NULL;
 
-CREATE VIEW IF NOT EXISTS {DA.db_name}.dlt_metrics AS
+CREATE VIEW IF NOT EXISTS {DA.schema_name}.dlt_metrics AS
 SELECT timestamp, origin.flow_name, details 
-FROM {DA.db_name}.dlt_success
+FROM {DA.schema_name}.dlt_success
 ORDER BY timestamp DESC;""".strip()
     
     self.print_sql(13, generate_register_dlt_event_metrics_sql_string)
@@ -81,7 +81,7 @@ def print_pipeline_config(self):
         <td><input type="text" value="{DA.paths.stream_path}" style="width:100%"></td></tr>
     <tr>
         <td style="white-space:nowrap; width:1em">Target:</td>
-        <td><input type="text" value="{DA.db_name}" style="width:100%"></td></tr>
+        <td><input type="text" value="{DA.schema_name}" style="width:100%"></td></tr>
     <tr>
         <td style="white-space:nowrap; width:1em">Storage Location:</td>
         <td><input type="text" value="{DA.paths.storage_location}" style="width:100%"></td></tr>
@@ -102,7 +102,7 @@ def create_pipeline(self):
     response = self.client.pipelines().create(
         name = pipeline_name, 
         storage = DA.paths.storage_location, 
-        target = DA.db_name, 
+        target = DA.schema_name, 
         notebooks = [path],
         continuous = True,
         development = self.is_smoke_test(), # When testing, don't use production
@@ -135,7 +135,7 @@ def validate_pipeline_config(self):
     assert storage == DA.paths.storage_location, f"Invalid storage location. Found \"{storage}\", expected \"{DA.paths.storage_location}\" "
     
     target = spec.get("target")
-    assert target == DA.db_name, f"Invalid target. Found \"{target}\", expected \"{DA.db_name}\" "
+    assert target == DA.schema_name, f"Invalid target. Found \"{target}\", expected \"{DA.schema_name}\" "
     
     libraries = spec.get("libraries")
     assert libraries is None or len(libraries) > 0, f"The notebook path must be specified."
@@ -182,7 +182,7 @@ def validate_pipeline_config(self):
         }
         self.client.pipelines.create_or_update(name = pipeline_name,
                                                storage = DA.paths.storage_location,
-                                               target = DA.db_name,
+                                               target = DA.schema_name,
                                                notebooks = [path],
                                                continuous = True,
                                                development = False,
@@ -238,8 +238,8 @@ def create_job(self):
     params = {
         "name": job_name,
         "tags": {
-            "dbacademy.course": self.course_name,
-            "dbacademy.source": self.course_name
+            "dbacademy.course": self.course_config.build_name,
+            "dbacademy.source": self.course_config.build_name
         },
         "email_notifications": {},
         "timeout_seconds": 7200,
@@ -326,9 +326,11 @@ def start_job(self):
 
 # COMMAND ----------
 
-DA = DBAcademyHelper(lesson="cap_12", **helper_arguments)
-DA.reset_environment()
-DA.init(install_datasets=True, create_db=True)
+lesson_config.name = "cap_12"
+
+DA = DBAcademyHelper(course_config, lesson_config)
+DA.reset_lesson()
+DA.init()
 
 DA.paths.stream_path = f"{DA.paths.working_dir}/stream"
 DA.paths.storage_location = f"{DA.paths.working_dir}/storage"

@@ -29,7 +29,7 @@
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC SELECT * FROM ${da.db_name}.daily_patient_avg
+# MAGIC SELECT * FROM ${da.schema_name}.daily_patient_avg
 
 # COMMAND ----------
 

@@ -10,7 +10,7 @@
 -- MAGIC %md <i18n value="731b610a-2018-40a2-8eae-f6f01ae7a788"/>
 -- MAGIC 
 -- MAGIC # Databricks上のデータベースとテーブル（Databases and Tables on Databricks）
--- MAGIC このデモンストレーションでは、データベースとテーブルを作成して調べます。
+-- MAGIC  このデモンストレーションでは、Delta Lakeでデータベースとテーブルを作成して確認します。
 -- MAGIC 
 -- MAGIC ## 学習目標（Learning Objectives）
 -- MAGIC このレッスンでは、以下のことが学べます。
@@ -49,7 +49,7 @@
 
 -- COMMAND ----------
 
-SELECT "${da.db_name}" AS db_name,
+SELECT "${da.schema_name}" AS schema_name,
        "${da.paths.working_dir}" AS working_dir
 
 -- COMMAND ----------
@@ -69,8 +69,8 @@ SELECT "${da.db_name}" AS db_name,
 
 -- COMMAND ----------
 
-CREATE SCHEMA IF NOT EXISTS ${da.db_name}_default_location;
-CREATE SCHEMA IF NOT EXISTS ${da.db_name}_custom_location LOCATION '${da.paths.working_dir}/_custom_location.db';
+CREATE SCHEMA IF NOT EXISTS ${da.schema_name}_default_location;
+CREATE SCHEMA IF NOT EXISTS ${da.schema_name}_custom_location LOCATION '${da.paths.working_dir}/_custom_location.db';
 
 -- COMMAND ----------
 
@@ -80,7 +80,7 @@ CREATE SCHEMA IF NOT EXISTS ${da.db_name}_custom_location LOCATION '${da.paths.w
 
 -- COMMAND ----------
 
-DESCRIBE SCHEMA EXTENDED ${da.db_name}_default_location;
+DESCRIBE SCHEMA EXTENDED ${da.schema_name}_default_location;
 
 -- COMMAND ----------
 
@@ -90,7 +90,7 @@ DESCRIBE SCHEMA EXTENDED ${da.db_name}_default_location;
 
 -- COMMAND ----------
 
-DESCRIBE SCHEMA EXTENDED ${da.db_name}_custom_location;
+DESCRIBE SCHEMA EXTENDED ${da.schema_name}_custom_location;
 
 -- COMMAND ----------
 
@@ -102,7 +102,7 @@ DESCRIBE SCHEMA EXTENDED ${da.db_name}_custom_location;
 
 -- COMMAND ----------
 
-USE ${da.db_name}_default_location;
+USE ${da.schema_name}_default_location;
 
 CREATE OR REPLACE TABLE managed_table_in_db_with_default_location (width INT, length INT, height INT);
 INSERT INTO managed_table_in_db_with_default_location 
@@ -130,11 +130,11 @@ DESCRIBE DETAIL managed_table_in_db_with_default_location;
 -- COMMAND ----------
 
 -- MAGIC %python 
--- MAGIC hive_root =  f"dbfs:/user/hive/warehouse"
--- MAGIC db_name =    f"{DA.db_name}_default_location.db"
--- MAGIC table_name = f"managed_table_in_db_with_default_location"
+-- MAGIC hive_root =   f"dbfs:/user/hive/warehouse"
+-- MAGIC schema_name = f"{DA.schema_name}_default_location.db"
+-- MAGIC table_name =  f"managed_table_in_db_with_default_location"
 -- MAGIC 
--- MAGIC tbl_location = f"{hive_root}/{db_name}/{table_name}"
+-- MAGIC tbl_location = f"{hive_root}/{schema_name}/{table_name}"
 -- MAGIC print(tbl_location)
 -- MAGIC 
 -- MAGIC files = dbutils.fs.ls(tbl_location)
@@ -160,7 +160,7 @@ DROP TABLE managed_table_in_db_with_default_location;
 
 -- MAGIC %python 
 -- MAGIC 
--- MAGIC db_location = f"{hive_root}/{db_name}"
+-- MAGIC db_location = f"{hive_root}/{schema_name}"
 -- MAGIC print(db_location)
 -- MAGIC dbutils.fs.ls(db_location)
 
@@ -174,7 +174,7 @@ DROP TABLE managed_table_in_db_with_default_location;
 
 -- COMMAND ----------
 
-USE ${da.db_name}_custom_location;
+USE ${da.schema_name}_custom_location;
 
 CREATE OR REPLACE TABLE managed_table_in_db_with_custom_location (width INT, length INT, height INT);
 INSERT INTO managed_table_in_db_with_custom_location VALUES (3, 2, 1);
@@ -184,7 +184,7 @@ SELECT * FROM managed_table_in_db_with_custom_location;
 
 -- MAGIC %md <i18n value="68e86e08-9400-428d-9c56-d47439af7dff"/>
 -- MAGIC 
--- MAGIC 再び説明でテーブルの場所を見つけます。
+-- MAGIC 再び`DESCRIBE DETAIL`でテーブルの場所を確認します。
 
 -- COMMAND ----------
 
@@ -245,7 +245,7 @@ DROP TABLE managed_table_in_db_with_custom_location;
 
 -- COMMAND ----------
 
-USE ${da.db_name}_default_location;
+USE ${da.schema_name}_default_location;
 
 CREATE OR REPLACE TEMPORARY VIEW temp_delays USING CSV OPTIONS (
   path = '${DA.paths.datasets}/flights/departuredelays.csv',
@@ -299,8 +299,8 @@ DROP TABLE external_table;
 
 -- COMMAND ----------
 
-DROP SCHEMA ${da.db_name}_default_location CASCADE;
-DROP SCHEMA ${da.db_name}_custom_location CASCADE;
+DROP SCHEMA ${da.schema_name}_default_location CASCADE;
+DROP SCHEMA ${da.schema_name}_custom_location CASCADE;
 
 -- COMMAND ----------
 

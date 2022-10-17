@@ -15,15 +15,23 @@
 # MAGIC The key changes this notebook makes includes:
 # MAGIC * Updating user-specific grants such that they can create databases/schemas against the current catalog when they are not workspace-admins.
 # MAGIC * Configures three cluster policies:
-# MAGIC     * **Student's All-Purpose Policy** - which should be used on clusters running standard notebooks.
-# MAGIC     * **Student's Jobs-Only Policy** - which should be used on workflows/jobs
-# MAGIC     * **Student's DLT-Only Policy** - which should be used on DLT piplines (automatically applied)
+# MAGIC     * **DBAcademy All-Purpose Policy** - which should be used on clusters running standard notebooks.
+# MAGIC     * **DBAcademy Jobs-Only Policy** - which should be used on workflows/jobs
+# MAGIC     * **DBAcademy DLT-Only Policy** - which should be used on DLT piplines (automatically applied)
 # MAGIC * Create or update the shared **Starter Warehouse** for use in Databricks SQL exercises
-# MAGIC * Create the Instance Pool **Student's Pool** for use by students and the "student" and "jobs" policies.
+# MAGIC * Create the Instance Pool **DBAcademy Pool** for use by students and the "student" and "jobs" policies.
 
 # COMMAND ----------
 
-# MAGIC %run ./_utility-methods
+# MAGIC %run ./_common
+
+# COMMAND ----------
+
+import time
+
+# Start a timer so we can 
+# benchmark execution duration.
+setup_start = int(time.time())
 
 # COMMAND ----------
 
@@ -34,8 +42,8 @@
 # COMMAND ----------
 
 # Setup the widgets to collect required parameters.
-from dbacademy_helper.workspace_helper import ALL_USERS # no other option for this course
-dbutils.widgets.dropdown("configure_for", ALL_USERS, [ALL_USERS], "Configure Workspace For")
+from dbacademy.dbhelper import WorkspaceHelper # no other option for this course
+dbutils.widgets.dropdown("configure_for", WorkspaceHelper.ALL_USERS, [WorkspaceHelper.ALL_USERS], "Configure Workspace For")
 
 # students_count is the reasonable estiamte to the maximum number of students
 dbutils.widgets.text("students_count", "", "Number of Students")
@@ -54,11 +62,12 @@ dbutils.widgets.text("event_name", "", "Event Name/Class Number")
 
 # COMMAND ----------
 
-DA = DBAcademyHelper(**helper_arguments) # Create the DA object
-DA.reset_environment()                   # Reset by removing databases and files from other lessons
-DA.init(install_datasets=True,           # Initialize, install and validate the datasets
-        create_db=False)                 # Continue initialization, create the user-db
-DA.conclude_setup()                      # Conclude setup by advertising environmental changes
+lesson_config.create_schema = False
+
+DA = DBAcademyHelper(course_config, lesson_config)
+DA.reset_lesson()
+DA.init()
+DA.conclude_setup()
 
 # COMMAND ----------
 
@@ -69,7 +78,7 @@ DA.conclude_setup()                      # Conclude setup by advertising environ
 
 # COMMAND ----------
 
-instance_pool_id = DA.workspace.clusters.create_instance_pools()
+instance_pool_id = DA.workspace.clusters.create_instance_pool()
 
 # COMMAND ----------
 
@@ -82,7 +91,7 @@ instance_pool_id = DA.workspace.clusters.create_instance_pools()
 
 DA.workspace.clusters.create_all_purpose_policy(instance_pool_id)
 DA.workspace.clusters.create_jobs_policy(instance_pool_id)
-DA.workspace.clusters.create_dlt_policy(instance_pool_id)
+DA.workspace.clusters.create_dlt_policy()
 None
 
 # COMMAND ----------
@@ -96,7 +105,7 @@ None
 
 # COMMAND ----------
 
-DA.workspace.warehouses.create_shared_sql_warehouse()
+DA.workspace.warehouses.create_shared_sql_warehouse(name="Starter Warehouse")
 
 # COMMAND ----------
 
@@ -132,7 +141,7 @@ DA.client.jobs().delete_by_id(job_id)
 
 # COMMAND ----------
 
-DA.setup_completed()
+print(f"Setup completed {DA.clock_stopped(setup_start)}")
 
 # COMMAND ----------
 

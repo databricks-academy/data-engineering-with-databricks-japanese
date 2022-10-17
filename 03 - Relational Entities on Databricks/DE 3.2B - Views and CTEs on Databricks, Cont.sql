@@ -33,7 +33,7 @@
 
 -- COMMAND ----------
 
-USE ${da.db_name};
+USE ${da.schema_name};
 
 -- COMMAND ----------
 
@@ -218,7 +218,7 @@ SELECT count(origin_airport) AS `Number of Delayed Flights from BOS to LAX` FROM
 
 -- COMMAND ----------
 
-DROP DATABASE ${da.db_name} CASCADE;
+DROP DATABASE ${da.schema_name} CASCADE;
 
 -- COMMAND ----------
 

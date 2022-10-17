@@ -77,11 +77,11 @@ import re
 
 username = spark.sql("SELECT current_user()").first()[0]
 clean_username = re.sub("[^a-zA-Z0-9]", "_", username)
-db_name = f"dbacademy_{clean_username}_{course}_5_3l"
+schema_name = f"dbacademy_{clean_username}_{course}_5_3l"
 working_dir = f"dbfs:/user/{username}/dbacademy/{course}/5.3l"
 
 print(f"username:    {username}")
-print(f"db_name:     {db_name}")
+print(f"schema_name:     {schema_name}")
 print(f"working_dir: {working_dir}")
 
 # COMMAND ----------
@@ -99,19 +99,19 @@ def create_database(course, reset=True):
 
     username = spark.sql("SELECT current_user()").first()[0]
     clean_username = re.sub("[^a-zA-Z0-9]", "_", username)
-    db_name = f"dbacademy_{clean_username}_{course}_5_3l"
+    schema_name = f"dbacademy_{clean_username}_{course}_5_3l"
     working_dir = f"dbfs:/user/{username}/dbacademy/{course}/5.3l"
 
     print(f"username:    {username}")
-    print(f"db_name:     {db_name}")
+    print(f"schema_name: {schema_name}")
     print(f"working_dir: {working_dir}")
 
     if reset:
-        spark.sql(f"DROP DATABASE IF EXISTS {db_name} CASCADE")
+        spark.sql(f"DROP DATABASE IF EXISTS {schema_name} CASCADE")
         dbutils.fs.rm(working_dir, True)
         
-    spark.sql(f"CREATE DATABASE IF NOT EXISTS {db_name} LOCATION '{working_dir}/{db_name}.db'")
-    spark.sql(f"USE {db_name}")
+    spark.sql(f"CREATE DATABASE IF NOT EXISTS {schema_name} LOCATION '{working_dir}/{schema_name}.db'")
+    spark.sql(f"USE {schema_name}")
     
 create_database(course)
 

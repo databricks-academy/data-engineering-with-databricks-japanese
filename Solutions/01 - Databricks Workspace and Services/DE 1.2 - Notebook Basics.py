@@ -103,7 +103,7 @@ print("I'm running Python!")
 # MAGIC %md <i18n value="828d14d2-a661-45e4-a555-0b86896c31d4"/>
 # MAGIC 
 # MAGIC ## MAGICコマンド
-# MAGIC * Magicコマンドは、Databricksノートブック固有のものです
+# MAGIC * MAGICコマンドは、Databricksノートブック固有のものです
 # MAGIC * 同等のノートブックプロダクトにみられるMAGICコマンドと非常によく似ています
 # MAGIC * これらはノートブックの言語に関係なく、同じ結果をもたらす組み込みコマンドです
 # MAGIC * セルの先頭にある1つのパーセント（%）記号は、MAGICコマンドであることを示します
@@ -149,7 +149,7 @@ print("Hello Python!")
 # MAGIC ## タイトル2（Title One）
 # MAGIC ### タイトル3（Title Three）
 # MAGIC 
-# MAGIC これは緊急放送システムのテストです。 これは単なるテストです。
+# MAGIC これは単なるテキストです。
 # MAGIC 
 # MAGIC これは **太字の** 単語を含むテキストです。
 # MAGIC 
@@ -211,9 +211,6 @@ print("Hello Python!")
 
 # MAGIC %md <i18n value="e7a9c7ec-1d61-42d6-91c9-ece07d2aa2a3"/>
 # MAGIC 
-# MAGIC The **`../Includes/Classroom-Setup-01.2`** notebook we referenced includes logic to create and **`USE`** a database, as well as creating the temp view **`demo_temp_vw`**.
-# MAGIC We can see this temp view is now available in our current notebook session with the following query.
-# MAGIC 
 # MAGIC 参照した **`../Includes/Classroom-Setup-01.2`** ノートブックには、データベースを作成し、 **`USE`** するためのロジックとテンポラリビュー **`demo_temp_vw`** の作成するも含まれています。
 # MAGIC 
 # MAGIC 次のクエリを使って、このテンポラリビューは、現在のノートブックセッションで利用できるようになっていることが確認できます。
@@ -242,7 +239,7 @@ print("Hello Python!")
 print(f"DA:                   {DA}")
 print(f"DA.username:          {DA.username}")
 print(f"DA.paths.working_dir: {DA.paths.working_dir}")
-print(f"DA.db_name:           {DA.db_name}")
+print(f"DA.schema_name:       {DA.schema_name}")
 
 # COMMAND ----------
 
@@ -259,7 +256,7 @@ print(f"DA.db_name:           {DA.db_name}")
 # MAGIC %sql
 # MAGIC SELECT '${da.username}' AS current_username,
 # MAGIC        '${da.paths.working_dir}' AS working_directory,
-# MAGIC        '${da.db_name}' as database_name
+# MAGIC        '${da.schema_name}' as schema_name
 
 # COMMAND ----------
 
@@ -268,7 +265,7 @@ print(f"DA.db_name:           {DA.db_name}")
 # MAGIC ## Databricksユーティリティ（Databricks Utilities）
 # MAGIC Databricksノートブックには、環境を設定したり操作したりするためのユーティリティコマンドが多数用意されています：<a href="https://docs.databricks.com/user-guide/dev-tools/dbutils.html" target="_blank">dbutils docs</a>
 # MAGIC 
-# MAGIC このコースでは、時折 **`dbutils.fs.ls()`** を使ってPythonセルからファイルのディレクトリを書き出します。
+# MAGIC このコースでは、時折 **`dbutils.fs.ls()`** を使ってPythonセルからディレクトリに存在するファイルを出力します。
 
 # COMMAND ----------
 

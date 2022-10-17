@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %run ./_utility-methods
+# MAGIC %run ./_common
 
 # COMMAND ----------
 
@@ -16,11 +16,21 @@ def create_demo_tmp_vw(self):
 
 # COMMAND ----------
 
-DA = DBAcademyHelper(**helper_arguments) # Create the DA object
-DA.reset_environment()                   # Reset by removing databases and files from other lessons
-DA.init(install_datasets=True,           # Initialize, install and validate the datasets
-        create_db=False)                 # Continue initialization, create the user-db
+# Overriding the instance defined in _common
+lesson_config = LessonConfig(name = None,
+                             create_schema = False,
+                             create_catalog = False,
+                             requires_uc = False,
+                             installing_datasets = True,
+                             enable_streaming_support = True)
 
-DA.create_demo_tmp_vw()                  # Create demo table
+# COMMAND ----------
 
-DA.conclude_setup()                      # Conclude setup by advertising environmental changes
+DA = DBAcademyHelper(course_config, lesson_config)
+DA.reset_lesson()
+DA.init()
+
+# Create demo table
+DA.create_demo_tmp_vw()                  
+
+DA.conclude_setup()

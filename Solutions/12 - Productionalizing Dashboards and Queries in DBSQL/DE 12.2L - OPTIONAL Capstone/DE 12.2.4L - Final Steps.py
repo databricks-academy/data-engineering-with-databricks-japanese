@@ -37,7 +37,7 @@
 
 # MAGIC %sql
 # MAGIC -- ANSWER
-# MAGIC SELECT * FROM ${da.db_name}.recordings_bronze WHERE heartrate <= 0
+# MAGIC SELECT * FROM ${da.schema_name}.recordings_bronze WHERE heartrate <= 0
 
 # COMMAND ----------
 
@@ -50,7 +50,7 @@
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC SELECT abs(heartrate), * FROM ${da.db_name}.recordings_bronze WHERE heartrate <= 0
+# MAGIC SELECT abs(heartrate), * FROM ${da.schema_name}.recordings_bronze WHERE heartrate <= 0
 
 # COMMAND ----------
 
@@ -67,15 +67,15 @@
 # MAGIC %sql
 # MAGIC -- ANSWER
 # MAGIC 
-# MAGIC MERGE INTO ${da.db_name}.recordings_enriched t
+# MAGIC MERGE INTO ${da.schema_name}.recordings_enriched t
 # MAGIC USING (SELECT
 # MAGIC   CAST(a.device_id AS INTEGER) device_id, 
 # MAGIC   CAST(a.mrn AS LONG) mrn, 
 # MAGIC   abs(CAST(a.heartrate AS DOUBLE)) heartrate, 
 # MAGIC   CAST(from_unixtime(a.time, 'yyyy-MM-dd HH:mm:ss') AS TIMESTAMP) time,
 # MAGIC   b.name
-# MAGIC   FROM ${da.db_name}.recordings_bronze a
-# MAGIC   INNER JOIN ${da.db_name}.pii b
+# MAGIC   FROM ${da.schema_name}.recordings_bronze a
+# MAGIC   INNER JOIN ${da.schema_name}.pii b
 # MAGIC   ON a.mrn = b.mrn
 # MAGIC   WHERE heartrate <= 0) v
 # MAGIC ON t.mrn=v.mrn AND t.time=v.time
@@ -92,7 +92,7 @@
 # COMMAND ----------
 
 # ANSWER
-assert spark.table(f"{DA.db_name}.recordings_bronze").count() == spark.table(f"{DA.db_name}.recordings_enriched").count()
+assert spark.table(f"{DA.schema_name}.recordings_bronze").count() == spark.table(f"{DA.schema_name}.recordings_enriched").count()
 
 # COMMAND ----------
 

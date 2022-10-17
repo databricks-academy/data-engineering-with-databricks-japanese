@@ -50,7 +50,7 @@
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC SELECT abs(heartrate), * FROM ${da.db_name}.recordings_bronze WHERE heartrate <= 0
+# MAGIC SELECT abs(heartrate), * FROM ${da.schema_name}.recordings_bronze WHERE heartrate <= 0
 
 # COMMAND ----------
 
